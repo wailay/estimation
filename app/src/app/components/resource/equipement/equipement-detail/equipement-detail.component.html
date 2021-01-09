@@ -1,0 +1,35 @@
+<div class="grid">
+    <!-- <div style="height: 100px; border: 1px solid red">1</div>
+    <div style="border: 1px solid blue">2</div>
+    <div style="border: 1px solid pink">3</div> -->
+    <div class="info border">
+        <div class="info-grid">
+            <div>Code</div>
+            <div class="label">{{ resource.code }}</div>
+
+            <div>Description</div>
+            <div class="label">{{ resource.description }}</div>
+
+            <div>Unite</div>
+            <div class="label">{{ resource.unit }}</div>
+
+            <div>Type de prix</div>
+            <!-- <mat-slide-toggle [disabled]="disabled" [checked]="priceType" (change)="fixedPriceChange($event)"
+                >{{ resource.fixed_price === true ? 'Detaille' : 'Fixe' }}
+            </mat-slide-toggle> -->
+        </div>
+    </div>
+    <div class="summary border">
+        <div class="summary-grid">
+            <div>Quantite:</div>
+            <div class="label">1</div>
+            <div>Cout Unitaire:</div>
+            <div class="label">{{ resource.unit_price }}</div>
+            <div>Total:</div>
+            <div class="label">{{ resource.code }}</div>
+        </div>
+    </div>
+    <div class="detail border">
+        <app-equipement-detail-table [disabled]="disabled" [data]="[]"></app-equipement-detail-table>
+    </div>
+</div>

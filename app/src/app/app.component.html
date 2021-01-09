@@ -1,0 +1,30 @@
+<nz-layout class="app-layout">
+    <nz-sider class="menu-sidebar" nzCollapsible nzWidth="256px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed">
+        <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+            <li nz-menu-item nzMatchRouter>
+                <i nz-icon nzType="project"></i>
+                <span> Projet </span>
+
+                <a routerLink="/project" routerLinkActive="active"> </a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+                <i nz-icon nzType="unordered-list"></i>
+                <span> Ressource </span>
+
+                <a routerLink="/resource"></a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+                <i nz-icon nzType="team"></i>
+                <span> Equipe </span>
+                <a routerLink="/" routerLinkActive="active"></a>
+            </li>
+        </ul>
+    </nz-sider>
+    <nz-layout>
+        <nz-content>
+            <div class="inner-content">
+                <router-outlet></router-outlet>
+            </div>
+        </nz-content>
+    </nz-layout>
+</nz-layout>
