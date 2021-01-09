@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { Tabulator } from 'tabulator-tables';
+import Tabulator from 'tabulator-tables';
 import { EquipementService } from './../../../../service/resource/equipement/equipement.service';
 import { ResourceService } from './../../../../service/resource/resource.service';
 

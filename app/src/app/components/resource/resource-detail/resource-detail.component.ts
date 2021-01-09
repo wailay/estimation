@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Tabulator } from 'tabulator-tables';
+import Tabulator from 'tabulator-tables';
 import { IResource } from './../../../interfaces/models';
 
 @Component({

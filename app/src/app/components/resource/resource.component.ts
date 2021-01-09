@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { Tabulator } from 'tabulator-tables';
+import Tabulator from 'tabulator-tables';
 import { Position, ResourceType } from './../../interfaces/models';
 import { ResourceService } from './../../service/resource/resource.service';
 @Component({
@@ -23,9 +23,9 @@ export class ResourceComponent implements OnInit {
     selected: Tabulator.RowComponent;
     data: [];
 
-    @ViewChild('split') split: SplitComponent;
-    @ViewChild('area1') area1: SplitAreaDirective;
-    @ViewChild('area2') area2: SplitAreaDirective;
+    // @ViewChild('split') split: SplitComponent;
+    // @ViewChild('area1') area1: SplitAreaDirective;
+    // @ViewChild('area2') area2: SplitAreaDirective;
 
     direction = 'horizontal';
     sizes = {

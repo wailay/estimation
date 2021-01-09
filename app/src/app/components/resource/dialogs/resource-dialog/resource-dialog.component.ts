@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Tabulator } from 'tabulator-tables';
+import Tabulator from 'tabulator-tables';
 
 export interface ResourceDialogData {
     row: Tabulator.RowComponent;

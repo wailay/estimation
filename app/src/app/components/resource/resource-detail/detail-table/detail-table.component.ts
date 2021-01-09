@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Tabulator } from 'tabulator-tables';
+import Tabulator from 'tabulator-tables';
 
 @Component({
     selector: 'app-detail-table',

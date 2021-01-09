@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Tabulator } from 'tabulator-tables';
+import Tabulator from 'tabulator-tables';
 import { IResource } from './../../../../../interfaces/models';
 import { EquipementService } from './../../../../../service/resource/equipement/equipement.service';
 

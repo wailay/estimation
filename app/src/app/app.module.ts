@@ -19,6 +19,10 @@ import { DetailTableComponent } from './components/resource/resource-detail/deta
 import { ResourceDetailComponent } from './components/resource/resource-detail/resource-detail.component';
 import { ResourceTableComponent } from './components/resource/resource-table/resource-table.component';
 import { ResourceComponent } from './components/resource/resource.component';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { IconsProviderModule } from './icons-provider.module';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
 
@@ -40,7 +44,18 @@ registerLocaleData(en);
         EquipementDetailComponent,
         EquipementDetailTableComponent,
     ],
-    imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, FormsModule, HttpClientModule, BrowserAnimationsModule],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        NzLayoutModule,
+        NzMenuModule,
+        NzIconModule,
+        IconsProviderModule,
+    ],
     providers: [{ provide: NZ_I18N, useValue: en_US }],
     bootstrap: [AppComponent],
 })
