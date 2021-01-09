@@ -6,43 +6,9 @@ class EquipementService {
     constructor() {}
 
     handle() {
-        this.addCode();
-        this.addResource();
         this.addEquipementDetail();
         this.editDetailQuantity();
         this.getDetails();
-    }
-
-    addCode() {
-        ipcMain.handle('add-equipement-code', async (event, type) => {
-            try {
-                const created = await Resource.create({ code: type, type: 'E' });
-
-                return { status: 'success', message: 'Code ajoute !', id: created.id };
-            } catch (err) {
-                return this.errorStatus(err);
-            }
-        });
-    }
-
-    addResource() {
-        ipcMain.handle('add-equipement-resource', async (event, resource, parentId) => {
-            try {
-                const [instance, created] = await Resource.findOrCreate({ where: { id: parentId }, defaults: { ...resource } });
-
-                if (created) return { status: 'success', message: 'Resource Equipement ajoute !', resource: instance.toJSON() };
-
-                if (!instance) return { status: 'error', message: 'Erreur' };
-
-                const newResource = await instance.createResource(resource);
-
-                if (!newResource) return { status: 'error', message: 'Erreur' };
-
-                return { status: 'success', message: 'Resource Equipement ajoute !', resource: newResource.toJSON() };
-            } catch (err) {
-                return this.errorStatus(err);
-            }
-        });
     }
 
     addEquipementDetail() {

@@ -1,4 +1,7 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { DialogService } from './../../../../service/dialog/dialog.service';
+import { TypeDialogComponent } from './../../dialogs/type-dialog/type-dialog.component';
+import { ResourceDialogComponent } from './../../dialogs/resource-dialog/resource-dialog.component';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewContainerRef } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import Tabulator from 'tabulator-tables';
 import { EquipementService } from './../../../../service/resource/equipement/equipement.service';
@@ -9,7 +12,7 @@ import { ResourceService } from './../../../../service/resource/resource.service
     templateUrl: './equipement-table.component.html',
     styleUrls: ['./equipement-table.component.scss'],
 })
-export class EquipementTableComponent implements AfterViewInit, OnChanges {
+export class EquipementTableComponent implements OnChanges {
     table: Tabulator;
     @Input() data: any[] = [];
 
@@ -62,20 +65,26 @@ export class EquipementTableComponent implements AfterViewInit, OnChanges {
         { title: 'Unite', field: 'unit', editor: 'input', editable: false },
         { title: 'Prix Unitaire', field: 'unit_price', editor: 'number', editable: false },
     ];
-    constructor(private equipementService: EquipementService, private resourceService: ResourceService, private modalService: NzModalService) {}
+    constructor(
+        private equipementService: EquipementService,
+        private resourceService: ResourceService,
+        private modal: NzModalService,
+        private dialogService: DialogService,
+    ) {}
 
-    ngAfterViewInit(): void {
-        this.drawTable();
-    }
+    // ngAfterViewInit(): void {
+    //     this.drawTable();
+    // }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (this.table) this.table.setData(this.data);
+        // if (this.table) this.table.setData(this.data);
+        this.drawTable();
     }
 
     private drawTable(): void {
         this.table = new Tabulator('#equipement-table', {
             data: this.data,
-            reactiveData: true, // enable data reactivity
+            reactiveData: true,
             rowContextMenu: this.rowMenu,
             columns: this.columns,
             layout: 'fitColumns',
@@ -112,48 +121,51 @@ export class EquipementTableComponent implements AfterViewInit, OnChanges {
     }
 
     private openTypeForm(row): void {
-        // const ref = this.dialog.open(TypeDialogComponent);
-        // ref.afterClosed().subscribe((type) => {
-        //     if (!type) return;
-        //     this.equipementService.addCode(type.code).then((res) => {
-        //         if (res.status === 'error') {
-        //             console.log('error');
-        //             return;
-        //         } else {
-        //             this.table.addData([{ id: res.id, code: type.code, _children: [] }]);
-        //             this.table.redraw();
-        //         }
-        //     });
-        // });
+        const modal = this.modal.create({
+            nzTitle: 'Ajouter un type',
+            nzContent: TypeDialogComponent,
+        });
+
+        modal.afterClose.subscribe((type) => {
+            if (!type) return;
+            this.resourceService.addType(type.code, 'E').then((res) => {
+                if (res.status === 'error') {
+                    console.log('error');
+                    return;
+                } else {
+                    this.table.addData([{ id: res.id, code: type.code, _children: [] }]);
+                    this.table.redraw();
+                }
+            });
+        });
     }
 
     private openResourceForm(row): void {
-        // const ref = this.dialog.open(ResourceDialogComponent);
-        // const parentId = row ? row.getData().id : row;
-        // ref.afterClosed().subscribe((resource) => {
-        //     if (!resource) return;
-        //     this.equipementService.addResource(resource, parentId).then((res) => {
-        //         console.log(res);
-        //         if (res.status === 'error') return;
-        //         if (parentId) {
-        //             console.log(res.resource);
-        //             row.getData()._children.push(res.resource);
-        //         } else {
-        //             this.table.addData({ ...res.resource });
-        //         }
-        //         this.table.redraw();
-        //     });
-        // });
+        const modal = this.modal.create({
+            nzTitle: 'Ajouter une ressource',
+            nzContent: ResourceDialogComponent,
+        });
+
+        const parentId = row ? row.getData().id : row;
+
+        modal.afterClose.subscribe((resource) => {
+            if (!resource) return;
+            this.resourceService.addResource(resource, parentId, 'E').then((res) => {
+                console.log(res);
+                if (res.status === 'error') return;
+                if (parentId) {
+                    console.log(res.resource);
+                    row.getData()._children.push(res.resource);
+                } else {
+                    this.table.addData({ ...res.resource });
+                }
+                this.table.redraw();
+            });
+        });
     }
 
     private openDeleteModal(row): void {
-        // const ref = this.dialog.open(DeleteDialogComponent);
-        // ref.afterClosed().subscribe((confirmation) => {
-        //     console.log(confirmation);
-        //     if (confirmation) {
-        //         this.deleteType(row);
-        //     }
-        // });
+        this.dialogService.openConfirm(this.deleteType.bind(this), row);
     }
 
     deleteType(row): void {

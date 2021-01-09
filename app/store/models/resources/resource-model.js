@@ -1,5 +1,6 @@
 const { DataTypes, Model } = require('sequelize');
 const { sequelize } = require('../../db');
+const { TeamResources, Team } = require('../team/team');
 const EquipementDetail = require('./equipements-detail');
 class Resource extends Model {}
 
@@ -46,4 +47,8 @@ Resource.belongsTo(Resource);
 Resource.hasMany(EquipementDetail, { foreignKey: { name: 'ResourceId', allowNull: false } });
 Resource.hasMany(EquipementDetail, { foreignKey: { name: 'EquipementId', allowNull: false } });
 EquipementDetail.belongsTo(Resource);
+
+// hierarchy de sous dossier
+Team.belongsToMany(Resource, { through: TeamResources });
+Resource.belongsToMany(Team, { through: TeamResources });
 module.exports = Resource;

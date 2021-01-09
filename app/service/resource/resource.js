@@ -1,7 +1,6 @@
 const { ipcMain } = require('electron');
 const { Op } = require('sequelize');
 const Resource = require('../../store/models/resources/resource-model');
-
 class ResourceService {
     constructor() {}
 
@@ -9,6 +8,8 @@ class ResourceService {
         this.getAll();
         this.deleteType();
         this.edit();
+        this.addType();
+        this.addResource();
     }
 
     edit() {
@@ -30,20 +31,33 @@ class ResourceService {
         });
     }
 
-    addType() {
-        ipcMain.handle('add-type', async (event, type, parentId) => {
+    addResource() {
+        ipcMain.handle('add-resource', async (event, resource, parentId) => {
             try {
-                const [parentType, created] = await Resource.findOrCreate({ where: { id: parentId }, defaults: { code: type } });
+                console.log('adding ', resource);
+                const [instance, created] = await Resource.findOrCreate({ where: { id: parentId }, defaults: { ...resource } });
 
-                if (created) return { status: 'success', message: 'Type ajoute !', id: parentType.id };
+                if (created) return { status: 'success', message: 'Resource ajoute !', resource: instance.toJSON() };
 
-                if (!parentType) return { status: 'error', message: 'Erreur' };
+                if (!instance) return { status: 'error', message: 'Erreur' };
 
-                await parentType.createResource({
-                    code: type,
-                });
+                const newResource = await instance.createResource(resource);
 
-                return { status: 'success', message: 'Type ajoute !', id: parentType.id };
+                if (!newResource) return { status: 'error', message: 'Erreur' };
+
+                return { status: 'success', message: 'Resource ajoute !', resource: newResource.toJSON() };
+            } catch (err) {
+                return this.errorStatus(err);
+            }
+        });
+    }
+
+    addType() {
+        ipcMain.handle('add-resource-type', async (event, code, type) => {
+            try {
+                const created = await Resource.create({ code: code, type: type });
+
+                return { status: 'success', message: 'Code ajoute !', id: created.id };
             } catch (err) {
                 return this.errorStatus(err);
             }

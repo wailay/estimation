@@ -13,8 +13,8 @@ async function createWindow() {
     nativeTheme.themeSource = 'light';
 
     win = new BrowserWindow({
-        width: 900,
-        height: 800,
+        width: 1600,
+        height: 1200,
         webPreferences: {
             nodeIntegration: true,
         },

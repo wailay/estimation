@@ -8,20 +8,16 @@ import { ElectronService } from './../electron/electron.service';
 export class ResourceService {
     constructor(private electron: ElectronService) {}
 
-    getTypeChildren(parentId: number): Promise<any> {
-        return this.electron.ipcRenderer.invoke('get-type-children', parentId);
+    addType(code: string, type: string): Promise<any> {
+        return this.electron.ipcRenderer.invoke('add-resource-type', code, type);
     }
 
-    getTypeItems(parentId: number): Promise<any> {
-        return this.electron.ipcRenderer.invoke('get-type-items', parentId);
+    addResource(resource: IResource, parentId: number, type: string): Promise<any> {
+        console.log(' adding res', { ...resource, type });
+        return this.electron.ipcRenderer.invoke('add-resource', { ...resource, type }, parentId);
     }
-
-    // getTypes(): Promise<any> {
-    //     return this.electron.ipcRenderer.invoke('get-types');
-    // }
 
     getAll(type: string): Promise<any> {
-        console.log('getting all');
         return this.electron.ipcRenderer.invoke('get-all', type);
     }
 
@@ -33,15 +29,7 @@ export class ResourceService {
         return this.electron.ipcRenderer.invoke('edit', id, field, value);
     }
 
-    addType(type: string, parentId): Promise<any> {
-        return this.electron.ipcRenderer.invoke('add-type', type, parentId);
-    }
-
     deleteType(typeId: number): Promise<any> {
         return this.electron.ipcRenderer.invoke('delete-type', typeId);
-    }
-
-    addResource(resource: IResource, parentId: number): Promise<any> {
-        return this.electron.ipcRenderer.invoke('add-resource', resource, parentId);
     }
 }

@@ -13,14 +13,6 @@ export class EquipementService {
         this.selected = new Subject();
     }
 
-    addCode(code: string): Promise<any> {
-        return this.electron.ipcRenderer.invoke('add-equipement-code', code);
-    }
-
-    addResource(resource: IResource, parentId: number): Promise<any> {
-        return this.electron.ipcRenderer.invoke('add-equipement-resource', { ...resource, type: 'E' }, parentId);
-    }
-
     addEquipementDetail(equipementId: number, resourceId: number): Promise<any> {
         return this.electron.ipcRenderer.invoke('add-equipement-detail', equipementId, resourceId);
     }

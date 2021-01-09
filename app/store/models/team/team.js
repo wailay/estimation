@@ -1,9 +1,9 @@
 const { DataTypes, Model } = require('sequelize');
 const { sequelize } = require('../../db');
 
-class Workforce extends Model {}
+class Team extends Model {}
 
-Workforce.init(
+Team.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -21,18 +21,31 @@ Workforce.init(
         },
         unit: {
             type: DataTypes.STRING,
-            allowNull: true,
-            defaultValue: null,
         },
         unit_price: {
             type: DataTypes.INTEGER,
         },
-        type: {
-            type: DataTypes.STRING,
-            defaultValue: 'W',
-        },
     },
-    { sequelize, modelName: 'Workforce', timestamps: false },
+    { sequelize, modelName: 'Team', timestamps: false },
 );
 
-module.exports = Workforce;
+class TeamResources extends Model {}
+
+TeamResources.init(
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+
+        unit_quantity: {
+            type: DataTypes.INTEGER,
+            defaultValue: 1,
+        },
+    },
+    { sequelize, modelName: 'TeamResources', timestamps: false },
+);
+
+module.exports = { Team, TeamResources };

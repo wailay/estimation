@@ -24,6 +24,45 @@
         </form>
     </div>
 </div>
+
+
+
 <mat-dialog-actions align="end">
     <button [disabled]="!resForm.valid" type="submit" mat-raised-button (click)="addResource()">OK</button>
 </mat-dialog-actions> -->
+
+<form nz-form [formGroup]="resForm">
+    <nz-form-item>
+        <nz-form-control>
+            <nz-input-group>
+                <input formControlName="code" nz-input type="text" placeholder="Code" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control>
+            <nz-input-group>
+                <input formControlName="description" nz-input type="text" placeholder="Description" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control>
+            <nz-input-group>
+                <input formControlName="unit" nz-input type="text" placeholder="Unité" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control>
+            <nz-input-group>
+                <input formControlName="unit_price" nz-input type="number" placeholder="Prix Unitaire" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+</form>
+
+<div *nzModalFooter>
+    <button nz-button nzType="default" (click)="cancel()">Annuler</button>
+    <button [disabled]="!resForm.valid" nz-button nzType="primary" (click)="addResource()">OK</button>
+</div>

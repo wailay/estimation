@@ -1,3 +1,4 @@
+import { NzModalRef } from 'ng-zorro-antd/modal';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import Tabulator from 'tabulator-tables';
@@ -19,15 +20,17 @@ export class ResourceDialogComponent implements OnInit {
         unit_price: ['', Validators.required],
     });
 
-    constructor(
-        // public dialogRef: MatDialogRef<TypeDialogComponent>, // @Inject(MAT_DIALOG_DATA) public data: ResourceDialogData,
-        public fb: FormBuilder,
-    ) {}
+    constructor(private modal: NzModalRef, public fb: FormBuilder) {}
 
     ngOnInit(): void {}
 
     addResource(): void {
-        // this.dialogRef.close(this.resForm.value);
-        // this.resForm.reset();
+        this.modal.destroy(this.resForm.value);
+        this.resForm.reset();
+    }
+
+    cancel(): void {
+        this.modal.destroy();
+        this.resForm.reset();
     }
 }
