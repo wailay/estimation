@@ -1,3 +1,4 @@
+import { ResourceComponent } from './components/resource/resource.component';
 import { TransferTableComponent } from './components/team/add-team/transfer-table/transfer-table.component';
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
@@ -15,10 +16,6 @@ import { EquipementDetailTableComponent } from './components/resource/equipement
 import { EquipementDetailComponent } from './components/resource/equipement/equipement-detail/equipement-detail.component';
 import { EquipementTableComponent } from './components/resource/equipement/equipement-table/equipement-table.component';
 import { EquipementComponent } from './components/resource/equipement/equipement.component';
-import { DetailTableComponent } from './components/resource/resource-detail/detail-table/detail-table.component';
-import { ResourceDetailComponent } from './components/resource/resource-detail/resource-detail.component';
-import { ResourceTableComponent } from './components/resource/resource-table/resource-table.component';
-import { ResourceComponent } from './components/resource/resource.component';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { IconsProviderModule } from './icons-provider.module';
@@ -52,6 +49,8 @@ import { TeamDetailComponent } from './components/team/team-detail/team-detail.c
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { TeamDetailTableComponent } from './components/team/team-detail/team-detail-table/team-detail-table.component';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { BordereauComponent } from './components/bordereau/bordereau.component';
+import { BordereauTableComponent } from './components/bordereau/bordereau-table/bordereau-table.component';
 
 registerLocaleData(en);
 
@@ -59,12 +58,8 @@ registerLocaleData(en);
     declarations: [
         AppComponent,
         ProjectComponent,
-        ResourceComponent,
-        ResourceTableComponent,
-        ResourceDetailComponent,
         TypeDialogComponent,
         ResourceDialogComponent,
-        DetailTableComponent,
         EquipementComponent,
         EquipementTableComponent,
         EquipementDetailComponent,
@@ -85,6 +80,9 @@ registerLocaleData(en);
         TeamTableComponent,
         TeamDetailComponent,
         TeamDetailTableComponent,
+        BordereauComponent,
+        ResourceComponent,
+        BordereauTableComponent,
     ],
     imports: [
         BrowserModule,

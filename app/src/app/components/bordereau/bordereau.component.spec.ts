@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ResourceTableComponent } from './resource-table.component';
+import { BordereauComponent } from './bordereau.component';
 
-describe('ResourceTableComponent', () => {
-  let component: ResourceTableComponent;
-  let fixture: ComponentFixture<ResourceTableComponent>;
+describe('BordereauComponent', () => {
+  let component: BordereauComponent;
+  let fixture: ComponentFixture<BordereauComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ResourceTableComponent ]
+      declarations: [ BordereauComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ResourceTableComponent);
+    fixture = TestBed.createComponent(BordereauComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

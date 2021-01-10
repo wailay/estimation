@@ -1,3 +1,4 @@
+import { BordereauComponent } from './components/bordereau/bordereau.component';
 import { AddTeamComponent } from './components/team/add-team/add-team.component';
 import { TeamComponent } from './components/team/team.component';
 import { NgModule } from '@angular/core';
@@ -10,6 +11,7 @@ const routes: Routes = [
     { path: 'resource', component: ResourceComponent },
     { path: 'team', component: TeamComponent },
     { path: 'team-add', component: AddTeamComponent },
+    { path: 'bordereau', component: BordereauComponent },
 ];
 
 @NgModule({
