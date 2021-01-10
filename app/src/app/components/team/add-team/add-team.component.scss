@@ -1,0 +1,43 @@
+.add-container {
+    padding-top: 5px;
+}
+
+.transfer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.item {
+    padding: 15px;
+    margin: 0 10px 0 10px;
+    width: 100%;
+
+    align-self: stretch;
+}
+
+.item-no-pad {
+    width: 100%;
+    margin: 0 10px 0 10px;
+    height: 350px;
+    align-self: stretch;
+    overflow-y: auto;
+}
+
+.border {
+    border: 1px solid rgba(219, 217, 217, 0.692);
+}
+
+.table {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
+.confirm-btn {
+    margin: 30px auto;
+    text-align: center;
+}

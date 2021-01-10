@@ -1,3 +1,4 @@
+import { AddTeamComponent } from './components/team/add-team/add-team.component';
 import { TeamComponent } from './components/team/team.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -8,6 +9,7 @@ const routes: Routes = [
     { path: 'project', component: ProjectComponent },
     { path: 'resource', component: ResourceComponent },
     { path: 'team', component: TeamComponent },
+    { path: 'team-add', component: AddTeamComponent },
 ];
 
 @NgModule({

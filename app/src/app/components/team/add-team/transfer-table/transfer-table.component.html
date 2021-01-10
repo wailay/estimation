@@ -1,0 +1,9 @@
+<div class="search">
+    <nz-input-group nzSearch [nzSuffix]="suffixIconSearch">
+        <input #filter type="text" nz-input placeholder="input search text" nzBorderless (input)="onFilterChange(filter.value)" />
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+        <i nz-icon nzType="search"></i>
+    </ng-template>
+</div>
+<div id="transfer-table"></div>

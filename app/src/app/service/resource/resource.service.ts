@@ -21,6 +21,10 @@ export class ResourceService {
         return this.electron.ipcRenderer.invoke('get-all', type);
     }
 
+    getAllTree(): Promise<any> {
+        return this.electron.ipcRenderer.invoke('get-all-tree');
+    }
+
     setField(resourceId: number, field: string, value: any): Promise<any> {
         return this.electron.ipcRenderer.invoke('set-resource-field', resourceId, field, value);
     }

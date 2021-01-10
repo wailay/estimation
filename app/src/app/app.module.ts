@@ -1,3 +1,4 @@
+import { TransferTableComponent } from './components/team/add-team/transfer-table/transfer-table.component';
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import en from '@angular/common/locales/en';
@@ -40,6 +41,17 @@ import { VracTableComponent } from './components/resource/vrac/vrac-table/vrac-t
 import { DiversTableComponent } from './components/resource/divers/divers-table/divers-table.component';
 import { ContractorTableComponent } from './components/resource/contractor/contractor-table/contractor-table.component';
 import { TeamComponent } from './components/team/team.component';
+import { AddTeamComponent } from './components/team/add-team/add-team.component';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { TeamTableComponent } from './components/team/team-table/team-table.component';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { TeamDetailComponent } from './components/team/team-detail/team-detail.component';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+import { TeamDetailTableComponent } from './components/team/team-detail/team-detail-table/team-detail-table.component';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 registerLocaleData(en);
 
@@ -68,6 +80,11 @@ registerLocaleData(en);
         DiversTableComponent,
         ContractorTableComponent,
         TeamComponent,
+        AddTeamComponent,
+        TransferTableComponent,
+        TeamTableComponent,
+        TeamDetailComponent,
+        TeamDetailTableComponent,
     ],
     imports: [
         BrowserModule,
@@ -85,6 +102,13 @@ registerLocaleData(en);
         NzButtonModule,
         NzInputModule,
         NzFormModule,
+        NzSelectModule,
+        NzDividerModule,
+        NzListModule,
+        NzMessageModule,
+        NzGridModule,
+        NzDescriptionsModule,
+        NzSpaceModule,
     ],
     providers: [{ provide: NZ_I18N, useValue: en_US }],
     bootstrap: [AppComponent],

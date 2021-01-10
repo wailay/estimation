@@ -1,0 +1,46 @@
+<div class="add-container">
+    <nz-divider nzText="Info" nzOrientation="left"></nz-divider>
+    <form nz-form [formGroup]="teamForm">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="5" nzRequired nzFor="code">Code</nz-form-label>
+            <nz-form-control [nzSpan]="6">
+                <input id="code" type="text" nz-input formControlName="code" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="5" nzRequired nzFor="description">Description</nz-form-label>
+            <nz-form-control [nzSpan]="6">
+                <input id="description" type="text" nz-input formControlName="description" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="5" nzFor="unit" nzRequired>Unite</nz-form-label>
+            <nz-form-control [nzSpan]="6">
+                <nz-select id="unit" formControlName="unit" ngModel="heure">
+                    <nz-option nzValue="heure" nzLabel="Heure"></nz-option>
+                    <nz-option nzValue="lump" nzLabel="Lump Sum"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+    <nz-divider nzText="Detail" nzOrientation="left"></nz-divider>
+    <div class="transfer">
+        <div class="table item border">
+            <app-transfer-table (selected)="selectionChange($event)" [data]="data"></app-transfer-table>
+        </div>
+        <div>
+            <button nz-button nzType="default"><i nz-icon nzType="right"></i></button>
+        </div>
+        <div class="item-no-pad">
+            <nz-list nzBordered nzHeader="Ressource a transferer">
+                <nz-list-item *ngFor="let item of selected">
+                    {{ item.getData().code }}
+                </nz-list-item>
+            </nz-list>
+        </div>
+    </div>
+
+    <div class="confirm-btn">
+        <button [disabled]="!teamForm.valid" nz-button nzType="primary" [nzSize]="'large'" (click)="addEquipe()">Ajouter l'equipe</button>
+    </div>
+</div>

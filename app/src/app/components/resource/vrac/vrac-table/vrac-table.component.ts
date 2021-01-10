@@ -82,6 +82,7 @@ export class VracTableComponent implements OnChanges {
             height: '100%',
             dataTree: true,
             dataTreeStartExpanded: true,
+            dataTreeChildField: 'children',
             selectable: true,
             selectableRangeMode: 'click',
             selectableRollingSelection: true,
@@ -120,7 +121,7 @@ export class VracTableComponent implements OnChanges {
                     console.log('error');
                     return;
                 } else {
-                    this.table.addData([{ id: res.id, code: type.code, _children: [] }]);
+                    this.table.addData([{ id: res.id, code: type.code, children: [] }]);
                     this.table.redraw();
                 }
             });
@@ -142,7 +143,7 @@ export class VracTableComponent implements OnChanges {
                 if (res.status === 'error') return;
                 if (parentId) {
                     console.log(res.resource);
-                    row.getData()._children.push(res.resource);
+                    row.getData().children.push(res.resource);
                 } else {
                     this.table.addData({ ...res.resource });
                 }

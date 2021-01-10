@@ -11,13 +11,24 @@ export interface IProject {
 }
 
 export interface IResource {
-    id: number;
-    code: string;
-    description: string;
-    unit: string;
-    unit_price: number;
+    id?: number;
+    code?: string;
+    description?: string;
+    unit?: string;
+    unit_price?: number;
     type?: number;
     fixed_price?: boolean;
+}
+
+export interface ITeamResource {
+    id: number;
+    unit_quantity: number;
+    TeamId: number;
+    ResourceId: number;
+}
+
+export interface TeamResource extends IResource {
+    TeamResources: ITeamResource;
 }
 
 export interface IResourceType {

@@ -3,6 +3,7 @@ const path = require('path');
 const ProjectService = require('./service/project/project');
 const EquipementService = require('./service/resource/equipements');
 const ResourceService = require('./service/resource/resource');
+const TeamService = require('./service/resource/team');
 const { syncDb } = require('./store/db');
 let win;
 const args = process.argv.slice(1);
@@ -61,6 +62,9 @@ try {
 
     const equipement = new EquipementService();
     equipement.handle();
+
+    const team = new TeamService();
+    team.handle();
 } catch (e) {
     console.log('ERROR', e);
     // Catch Error

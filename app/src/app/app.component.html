@@ -13,10 +13,18 @@
 
                 <a routerLink="/resource"></a>
             </li>
-            <li nz-menu-item nzMatchRouter>
-                <i nz-icon nzType="team"></i>
-                <span> Equipe </span>
-                <a routerLink="/team" routerLinkActive="active"></a>
+
+            <li nz-submenu nzTitle="Équipe" nzIcon="team">
+                <ul>
+                    <li nz-menu-item nzMatchRouter>
+                        <span> Liste des équipes </span>
+                        <a routerLink="/team" routerLinkActive="active"></a>
+                    </li>
+                    <li nz-menu-item nzMatchRouter>
+                        <span> Ajouter une équipe </span>
+                        <a routerLink="/team-add" routerLinkActive="active"></a>
+                    </li>
+                </ul>
             </li>
         </ul>
     </nz-sider>

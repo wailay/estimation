@@ -24,6 +24,7 @@ Team.init(
         },
         unit_price: {
             type: DataTypes.INTEGER,
+            defaultValue: 0,
         },
     },
     { sequelize, modelName: 'Team', timestamps: false },

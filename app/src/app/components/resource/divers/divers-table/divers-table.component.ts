@@ -79,6 +79,7 @@ export class DiversTableComponent implements OnChanges {
             columns: this.columns,
             layout: 'fitColumns',
             height: '100%',
+            dataTreeChildField: 'children',
             dataTree: true,
             dataTreeStartExpanded: true,
             selectable: true,
@@ -119,7 +120,7 @@ export class DiversTableComponent implements OnChanges {
                     console.log('error');
                     return;
                 } else {
-                    this.table.addData([{ id: res.id, code: type.code, _children: [] }]);
+                    this.table.addData([{ id: res.id, code: type.code, children: [] }]);
                     this.table.redraw();
                 }
             });
@@ -141,7 +142,7 @@ export class DiversTableComponent implements OnChanges {
                 if (res.status === 'error') return;
                 if (parentId) {
                     console.log(res.resource);
-                    row.getData()._children.push(res.resource);
+                    row.getData().children.push(res.resource);
                 } else {
                     this.table.addData({ ...res.resource });
                 }

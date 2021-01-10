@@ -80,6 +80,7 @@ export class ResourceTableComponent implements OnChanges {
             height: '100%',
             dataTree: true,
             dataTreeStartExpanded: true,
+            dataTreeChildField: 'children',
             selectable: true,
             selectableRollingSelection: true,
             selectableRangeMode: 'click',
@@ -114,9 +115,9 @@ export class ResourceTableComponent implements OnChanges {
         //     if (!res) return;
         //     const typeId = row?.getData().id;
         //     if (typeId) {
-        //         row?.getData()._children.push({ id: res.id, code: res.type, _children: [] });
+        //         row?.getData().children.push({ id: res.id, code: res.type, children: [] });
         //     } else {
-        //         this.table.addData([{ id: res.id, code: res.type, _children: [] }]);
+        //         this.table.addData([{ id: res.id, code: res.type, children: [] }]);
         //     }
         //     this.table.redraw();
         // });
@@ -126,7 +127,7 @@ export class ResourceTableComponent implements OnChanges {
         // const ref = this.dialog.open(ResourceDialogComponent, { data: { row } });
         // ref.afterClosed().subscribe((result) => {
         //     if (!result) return;
-        //     row.getData()._children.push(result);
+        //     row.getData().children.push(result);
         //     this.table.redraw();
         // });
     }

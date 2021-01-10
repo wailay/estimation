@@ -90,6 +90,7 @@ export class EquipementTableComponent implements OnChanges {
             layout: 'fitColumns',
             height: '100%',
             dataTree: true,
+            dataTreeChildField: 'children',
             dataTreeStartExpanded: true,
             selectable: true,
             selectableRangeMode: 'click',
@@ -133,7 +134,7 @@ export class EquipementTableComponent implements OnChanges {
                     console.log('error');
                     return;
                 } else {
-                    this.table.addData([{ id: res.id, code: type.code, _children: [] }]);
+                    this.table.addData([{ id: res.id, code: type.code, children: [] }]);
                     this.table.redraw();
                 }
             });
@@ -155,7 +156,7 @@ export class EquipementTableComponent implements OnChanges {
                 if (res.status === 'error') return;
                 if (parentId) {
                     console.log(res.resource);
-                    row.getData()._children.push(res.resource);
+                    row.getData().children.push(res.resource);
                 } else {
                     this.table.addData({ ...res.resource });
                 }

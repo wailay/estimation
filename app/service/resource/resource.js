@@ -10,6 +10,7 @@ class ResourceService {
         this.edit();
         this.addType();
         this.addResource();
+        this.getAllTree();
     }
 
     edit() {
@@ -67,7 +68,6 @@ class ResourceService {
     deleteType() {
         ipcMain.handle('delete-type', async (event, typeId) => {
             try {
-                console.log('deleteing this bitch');
                 await Resource.destroy({ where: { [Op.or]: [{ id: typeId }, { ResourceId: typeId }] } });
 
                 return { status: 'success', message: 'Type supprime !' };
@@ -97,29 +97,55 @@ class ResourceService {
     //     });
     // }
 
+    async _getAll(type) {
+        try {
+            const resources = await Resource.findAll({ where: { type: type } });
+
+            let hmap = {};
+
+            resources.forEach((res) => {
+                hmap[res.id] = res.toJSON();
+
+                if (!res.unit) hmap[res.id].children = [];
+            });
+            let result = [];
+
+            resources.forEach((res) => {
+                if (res.ResourceId) {
+                    hmap[res.ResourceId].children.push(hmap[res.id]);
+                } else {
+                    result.push(hmap[res.id]);
+                }
+            });
+
+            return JSON.parse(JSON.stringify(result));
+        } catch (err) {
+            return this.errorStatus(err);
+        }
+    }
+
     getAll() {
         ipcMain.handle('get-all', async (e, type) => {
             try {
-                const resources = await Resource.findAll({ where: { type: type } });
+                return await this._getAll(type);
+            } catch (err) {
+                return this.errorStatus(err);
+            }
+        });
+    }
 
-                let hmap = {};
+    getAllTree() {
+        ipcMain.handle('get-all-tree', async () => {
+            try {
+                const types = { W: "Main d'oeuvre", M: 'Materiaux', D: 'Divers', C: 'Sous-traitant', V: 'Vrac' };
+                let tree = [];
 
-                resources.forEach((res) => {
-                    hmap[res.id] = res.toJSON();
-
-                    if (!res.unit) hmap[res.id]._children = [];
-                });
-                let result = [];
-
-                resources.forEach((res) => {
-                    if (res.ResourceId) {
-                        hmap[res.ResourceId]._children.push(hmap[res.id]);
-                    } else {
-                        result.push(hmap[res.id]);
-                    }
-                });
-
-                return JSON.parse(JSON.stringify(result));
+                for (const [key, value] of Object.entries(types)) {
+                    const subTree = await this._getAll(key);
+                    tree.push({ code: value, children: subTree });
+                }
+                console.log('TREE', tree);
+                return tree;
             } catch (err) {
                 return this.errorStatus(err);
             }
@@ -127,6 +153,7 @@ class ResourceService {
     }
 
     errorStatus(err) {
+        console.log(err);
         if (err.stack.includes('SequelizeUniqueConstraintError')) return { status: 'error', message: 'La ressource existe deja' };
         return { status: 'error', message: 'Erreur' };
     }
