@@ -1,26 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ResourceService } from '@app/service/resource/resource.service';
-import Tabulator from 'tabulator-tables';
+import { ResourceComponent } from './../resource.component';
 
 @Component({
     selector: 'app-contractor',
     templateUrl: './contractor.component.html',
-    styleUrls: ['./contractor.component.scss'],
+    styleUrls: ['./contractor.component.scss', './../resource.component.scss'],
 })
-export class ContractorComponent implements OnInit {
-    data: any[];
-    selected: Tabulator.RowComponent;
+export class ContractorComponent extends ResourceComponent {
+    type = 'C';
 
-    constructor(private resourceService: ResourceService) {
-        this.data = [];
-        this.resourceService.getAll('C').then((data) => {
-            this.data = data;
-        });
+    constructor(protected resourceService: ResourceService) {
+        super(resourceService);
+        this.getAll(this.type);
     }
-
-    selectedChange(row: Tabulator.RowComponent): void {
-        this.selected = row;
-    }
-
-    ngOnInit(): void {}
 }

@@ -1,7 +1,8 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { ResourceService } from '@app/service/resource/resource.service';
+import Tabulator from 'tabulator-tables';
 import { IResource } from './../../../interfaces/models';
 import { TeamService } from './../../../service/team/team.service';
-import { Component, OnInit, Input } from '@angular/core';
-import Tabulator from 'tabulator-tables';
 
 @Component({
     selector: 'app-team-detail',
@@ -13,12 +14,12 @@ export class TeamDetailComponent implements OnInit {
     data: any[];
     totalPrice: number;
 
-    constructor(private teamService: TeamService) {
+    constructor(private teamService: TeamService, private resourceService: ResourceService) {
         this.data = [];
     }
 
     ngOnInit(): void {
-        this.teamService.getSelected().subscribe((selected) => {
+        this.resourceService.getSelected().subscribe((selected) => {
             this.selected = selected;
             this.totalPrice = this.team.unit_price;
             this.getTeamResource(this.selected.getData().id);

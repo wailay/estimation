@@ -1,9 +1,9 @@
-import { TeamService } from './../../../service/team/team.service';
-import Tabulator from 'tabulator-tables';
-import { ResourceService } from '@app/service/resource/resource.service';
-import { FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ResourceService } from '@app/service/resource/resource.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import Tabulator from 'tabulator-tables';
+import { TeamService } from './../../../service/team/team.service';
 
 @Component({
     selector: 'app-add-team',
@@ -54,8 +54,8 @@ export class AddTeamComponent implements OnInit {
             sum = this.computeTotalPrice();
         }
         console.log(sum);
-        const result = await this.teamService.addTeam(this.teamForm.value, sum);
-
+        const result = await this.resourceService.addResource({ ...this.teamForm.value, unit_price: sum }, null, 'T');
+        console.log('returned result', result);
         if (result.status === 'error') {
             this.message.error(result.message);
             return;
@@ -64,7 +64,7 @@ export class AddTeamComponent implements OnInit {
         if (result.status === 'success' && this.selected.length) {
             this.selected.forEach(async (row) => {
                 console.log('adding ', row.getData());
-                await this.teamService.addTeamResource(result.id, row.getData().id);
+                await this.teamService.addTeamResource(result.resource.id, row.getData().id);
             });
         }
 

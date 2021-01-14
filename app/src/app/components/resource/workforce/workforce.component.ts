@@ -1,27 +1,17 @@
+import { Component } from '@angular/core';
 import { ResourceService } from './../../../service/resource/resource.service';
-import { Component, OnInit } from '@angular/core';
-import Tabulator from 'tabulator-tables';
+import { ResourceComponent } from './../resource.component';
 
 @Component({
     selector: 'app-workforce',
     templateUrl: './workforce.component.html',
-    styleUrls: ['./workforce.component.scss'],
+    styleUrls: ['./workforce.component.scss', './../resource.component.scss'],
 })
-export class WorkforceComponent implements OnInit {
-    data: any[];
-    selected: Tabulator.RowComponent;
+export class WorkforceComponent extends ResourceComponent {
+    type = 'W';
 
-    constructor(private resourceService: ResourceService) {
-        this.data = [];
-        this.resourceService.getAll('W').then((data) => {
-            console.log('getting all for workforce', data);
-            this.data = data;
-        });
+    constructor(protected resourceService: ResourceService) {
+        super(resourceService);
+        this.getAll(this.type);
     }
-
-    selectedChange(row: Tabulator.RowComponent): void {
-        this.selected = row;
-    }
-
-    ngOnInit(): void {}
 }

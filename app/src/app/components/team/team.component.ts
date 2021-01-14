@@ -1,20 +1,17 @@
-import { TeamService } from './../../service/team/team.service';
+import { Component } from '@angular/core';
 import { ResourceService } from '@app/service/resource/resource.service';
-import { Component, OnInit } from '@angular/core';
+import { ResourceComponent } from './../resource/resource.component';
 
 @Component({
     selector: 'app-team',
     templateUrl: './team.component.html',
     styleUrls: ['./team.component.scss'],
 })
-export class TeamComponent implements OnInit {
-    data: any[];
-    constructor(private team: TeamService) {
-        this.data = [];
-    }
+export class TeamComponent extends ResourceComponent {
+    type = 'T';
 
-    async ngOnInit(): Promise<void> {
-        const data = await this.team.getAll();
-        this.data = data;
+    constructor(protected resourceService: ResourceService) {
+        super(resourceService);
+        this.getAll(this.type);
     }
 }

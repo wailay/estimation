@@ -7,9 +7,17 @@
 
                 <a routerLink="/project" routerLinkActive="active"> </a>
             </li>
-            <li nz-menu-item nzMatchRouter>
-                <i nz-icon nzType="table"></i>
-                <span> Bordereau </span>
+            <li nz-submenu nzTitle="Bordereau" nzIcon="table">
+                <ul>
+                    <li nz-menu-item nzMatchRouter>
+                        <span> Bordereau de soumission </span>
+                        <a routerLink="/bordereau" routerLinkActive="active"></a>
+                    </li>
+                    <li nz-menu-item nzMatchRouter>
+                        <span> Bordereau avec ressources </span>
+                        <a routerLink="/bordereau-ressource" routerLinkActive="active"></a>
+                    </li>
+                </ul>
 
                 <a routerLink="/bordereau" routerLinkActive="active"> </a>
             </li>

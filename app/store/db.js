@@ -7,8 +7,9 @@ const sequelize = new Sequelize('database', 'username', '', {
 });
 
 async function syncDb() {
-    // await sequelize.sync();
-    await sequelize.sync({ force: true });
+    await sequelize.sync();
+    // await sequelize.drop();
+    // await sequelize.sync({ force: true });
 }
 
 module.exports = { sequelize, syncDb };

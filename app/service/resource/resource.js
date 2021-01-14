@@ -6,9 +6,9 @@ class ResourceService {
 
     handle() {
         this.getAll();
-        this.deleteType();
+        this.delete();
         this.edit();
-        this.addType();
+        this.addFolder();
         this.addResource();
         this.getAllTree();
     }
@@ -53,8 +53,8 @@ class ResourceService {
         });
     }
 
-    addType() {
-        ipcMain.handle('add-resource-type', async (event, code, type) => {
+    addFolder() {
+        ipcMain.handle('add-resource-folder', async (event, code, type) => {
             try {
                 const created = await Resource.create({ code: code, type: type });
 
@@ -65,10 +65,10 @@ class ResourceService {
         });
     }
 
-    deleteType() {
-        ipcMain.handle('delete-type', async (event, typeId) => {
+    delete() {
+        ipcMain.handle('delete-resource', async (event, id) => {
             try {
-                await Resource.destroy({ where: { [Op.or]: [{ id: typeId }, { ResourceId: typeId }] } });
+                await Resource.destroy({ where: { [Op.or]: [{ id: id }, { ResourceId: id }] } });
 
                 return { status: 'success', message: 'Type supprime !' };
             } catch (err) {
@@ -76,26 +76,6 @@ class ResourceService {
             }
         });
     }
-
-    // addResource() {
-    //     ipcMain.handle('add-resource', async (event, resource, parentId) => {
-    //         try {
-    //             const parentType = await Resource.findByPk(parentId);
-
-    //             console.log(parentType);
-
-    //             if (!parentType) return { status: 'error', message: 'Erreur' };
-
-    //             const newResource = await parentType.createResource(resource);
-
-    //             if (!newResource) return { status: 'error', message: 'Erreur' };
-
-    //             return { status: 'success', message: 'Resource ajoute !' };
-    //         } catch (err) {
-    //             return this.errorStatus(err);
-    //         }
-    //     });
-    // }
 
     async _getAll(type) {
         try {
@@ -105,9 +85,9 @@ class ResourceService {
 
             resources.forEach((res) => {
                 hmap[res.id] = res.toJSON();
-
                 if (!res.unit) hmap[res.id].children = [];
             });
+
             let result = [];
 
             resources.forEach((res) => {
@@ -127,6 +107,7 @@ class ResourceService {
     getAll() {
         ipcMain.handle('get-all', async (e, type) => {
             try {
+                console.log('get ALL', type);
                 return await this._getAll(type);
             } catch (err) {
                 return this.errorStatus(err);
@@ -144,7 +125,7 @@ class ResourceService {
                     const subTree = await this._getAll(key);
                     tree.push({ code: value, children: subTree });
                 }
-                console.log('TREE', tree);
+                console.log(tree);
                 return tree;
             } catch (err) {
                 return this.errorStatus(err);

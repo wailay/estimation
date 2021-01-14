@@ -1,11 +1,11 @@
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { TransferTableComponent } from './../../add-team/transfer-table/transfer-table.component';
+import Tabulator from 'tabulator-tables';
+import { TeamResource } from './../../../../interfaces/models';
 import { DialogService } from './../../../../service/dialog/dialog.service';
 import { ResourceService } from './../../../../service/resource/resource.service';
 import { TeamService } from './../../../../service/team/team.service';
-import { IResource, TeamResource } from './../../../../interfaces/models';
-import { Component, Input, OnInit, SimpleChanges, OnChanges, EventEmitter, Output } from '@angular/core';
-import Tabulator from 'tabulator-tables';
+import { TransferTableComponent } from './../../add-team/transfer-table/transfer-table.component';
 
 @Component({
     selector: 'app-team-detail-table',
@@ -73,7 +73,7 @@ export class TeamDetailTableComponent implements OnChanges {
                 cell.edit(true);
             },
             cellEdited: (cell) => {
-                const resourceId = (cell.getData() as TeamResource).TeamResources.ResourceId;
+                const resourceId = (cell.getData() as TeamResource).TeamResources.TeamResourceId;
                 const teamId = (cell.getData() as TeamResource).TeamResources.TeamId;
                 const field = cell.getColumn().getField();
                 const value = cell.getValue();
@@ -109,7 +109,7 @@ export class TeamDetailTableComponent implements OnChanges {
     deleteTeamResource(row): void {
         const data = (row.getData() as TeamResource).TeamResources;
         row.delete();
-        this.teamService.deleteTeamResource(data.TeamId, data.ResourceId).then((res) => {
+        this.teamService.deleteTeamResource(data.TeamId, data.TeamResourceId).then((res) => {
             console.log('delete team resources', res);
         });
     }

@@ -1,6 +1,7 @@
 const { app, BrowserWindow, nativeTheme } = require('electron');
 const path = require('path');
 const ProjectService = require('./service/project/project');
+const BordereauService = require('./service/resource/bordereau');
 const EquipementService = require('./service/resource/equipements');
 const ResourceService = require('./service/resource/resource');
 const TeamService = require('./service/resource/team');
@@ -65,6 +66,9 @@ try {
 
     const team = new TeamService();
     team.handle();
+
+    const bord = new BordereauService();
+    bord.handle();
 } catch (e) {
     console.log('ERROR', e);
     // Catch Error

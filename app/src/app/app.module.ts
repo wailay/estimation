@@ -3,7 +3,7 @@ import { TransferTableComponent } from './components/team/add-team/transfer-tabl
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import en from '@angular/common/locales/en';
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -51,6 +51,10 @@ import { TeamDetailTableComponent } from './components/team/team-detail/team-det
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { BordereauComponent } from './components/bordereau/bordereau.component';
 import { BordereauTableComponent } from './components/bordereau/bordereau-table/bordereau-table.component';
+import { BordereauDialogComponent } from './components/bordereau/bordereau-dialog/bordereau-dialog.component';
+import { TeamLookupComponent } from './components/lookup/team-lookup/team-lookup.component';
+import { BordereauResourceComponent } from './components/bordereau-resource/bordereau-resource.component';
+import { BordereauResourceTableComponent } from './components/bordereau-resource/bordereau-resource-table/bordereau-resource-table.component';
 
 registerLocaleData(en);
 
@@ -83,6 +87,10 @@ registerLocaleData(en);
         BordereauComponent,
         ResourceComponent,
         BordereauTableComponent,
+        BordereauDialogComponent,
+        TeamLookupComponent,
+        BordereauResourceComponent,
+        BordereauResourceTableComponent,
     ],
     imports: [
         BrowserModule,

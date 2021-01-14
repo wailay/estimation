@@ -1,9 +1,9 @@
 const { DataTypes, Model } = require('sequelize');
 const { sequelize } = require('../../db');
 
-class Borderau extends Model {}
+class Bordereau extends Model {}
 
-Borderau.init(
+Bordereau.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -25,21 +25,24 @@ Borderau.init(
         unit: {
             type: DataTypes.STRING,
         },
+        unit_price: {
+            type: DataTypes.INTEGER,
+        },
+        total_price: {
+            type: DataTypes.INTEGER,
+        },
         production: {
             type: DataTypes.INTEGER,
         },
         duration: {
             type: DataTypes.INTEGER,
         },
-        total_price: {
-            type: DataTypes.INTEGER,
-        },
     },
-    { sequelize, modelName: 'Borderau', timestamps: false },
+    { sequelize, modelName: 'Bordereau', timestamps: false, freezeTableName: true },
 );
 
 // hierarchy de sous dossier
-Borderau.hasMany(Borderau);
-Borderau.belongsTo(Borderau);
+Bordereau.hasMany(Bordereau);
+Bordereau.belongsTo(Bordereau);
 
-module.exports = Borderau;
+module.exports = Bordereau;

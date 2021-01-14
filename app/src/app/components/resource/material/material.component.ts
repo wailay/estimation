@@ -1,26 +1,17 @@
+import { Component } from '@angular/core';
 import { ResourceService } from './../../../service/resource/resource.service';
-import { Component, OnInit } from '@angular/core';
-import Tabulator from 'tabulator-tables';
+import { ResourceComponent } from './../resource.component';
 
 @Component({
     selector: 'app-material',
     templateUrl: './material.component.html',
-    styleUrls: ['./material.component.scss'],
+    styleUrls: ['./material.component.scss', './../resource.component.scss'],
 })
-export class MaterialComponent implements OnInit {
-    data: any[];
-    selected: Tabulator.RowComponent;
+export class MaterialComponent extends ResourceComponent {
+    type = 'M';
 
-    constructor(private resourceService: ResourceService) {
-        this.data = [];
-        this.resourceService.getAll('M').then((data) => {
-            this.data = data;
-        });
+    constructor(protected resourceService: ResourceService) {
+        super(resourceService);
+        this.getAll(this.type);
     }
-
-    selectedChange(row: Tabulator.RowComponent): void {
-        this.selected = row;
-    }
-
-    ngOnInit(): void {}
 }

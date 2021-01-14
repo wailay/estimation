@@ -24,7 +24,7 @@ export interface ITeamResource {
     id: number;
     unit_quantity: number;
     TeamId: number;
-    ResourceId: number;
+    TeamResourceId: number;
 }
 
 export interface TeamResource extends IResource {
@@ -57,6 +57,17 @@ export interface ResourceType extends IResourceType {
     expanded: boolean;
 }
 
+export interface Bordereau {
+    id: number;
+    numero: number;
+    description: string;
+    quantity: number;
+    unit: string;
+    production: string;
+    duration: number;
+    total_price: number;
+    BordereauId: number | null;
+}
 export interface Position {
     x: number;
     y: number;

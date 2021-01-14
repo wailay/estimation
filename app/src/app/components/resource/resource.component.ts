@@ -1,7 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import Tabulator from 'tabulator-tables';
-import { Position, ResourceType } from './../../interfaces/models';
 import { ResourceService } from './../../service/resource/resource.service';
 @Component({
     selector: 'app-resource',
@@ -9,23 +7,23 @@ import { ResourceService } from './../../service/resource/resource.service';
     styleUrls: ['./resource.component.scss'],
 })
 export class ResourceComponent implements OnInit {
-    constructor(private fb: FormBuilder, private resourceService: ResourceService) {
-        this.types = [];
-        // this.getTypes();
-        this.showMenu = false;
-        this.menu = { x: 0, y: 0 };
+    type = '';
+    data: any[];
+    selected: Tabulator.RowComponent;
+
+    constructor(protected resourceService: ResourceService) {
         this.data = [];
     }
-    types: ResourceType[];
-    menu: Position;
-    showMenu: boolean;
-    rightClickedType: ResourceType;
-    selected: Tabulator.RowComponent;
-    data: [];
 
-    ngOnInit(): void {}
+    getAll(type: string): void {
+        this.resourceService.getAll(type).then((data) => {
+            this.data = data;
+        });
+    }
 
     selectedChange(row: Tabulator.RowComponent): void {
         this.selected = row;
     }
+
+    ngOnInit(): void {}
 }

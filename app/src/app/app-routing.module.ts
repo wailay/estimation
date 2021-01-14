@@ -1,3 +1,5 @@
+import { BordereauResourceComponent } from './components/bordereau-resource/bordereau-resource.component';
+import { TeamLookupComponent } from './components/lookup/team-lookup/team-lookup.component';
 import { BordereauComponent } from './components/bordereau/bordereau.component';
 import { AddTeamComponent } from './components/team/add-team/add-team.component';
 import { TeamComponent } from './components/team/team.component';
@@ -12,6 +14,8 @@ const routes: Routes = [
     { path: 'team', component: TeamComponent },
     { path: 'team-add', component: AddTeamComponent },
     { path: 'bordereau', component: BordereauComponent },
+    { path: 'bordereau-ressource', component: BordereauResourceComponent },
+    { path: 'affectation', component: TeamLookupComponent },
 ];
 
 @NgModule({

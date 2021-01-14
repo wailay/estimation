@@ -1,0 +1,11 @@
+<div>
+    <input nz-input placeholder="Numero" [(ngModel)]="numero" required />
+    <input nz-input placeholder="Description" [(ngModel)]="description" required />
+    <input nz-input placeholder="Quantite" [(ngModel)]="quantity" required />
+    <input nz-input placeholder="Unite" [(ngModel)]="unit" required />
+</div>
+
+<div *nzModalFooter>
+    <button nz-button nzType="default" (click)="cancel()">Annuler</button>
+    <button [disabled]="disabled" nz-button nzType="primary" (click)="add()">OK</button>
+</div>

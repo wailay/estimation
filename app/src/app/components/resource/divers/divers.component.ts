@@ -1,26 +1,17 @@
+import { Component } from '@angular/core';
 import { ResourceService } from './../../../service/resource/resource.service';
-import { Component, OnInit } from '@angular/core';
-import Tabulator from 'tabulator-tables';
+import { ResourceComponent } from './../resource.component';
 
 @Component({
     selector: 'app-divers',
     templateUrl: './divers.component.html',
-    styleUrls: ['./divers.component.scss'],
+    styleUrls: ['./divers.component.scss', './../resource.component.scss'],
 })
-export class DiversComponent implements OnInit {
-    data: any[];
-    selected: Tabulator.RowComponent;
+export class DiversComponent extends ResourceComponent {
+    type = 'D';
 
-    constructor(private resourceService: ResourceService) {
-        this.data = [];
-        this.resourceService.getAll('D').then((data) => {
-            this.data = data;
-        });
+    constructor(protected resourceService: ResourceService) {
+        super(resourceService);
+        this.getAll(this.type);
     }
-
-    selectedChange(row: Tabulator.RowComponent): void {
-        this.selected = row;
-    }
-
-    ngOnInit(): void {}
 }
