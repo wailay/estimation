@@ -7,12 +7,12 @@ import { ResourceTableComponent } from './../../resource-table/resource-table.co
 
 @Component({
     selector: 'app-workforce-table',
-    templateUrl: './workforce-table.component.html',
+    templateUrl: '../../resource-table/resource-table.component.html',
     styleUrls: ['./workforce-table.component.scss'],
 })
 export class WorkforceTableComponent extends ResourceTableComponent {
     type = 'W';
-    tableId = '#workforce-table';
+    tableId = 'workforce-table';
 
     constructor(
         protected resourceService: ResourceService,

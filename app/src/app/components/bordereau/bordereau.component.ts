@@ -13,6 +13,7 @@ export class BordereauComponent implements OnInit {
     constructor(public bordereauService: BordereauService) {
         this.bordereauService.getAll().then((data) => {
             this.bordereauService.data = data;
+            console.log('soum', data);
         });
     }
 

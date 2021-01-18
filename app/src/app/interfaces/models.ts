@@ -11,6 +11,8 @@ export interface IProject {
 }
 
 export interface IResource {
+    ResourceId?: null | number;
+    BordereauResource?: BordereauResource;
     id?: number;
     code?: string;
     description?: string;
@@ -57,17 +59,30 @@ export interface ResourceType extends IResourceType {
     expanded: boolean;
 }
 
-export interface Bordereau {
-    id: number;
-    numero: number;
-    description: string;
-    quantity: number;
-    unit: string;
-    production: string;
-    duration: number;
-    total_price: number;
-    BordereauId: number | null;
+export interface BordereauResource {
+    BordereauId?: number | null;
+    ResourceId?: number | null;
+    duration?: number | null;
+    id?: number;
+    production?: number | null;
+    quantity?: number;
 }
+export interface Bordereau {
+    id?: number;
+    code?: number | null;
+    description?: string;
+    quantity?: number;
+    unit?: string;
+    unit_price?: number;
+    total_price?: number;
+    total_price_vendant?: number;
+    BordereauId?: number | null;
+    children?: IResource[] | Bordereau[];
+    Resources?: IResource[];
+    type?: string;
+    BordereauResource?: BordereauResource;
+}
+
 export interface Position {
     x: number;
     y: number;

@@ -118,7 +118,7 @@ class ResourceService {
     getAllTree() {
         ipcMain.handle('get-all-tree', async () => {
             try {
-                const types = { W: "Main d'oeuvre", M: 'Materiaux', D: 'Divers', C: 'Sous-traitant', V: 'Vrac' };
+                const types = { W: "Main d'oeuvre", M: 'Materiaux', D: 'Divers', C: 'Sous-traitant', V: 'Vrac', E: 'Equipements' };
                 let tree = [];
 
                 for (const [key, value] of Object.entries(types)) {

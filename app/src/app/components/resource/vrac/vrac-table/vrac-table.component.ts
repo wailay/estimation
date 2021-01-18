@@ -7,12 +7,12 @@ import { ResourceTableComponent } from './../../resource-table/resource-table.co
 
 @Component({
     selector: 'app-vrac-table',
-    templateUrl: './vrac-table.component.html',
+    templateUrl: '../../resource-table/resource-table.component.html',
     styleUrls: ['./vrac-table.component.scss'],
 })
 export class VracTableComponent extends ResourceTableComponent {
     type = 'V';
-    tableId = '#vrac-table';
+    tableId = 'vrac-table';
 
     constructor(
         protected resourceService: ResourceService,

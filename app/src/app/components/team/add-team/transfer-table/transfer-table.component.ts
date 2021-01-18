@@ -1,5 +1,4 @@
-import { ResourceService } from '@app/service/resource/resource.service';
-import { Component, OnInit, SimpleChanges, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import Tabulator from 'tabulator-tables';
 
 @Component({
@@ -9,6 +8,7 @@ import Tabulator from 'tabulator-tables';
 })
 export class TransferTableComponent implements OnChanges {
     table: Tabulator;
+    @Input() id = '';
     @Input() data: any[] = [];
     @Input() filter = '';
     @Output() selected: EventEmitter<Tabulator.RowComponent[]> = new EventEmitter();
@@ -18,10 +18,14 @@ export class TransferTableComponent implements OnChanges {
         { formatter: 'rowSelection', headerSort: false, hozAlign: 'center', width: 1 },
         { title: 'Code', field: 'code' },
         { title: 'Description', field: 'description' },
-        { title: 'Unite', field: 'unit', editor: 'input' },
+        { title: 'Unite', field: 'unit' },
         { title: 'Prix Unitaire', field: 'unit_price' },
     ];
     constructor() {}
+
+    // ngOnInit(): void {
+    //     this.drawTable();
+    // }
 
     ngOnChanges(changes: SimpleChanges): void {
         // if (this.table) this.table.setData(this.data);
@@ -29,12 +33,13 @@ export class TransferTableComponent implements OnChanges {
     }
 
     private drawTable(): void {
-        this.table = new Tabulator('#transfer-table', {
+        console.log('drawing', this.id);
+        this.table = new Tabulator(`#${this.id}`, {
             data: this.data,
             reactiveData: true, // enable data reactivity
             columns: this.columns,
             layout: 'fitColumns',
-            height: '100%',
+            height: '250px',
             dataTree: true,
             dataTreeFilter: true,
             dataTreeStartExpanded: true,

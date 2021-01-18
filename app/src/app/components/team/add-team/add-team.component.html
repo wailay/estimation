@@ -8,7 +8,7 @@
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-            <nz-form-label [nzSpan]="5" nzRequired nzFor="description">Description</nz-form-label>
+            <nz-form-label [nzSpan]="5" nzRequired nzFor="description">Nom</nz-form-label>
             <nz-form-control [nzSpan]="6">
                 <input id="description" type="text" nz-input formControlName="description" />
             </nz-form-control>
@@ -22,11 +22,17 @@
                 </nz-select>
             </nz-form-control>
         </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="5" nzRequired nzFor="production">Production</nz-form-label>
+            <nz-form-control [nzSpan]="6">
+                <input id="production" type="number" nz-input formControlName="production" />
+            </nz-form-control>
+        </nz-form-item>
     </form>
     <nz-divider nzText="Detail" nzOrientation="left"></nz-divider>
     <div class="transfer">
         <div class="table item border">
-            <app-transfer-table (selected)="selectionChange($event)" [data]="data"></app-transfer-table>
+            <app-transfer-table (selected)="selectionChange($event)" [data]="data" [id]="'transfer-table'"></app-transfer-table>
         </div>
         <div>
             <button nz-button nzType="default"><i nz-icon nzType="right"></i></button>

@@ -1,6 +1,5 @@
-import { NzModalRef } from 'ng-zorro-antd/modal';
 import { Component, OnInit } from '@angular/core';
-import { isNull } from '@angular/compiler/src/output/output_ast';
+import { NzModalRef } from 'ng-zorro-antd/modal';
 
 @Component({
     selector: 'app-bordereau-dialog',
@@ -8,7 +7,7 @@ import { isNull } from '@angular/compiler/src/output/output_ast';
     styleUrls: ['./bordereau-dialog.component.scss'],
 })
 export class BordereauDialogComponent implements OnInit {
-    numero = '';
+    code = '';
     description = '';
     unit = null;
     quantity = null;
@@ -18,13 +17,13 @@ export class BordereauDialogComponent implements OnInit {
     ngOnInit(): void {}
 
     add(): void {
-        this.modal.destroy({ numero: this.numero, description: this.description, unit: this.unit, quantity: this.quantity });
+        this.modal.destroy({ code: this.code, description: this.description, unit: this.unit, quantity: this.quantity });
     }
     cancel(): void {
         this.modal.destroy();
     }
 
     get disabled(): boolean {
-        return this.numero === '' || this.description === '';
+        return this.code === '' || this.description === '';
     }
 }

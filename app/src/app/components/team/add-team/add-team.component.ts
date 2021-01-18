@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { ResourceService } from '@app/service/resource/resource.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import Tabulator from 'tabulator-tables';
@@ -15,22 +16,28 @@ export class AddTeamComponent implements OnInit {
         code: ['', Validators.required],
         description: ['', Validators.required],
         unit: ['', Validators.required],
+        production: ['', Validators.required],
     });
 
     data: any[] = [];
     selected: Tabulator.RowComponent[];
+    parentId: number;
 
     constructor(
         private fb: FormBuilder,
         private resourceService: ResourceService,
         private teamService: TeamService,
         private message: NzMessageService,
+        private route: ActivatedRoute,
     ) {
         this.selected = [];
     }
 
     ngOnInit(): void {
         this.getAllTree();
+        this.route.queryParams.subscribe((params) => {
+            this.parentId = params.parentId ? params.parentId : null;
+        });
     }
 
     getAllTree(): void {
@@ -54,7 +61,7 @@ export class AddTeamComponent implements OnInit {
             sum = this.computeTotalPrice();
         }
         console.log(sum);
-        const result = await this.resourceService.addResource({ ...this.teamForm.value, unit_price: sum }, null, 'T');
+        const result = await this.resourceService.addResource({ ...this.teamForm.value, unit_price: sum }, this.parentId, 'T');
         console.log('returned result', result);
         if (result.status === 'error') {
             this.message.error(result.message);

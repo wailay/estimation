@@ -7,12 +7,12 @@ import { ResourceTableComponent } from './../../resource-table/resource-table.co
 
 @Component({
     selector: 'app-equipement-table',
-    templateUrl: './equipement-table.component.html',
+    templateUrl: '../../resource-table/resource-table.component.html',
     styleUrls: ['./equipement-table.component.scss'],
 })
 export class EquipementTableComponent extends ResourceTableComponent {
     type = 'E';
-    tableId = '#equipement-table';
+    tableId = 'equipement-table';
 
     constructor(
         protected resourceService: ResourceService,

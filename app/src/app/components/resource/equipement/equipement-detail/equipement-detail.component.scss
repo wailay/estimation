@@ -44,14 +44,14 @@
 
 .label {
     padding: 3px;
-    border: 1px solid blue;
+    border: 1px solid rgba(167, 167, 168, 0.575);
     border-radius: 5px;
     text-align: right;
     height: 30px;
 }
 
 .border {
-    border: 1px solid gray;
+    border: 1px solid rgba(177, 175, 175, 0.589);
     border-radius: 10px;
     box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
 }

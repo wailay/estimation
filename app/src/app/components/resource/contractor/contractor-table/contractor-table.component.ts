@@ -7,12 +7,12 @@ import { ResourceTableComponent } from './../../resource-table/resource-table.co
 
 @Component({
     selector: 'app-contractor-table',
-    templateUrl: './contractor-table.component.html',
+    templateUrl: '../../resource-table/resource-table.component.html',
     styleUrls: ['./contractor-table.component.scss'],
 })
 export class ContractorTableComponent extends ResourceTableComponent {
     type = 'C';
-    tableId = '#contractor-table';
+    tableId = 'contractor-table';
 
     constructor(
         protected resourceService: ResourceService,

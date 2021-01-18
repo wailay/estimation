@@ -1,0 +1,14 @@
+<div class="container">
+    <div class="item">
+        <h4 nz-typography>Equipes</h4>
+        <app-transfer-table (selected)="teamSelected($event)" [data]="teamData" [id]="'team-lookup-table'"></app-transfer-table>
+    </div>
+    <div class="item">
+        <h4 nz-typography>Resources</h4>
+        <app-transfer-table (selected)="resourceSelected($event)" [data]="resourcesData" [id]="'res-table'"></app-transfer-table>
+    </div>
+</div>
+<div *nzModalFooter>
+    <button nz-button nzType="default" (click)="closeModal()">Annuler</button>
+    <button nz-button nzType="primary" (click)="confirm()">Affecter les resources</button>
+</div>

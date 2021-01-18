@@ -1,5 +1,5 @@
-import { NzModalService } from 'ng-zorro-antd/modal';
 import { Injectable } from '@angular/core';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Injectable({
     providedIn: 'root',
@@ -8,7 +8,6 @@ export class DialogService {
     constructor(private modal: NzModalService) {}
 
     openConfirm(onOk: any, row: any): void {
-        console.log(onOk);
         this.modal.confirm({
             nzTitle: 'Etes-vous sur de vouloir supprimer ?',
             nzOkText: 'Oui',

@@ -1,6 +1,6 @@
-import { NzModalRef } from 'ng-zorro-antd/modal';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { NzModalRef } from 'ng-zorro-antd/modal';
 import Tabulator from 'tabulator-tables';
 
 export interface ResourceDialogData {
@@ -18,6 +18,8 @@ export class ResourceDialogComponent implements OnInit {
         description: ['', Validators.required],
         unit: ['', Validators.required],
         unit_price: ['', Validators.required],
+        production: [''],
+        unit_production: [''],
     });
 
     constructor(private modal: NzModalRef, public fb: FormBuilder) {}

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DialogService } from '@app/service/dialog/dialog.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -18,8 +18,6 @@ export class ResourceTableComponent implements OnChanges {
 
     table: Tabulator;
     @Input() data: any[] = [];
-
-    @Output() selected: EventEmitter<Tabulator.RowComponent> = new EventEmitter();
 
     rowMenu = [
         {
@@ -56,17 +54,12 @@ export class ResourceTableComponent implements OnChanges {
     ];
 
     protected columns: Tabulator.ColumnDefinition[] = [
-        {
-            title: 'Code',
-            field: 'code',
-            headerMenu: this.headerMenu,
-
-            editor: 'input',
-            editable: false,
-        },
+        { title: 'Code', field: 'code', headerMenu: this.headerMenu, editor: 'input', editable: false },
         { title: 'Description', field: 'description', editor: 'input', editable: false },
         { title: 'Unite', field: 'unit', editor: 'input', editable: false },
         { title: 'Prix Unitaire', field: 'unit_price', editor: 'number', editable: false },
+        { title: 'Production', field: 'production', editor: 'number', editable: false },
+        { title: 'Unite de Production', field: 'unit_production', editor: 'input', editable: false },
     ];
     constructor(
         protected resourceService: ResourceService,
@@ -81,7 +74,7 @@ export class ResourceTableComponent implements OnChanges {
     }
 
     protected drawTable(): void {
-        this.table = new Tabulator(this.tableId, {
+        this.table = new Tabulator(`#${this.tableId}`, {
             data: this.data,
             reactiveData: true, // enable data reactivity
             rowContextMenu: this.rowMenu,
@@ -116,7 +109,7 @@ export class ResourceTableComponent implements OnChanges {
         });
     }
 
-    protected openTypeForm(row): void {
+    openTypeForm(row): void {
         const modal = this.modal.create({
             nzTitle: 'Ajouter un type',
             nzContent: TypeDialogComponent,
@@ -137,7 +130,7 @@ export class ResourceTableComponent implements OnChanges {
         });
     }
 
-    protected openResourceForm(row): void {
+    openResourceForm(row): void {
         const modal = this.modal.create({
             nzTitle: 'Ajouter une ressource',
             nzContent: ResourceDialogComponent,

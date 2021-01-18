@@ -18,7 +18,7 @@ class TeamService {
         ipcMain.handle('get-team-resource', async (e, teamId) => {
             try {
                 const team = await Resource.findOne({
-                    where: { id: 2 },
+                    where: { id: teamId },
                     include: 'Team',
                 });
 

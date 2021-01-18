@@ -6,10 +6,11 @@ const EquipementService = require('./service/resource/equipements');
 const ResourceService = require('./service/resource/resource');
 const TeamService = require('./service/resource/team');
 const { syncDb } = require('./store/db');
+const url = require('url');
 let win;
 const args = process.argv.slice(1);
-// const serve = args.some((val) => val === '--serve');
-const serve = true;
+const serve = args.some((val) => val === '--serve');
+// const serve = true;
 console.log(args, 'serve', serve);
 async function createWindow() {
     nativeTheme.themeSource = 'light';
@@ -30,7 +31,14 @@ async function createWindow() {
         win.loadURL('http://localhost:4200');
     } else {
         console.log('loading');
-        win.loadFile('./dist/index.html');
+
+        win.loadURL(
+            url.format({
+                pathname: path.join(__dirname, `/dist/index.html`),
+                protocol: 'file:',
+                slashes: true,
+            }),
+        );
     }
 
     win.on('closed', () => {

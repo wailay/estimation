@@ -19,12 +19,23 @@ Resource.init(
         },
         description: {
             type: DataTypes.STRING,
+            defaultValue: '',
         },
         unit: {
             type: DataTypes.STRING,
+            defaultValue: '',
         },
         unit_price: {
             type: DataTypes.INTEGER,
+            defaultValue: '',
+        },
+        production: {
+            type: DataTypes.INTEGER,
+            defaultValue: '',
+        },
+        unit_production: {
+            type: DataTypes.STRING,
+            defaultValue: '',
         },
         fixed_price: {
             type: DataTypes.BOOLEAN,
@@ -32,8 +43,6 @@ Resource.init(
         },
         type: {
             type: DataTypes.STRING,
-            allowNull: true,
-            defaultValue: null,
         },
     },
     { sequelize, modelName: 'Resource', timestamps: false },

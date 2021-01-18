@@ -7,12 +7,12 @@ import { ResourceTableComponent } from './../../resource-table/resource-table.co
 
 @Component({
     selector: 'app-divers-table',
-    templateUrl: './divers-table.component.html',
+    templateUrl: '../../resource-table/resource-table.component.html',
     styleUrls: ['./divers-table.component.scss'],
 })
 export class DiversTableComponent extends ResourceTableComponent {
     type = 'D';
-    tableId = '#divers-table';
+    tableId = 'divers-table';
 
     constructor(
         protected resourceService: ResourceService,

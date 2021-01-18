@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Tabulator from 'tabulator-tables';
+import { Bordereau } from './../../interfaces/models';
 import { BordereauService } from './../../service/bordereau/bordereau.service';
 
 @Component({
@@ -11,8 +12,9 @@ export class BordereauResourceComponent implements OnInit {
     selected: Tabulator.RowComponent;
 
     constructor(public bordereauService: BordereauService) {
-        this.bordereauService.getAll().then((data) => {
+        this.bordereauService.getAll().then((data: Bordereau[]) => {
             this.bordereauService.data = data;
+            console.log('data', data);
         });
     }
 

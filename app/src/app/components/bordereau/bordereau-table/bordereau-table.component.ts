@@ -1,16 +1,11 @@
-import { Bordereau } from './../../../interfaces/models';
-import { TeamLookupComponent } from './../../lookup/team-lookup/team-lookup.component';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { BordereauDialogComponent } from './../../../components/bordereau/bordereau-dialog/bordereau-dialog.component';
-import { BordereauService } from './../../../service/bordereau/bordereau.service';
-import { ResourceDialogComponent } from './../../resource/dialogs/resource-dialog/resource-dialog.component';
-import { TypeDialogComponent } from './../../resource/dialogs/type-dialog/type-dialog.component';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { DialogService } from '@app/service/dialog/dialog.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { ResourceService } from './../../../service/resource/resource.service';
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import Tabulator from 'tabulator-tables';
-import { Router } from '@angular/router';
+import { BordereauDialogComponent } from './../../../components/bordereau/bordereau-dialog/bordereau-dialog.component';
+import { Bordereau } from './../../../interfaces/models';
+import { BordereauService } from './../../../service/bordereau/bordereau.service';
 
 @Component({
     selector: 'app-bordereau-table',
@@ -53,7 +48,7 @@ export class BordereauTableComponent implements OnChanges {
     private columns: Tabulator.ColumnDefinition[] = [
         {
             title: 'Numero',
-            field: 'numero',
+            field: 'code',
             headerMenu: this.headerMenu,
             editor: 'input',
             editable: false,
@@ -66,23 +61,22 @@ export class BordereauTableComponent implements OnChanges {
             editable: false,
             formatter: this.boldFormatter,
         },
-        { title: 'Quantite', field: 'quantity', editor: 'input', editable: false },
-        { title: 'Unite', field: 'unit', editor: 'input', editable: false },
-        { title: 'Production', field: 'production', editor: 'input', editable: false },
-        { title: 'Duree', field: 'duration', editor: 'number', editable: false },
-        { title: 'Total', field: 'total_price', editor: 'number', editable: false, formatter: 'money' },
+        { title: 'Quantite Bordereau', field: 'quantity', editor: 'input', editable: false },
+        { title: 'Unite Bordereau', field: 'unit', editor: 'input', editable: false },
+        { title: 'Prix Unitaire', field: 'b_unit_price', formatter: 'money', formatterParams: { symbol: '$' } },
+        { title: 'Montant Final', field: 'total_price', formatter: 'money', formatterParams: { symbol: '$' } },
+        { title: 'Montant Final Vendant', field: 'total_price_vendant', formatter: 'money' },
     ];
     constructor(
         private bordereauService: BordereauService,
         private modal: NzModalService,
         private dialogService: DialogService,
         private message: NzMessageService,
-        private router: Router,
     ) {}
 
     private boldFormatter(c, p): string {
         const value = c.getValue();
-        if ((c.getData() as Bordereau).BordereauId) return value;
+        if ((c.getData() as Bordereau).BordereauId || c.getData().type) return value;
 
         return `<span style='font-weight:bold;'>` + value + '</span>';
     }
@@ -98,10 +92,10 @@ export class BordereauTableComponent implements OnChanges {
             rowContextMenu: this.rowMenu,
             columns: this.columns,
             layout: 'fitColumns',
-            height: '100%',
+            height: '91%',
             dataTree: true,
-            dataTreeElementColumn: 'description',
-            dataTreeStartExpanded: true,
+            dataTreeBranchElement: false,
+            dataTreeStartExpanded: false,
             dataTreeChildField: 'children',
             selectable: true,
             selectableRollingSelection: true,
@@ -132,7 +126,7 @@ export class BordereauTableComponent implements OnChanges {
         });
     }
 
-    private openItemForm(row: Tabulator.RowComponent): void {
+    openItemForm(row: Tabulator.RowComponent): void {
         const modal = this.modal.create({
             nzTitle: 'Ajouter un item',
             nzContent: BordereauDialogComponent,
@@ -140,9 +134,9 @@ export class BordereauTableComponent implements OnChanges {
 
         console.log(row);
         const parent = row ? row.getData().id : null;
-        modal.afterClose.subscribe((travail) => {
+        modal.afterClose.subscribe((travail: Bordereau) => {
             if (!travail) return;
-            this.bordereauService.add(travail.numero, travail.description, parent).then((res) => {
+            this.bordereauService.add(travail, parent).then((res) => {
                 if (res.status === 'error') {
                     this.message.error('Cet item existe deja');
                     return;
@@ -150,7 +144,7 @@ export class BordereauTableComponent implements OnChanges {
                     if (parent) {
                         row.getData().children.push({
                             id: res.id,
-                            numero: travail.numero,
+                            code: travail.code,
                             description: travail.description,
                             unit: travail.unit,
                             quantity: travail.quantity,
@@ -162,7 +156,7 @@ export class BordereauTableComponent implements OnChanges {
                         this.table.addData([
                             {
                                 id: res.id,
-                                numero: travail.numero,
+                                code: travail.code,
                                 description: travail.description,
                                 unit: travail.unit,
                                 quantity: travail.quantity,
@@ -176,34 +170,8 @@ export class BordereauTableComponent implements OnChanges {
         });
     }
 
-    private openResourceForm(row): void {
-        // const modal = this.modal.create({
-        //     nzTitle: 'Ajouter une ressource',
-        //     nzContent: ResourceDialogComponent,
-        // });
-        // const parentId = row ? row.getData().id : row;
-        // modal.afterClose.subscribe((resource) => {
-        //     if (!resource) return;
-        //     this.bordereauService.add(resource, parentId, 'M').then((res) => {
-        //         console.log(res);
-        //         if (res.status === 'error') return;
-        //         if (parentId) {
-        //             console.log(res.resource);
-        //             row.getData().children.push(res.resource);
-        //         } else {
-        //             this.table.addData({ ...res.resource });
-        //         }
-        //         this.table.redraw();
-        //     });
-        // });
-    }
-
     private openDeleteModal(row): void {
         this.dialogService.openConfirm(this.deleteType.bind(this), row);
-    }
-
-    private openAffectation(): void {
-        this.router.navigate(['affectation']);
     }
 
     edit(id, field, value): void {
