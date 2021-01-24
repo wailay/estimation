@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="item">
+    <div *ngIf="withEquipe" class="item">
         <h4 nz-typography>Equipes</h4>
         <app-transfer-table (selected)="teamSelected($event)" [data]="teamData" [id]="'team-lookup-table'"></app-transfer-table>
     </div>

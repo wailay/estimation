@@ -7,7 +7,6 @@ import Tabulator from 'tabulator-tables';
 import { Bordereau } from './../../../interfaces/models';
 import { BordereauService } from './../../../service/bordereau/bordereau.service';
 import { LookupComponent } from './../../lookup/lookup.component';
-const XLSX = require('xlsx');
 
 @Component({
     selector: 'app-bordereau-resource-table',
@@ -43,7 +42,7 @@ export class BordereauResourceTableComponent implements OnChanges {
     ];
 
     private columns: Tabulator.ColumnDefinition[] = [
-        { title: 'Numero', field: 'code', editor: 'input', formatter: this.boldFormatter },
+        { title: 'Numero', field: 'code', editable: false, formatter: this.boldFormatter },
         { title: 'Description', field: 'description', editable: false, formatter: this.boldFormatter },
         { title: 'Quantite Bordereau', field: 'quantity', editable: false, hozAlign: 'center' },
         { title: 'Unite', field: 'unit', editor: 'input', editable: false, hozAlign: 'center' },
@@ -59,6 +58,9 @@ export class BordereauResourceTableComponent implements OnChanges {
             field: 'total_price',
             hozAlign: 'center',
             formatter: this.totalBRFormatter,
+            bottomCalc: 'sum',
+            bottomCalcFormatter: 'money',
+            bottomCalcFormatterParams: { symbol: '$' },
         },
         { title: 'Quantite Ressource', field: 'BordereauResource.quantity', editor: 'number', hozAlign: 'center' },
         { title: 'Production', field: 'BordereauResource.production', editor: 'number', hozAlign: 'center' },
@@ -87,6 +89,23 @@ export class BordereauResourceTableComponent implements OnChanges {
         return frmt.format(value).bold();
     }
 
+    private sumCalc(values, data: Bordereau[], calcParams): number {
+        let sum = 0;
+        const recSum = (allData: Bordereau[] | IResource[]) => {
+            allData.forEach((d) => {
+                if (d.children) {
+                    recSum(d.children);
+                    sum += d.total_price;
+                } else {
+                    return;
+                }
+            });
+        };
+
+        recSum(data);
+
+        return sum;
+    }
     ngOnChanges(changes: SimpleChanges): void {
         this.drawTable();
     }
@@ -102,12 +121,14 @@ export class BordereauResourceTableComponent implements OnChanges {
             dataTree: true,
             dataTreeStartExpanded: true,
             dataTreeChildField: 'children',
-            groupBy: 'code',
+            groupBy: 'description',
+            columnCalcs: 'both',
+            // groupClosedShowCalcs: true,
+            // dataTreeChildColumnCalcs: true,
             // selectable: true,
             // selectableRollingSelection: true,
             // selectableRangeMode: 'click',
             placeholder: 'Bordereau vide',
-
             cellEdited: (cell) => {
                 const cellB = cell.getData() as Bordereau;
                 const id = cellB.id;
@@ -122,18 +143,6 @@ export class BordereauResourceTableComponent implements OnChanges {
                 } else {
                     this.edit(id, field, value);
                 }
-            },
-            rowClick: (e: MouseEvent, row) => {
-                if (e.shiftKey) {
-                    return;
-                }
-
-                if (!row.getData().unit) {
-                    row.deselect();
-                    return;
-                }
-
-                this.selected.emit(row);
             },
         });
     }
@@ -160,8 +169,6 @@ export class BordereauResourceTableComponent implements OnChanges {
         });
     }
 
-    private computeResourceDuration(): void {}
-
     private openDeleteModal(row: Tabulator.RowComponent): void {
         if (row.getData().type) {
             this.dialogService.openConfirm(this.deleteResources.bind(this), row);
@@ -171,9 +178,7 @@ export class BordereauResourceTableComponent implements OnChanges {
     }
 
     edit(id, field, value): void {
-        this.bordereauService.edit(id, field, value).then((res) => {
-            console.log('edit ed! ', res);
-        });
+        this.bordereauService.edit(id, field, value).then((res) => {});
     }
 
     async editBR(row: Tabulator.RowComponent, bordId, resId, field, value): Promise<void> {
@@ -181,10 +186,8 @@ export class BordereauResourceTableComponent implements OnChanges {
         const bordParentResult = await this.bordereauService.recompute(bordId);
 
         if (bordResourceResult.status === 'error' || bordParentResult.status === 'error') {
-            console.log('error edit BR');
             return;
         }
-        console.log(bordResourceResult, bordParentResult);
         row.update({ BordereauResource: bordResourceResult.bordereau });
         (row.getTreeParent() as Tabulator.RowComponent).update(bordParentResult.bordereau);
     }
@@ -198,9 +201,7 @@ export class BordereauResourceTableComponent implements OnChanges {
 
         selectedRows.forEach((rows: Tabulator.RowComponent) => {
             rows.delete();
-            this.bordereauService.delete(row.getData().id).then((res) => {
-                console.log('delete !', res);
-            });
+            this.bordereauService.delete(row.getData().id).then((res) => {});
         });
     }
 

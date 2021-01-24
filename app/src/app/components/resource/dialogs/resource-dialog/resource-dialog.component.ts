@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import Tabulator from 'tabulator-tables';
@@ -24,15 +24,20 @@ export class ResourceDialogComponent implements OnInit {
 
     constructor(private modal: NzModalRef, public fb: FormBuilder) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        const oldRes = localStorage.getItem('resource');
+        if (oldRes) {
+            this.resForm.patchValue(JSON.parse(oldRes));
+        }
+    }
 
     addResource(): void {
         this.modal.destroy(this.resForm.value);
-        this.resForm.reset();
+        localStorage.setItem('resource', JSON.stringify(this.resForm.value));
     }
 
     cancel(): void {
         this.modal.destroy();
-        this.resForm.reset();
+        localStorage.setItem('resource', JSON.stringify(this.resForm.value));
     }
 }

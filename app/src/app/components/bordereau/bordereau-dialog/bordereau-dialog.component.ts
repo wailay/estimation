@@ -7,23 +7,35 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
     styleUrls: ['./bordereau-dialog.component.scss'],
 })
 export class BordereauDialogComponent implements OnInit {
-    code = '';
-    description = '';
-    unit = null;
-    quantity = null;
+    form = {
+        code: '',
+        description: '',
+        unit: null,
+        quantity: null,
+    };
 
     constructor(private modal: NzModalRef) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        const form = localStorage.getItem('bordereau');
+        if (form) this.form = JSON.parse(form);
+    }
 
     add(): void {
-        this.modal.destroy({ code: this.code, description: this.description, unit: this.unit, quantity: this.quantity });
+        localStorage.setItem('bordereau', JSON.stringify(this.form));
+        this.modal.destroy({
+            code: this.form.code,
+            description: this.form.description,
+            unit: this.form.unit,
+            quantity: this.form.quantity,
+        });
     }
     cancel(): void {
+        localStorage.setItem('bordereau', JSON.stringify(this.form));
         this.modal.destroy();
     }
 
     get disabled(): boolean {
-        return this.code === '' || this.description === '';
+        return this.form.code === '' || this.form.description === '';
     }
 }

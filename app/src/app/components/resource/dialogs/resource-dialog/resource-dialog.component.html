@@ -44,6 +44,6 @@
 </form>
 
 <div *nzModalFooter>
-    <button nz-button nzType="default" (click)="cancel()">Annuler</button>
     <button [disabled]="!resForm.valid" nz-button nzType="primary" (click)="addResource()">OK</button>
+    <button nz-button nzType="default" (click)="cancel()">Annuler</button>
 </div>

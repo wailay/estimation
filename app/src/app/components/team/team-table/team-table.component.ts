@@ -1,3 +1,5 @@
+import { TeamService } from './../../../service/team/team.service';
+import { LookupComponent } from './../../lookup/lookup.component';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { DialogService } from '@app/service/dialog/dialog.service';
@@ -94,11 +96,33 @@ export class TeamTableComponent extends ResourceTableComponent implements OnChan
         protected dialogService: DialogService,
         protected message: NzMessageService,
         private router: Router,
+        private teamService: TeamService,
     ) {
         super(resourceService, modal, dialogService, message);
     }
 
     private affectResource(row: Tabulator.RowComponent): void {
-        console.log('affecter');
+        const modal = this.modal.create({
+            nzTitle: 'Affecter une ressource',
+            nzContent: LookupComponent,
+            nzWidth: 1500,
+            nzComponentParams: { withEquipe: false },
+        });
+
+        const parentId = row.getData().id;
+        modal.afterClose.subscribe((selected) => {
+            if (!selected) return;
+
+            const selectedResources = selected.selected.map((sel: Tabulator.RowComponent) => sel.getData());
+
+            selectedResources.forEach(async (selR) => {
+                const result = await this.teamService.addTeamResource(parentId, selR.id);
+                const newSum = await this.teamService.recomputePrice(parentId);
+                row.update({ unit_price: newSum });
+                this.resourceService.select(row); // trigger update to team detail table
+            });
+
+            this.message.success('Affectation !');
+        });
     }
 }

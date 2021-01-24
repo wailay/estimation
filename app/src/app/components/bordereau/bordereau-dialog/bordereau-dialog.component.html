@@ -1,8 +1,8 @@
 <div>
-    <input nz-input placeholder="Numero" [(ngModel)]="code" required />
-    <input nz-input placeholder="Description" [(ngModel)]="description" required />
-    <input nz-input placeholder="Quantite" [(ngModel)]="quantity" required />
-    <input nz-input placeholder="Unite" [(ngModel)]="unit" required />
+    <input nz-input placeholder="Numero" [(ngModel)]="form.code" required />
+    <input nz-input placeholder="Description" [(ngModel)]="form.description" required />
+    <input nz-input placeholder="Quantite" type="number" [(ngModel)]="form.quantity" required />
+    <input nz-input placeholder="Unite" [(ngModel)]="form.unit" required />
 </div>
 
 <div *nzModalFooter>

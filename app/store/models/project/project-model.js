@@ -24,8 +24,16 @@ Project.init(
             type: DataTypes.DATE,
             allowNull: false,
         },
+        checked: {
+            type: DataTypes.STRING,
+            defaultValue: '',
+        },
+        total_price: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
+        },
     },
-    { sequelize, modelName: 'Project', timestamps: false },
+    { sequelize, timestamps: false },
 );
 
 module.exports = Project;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import Tabulator from 'tabulator-tables';
 import { IResource } from './../../interfaces/models';
@@ -12,8 +12,9 @@ import { ResourceService } from './../../service/resource/resource.service';
 export class LookupComponent implements OnInit {
     resourcesData: any[] = [];
     teamData: any[] = [];
-    selectedResources: Tabulator.RowComponent[];
-    selectedTeams: Tabulator.RowComponent[];
+    selectedResources: Tabulator.RowComponent[] = [];
+    selectedTeams: Tabulator.RowComponent[] = [];
+    @Input() withEquipe = true;
 
     constructor(private resourceService: ResourceService, private modal: NzModalRef) {}
 

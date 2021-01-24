@@ -16,7 +16,6 @@ class ResourceService {
     edit() {
         ipcMain.handle('edit', async (event, typeId, field, value) => {
             try {
-                console.log('EDITIING', typeId, field, value);
                 const typeToEdit = await Resource.findByPk(typeId);
 
                 if (!typeToEdit) return { status: 'error', message: 'Erreur' };
@@ -35,7 +34,6 @@ class ResourceService {
     addResource() {
         ipcMain.handle('add-resource', async (event, resource, parentId) => {
             try {
-                console.log('adding ', resource);
                 const [instance, created] = await Resource.findOrCreate({ where: { id: parentId }, defaults: { ...resource } });
 
                 if (created) return { status: 'success', message: 'Resource ajoute !', resource: instance.toJSON() };
@@ -107,7 +105,6 @@ class ResourceService {
     getAll() {
         ipcMain.handle('get-all', async (e, type) => {
             try {
-                console.log('get ALL', type);
                 return await this._getAll(type);
             } catch (err) {
                 return this.errorStatus(err);
@@ -125,7 +122,6 @@ class ResourceService {
                     const subTree = await this._getAll(key);
                     tree.push({ code: value, children: subTree });
                 }
-                console.log(tree);
                 return tree;
             } catch (err) {
                 return this.errorStatus(err);

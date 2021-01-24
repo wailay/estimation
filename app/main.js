@@ -11,7 +11,7 @@ let win;
 const args = process.argv.slice(1);
 const serve = args.some((val) => val === '--serve');
 // const serve = true;
-console.log(args, 'serve', serve);
+args, 'serve', serve;
 async function createWindow() {
     nativeTheme.themeSource = 'light';
 
@@ -26,12 +26,10 @@ async function createWindow() {
     if (serve) {
         win.webContents.openDevTools();
 
-        console.log('syncing db');
+        ('syncing db');
         await syncDb();
         win.loadURL('http://localhost:4200');
     } else {
-        console.log('loading');
-
         win.loadURL(
             url.format({
                 pathname: path.join(__dirname, `/dist/index.html`),

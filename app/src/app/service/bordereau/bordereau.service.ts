@@ -1,3 +1,5 @@
+import { NzMessageModule, NzMessageService } from 'ng-zorro-antd/message';
+import { ProjectService } from './../project/project.service';
 import { Injectable } from '@angular/core';
 import { Bordereau } from './../../interfaces/models';
 import { ElectronService } from './../electron/electron.service';
@@ -7,12 +9,12 @@ import { ElectronService } from './../electron/electron.service';
 })
 export class BordereauService {
     data: Bordereau[];
-    constructor(private electron: ElectronService) {
+    constructor(private electron: ElectronService, private projet: ProjectService, private message: NzMessageService) {
         this.data = [];
     }
 
     getAll(): Promise<any> {
-        return this.electron.ipcRenderer.invoke('get-all-bordereau');
+        return this.electron.ipcRenderer.invoke('get-all-bordereau', this.projet.currentProjectId);
     }
 
     recompute(boardId: number): Promise<any> {
@@ -20,7 +22,11 @@ export class BordereauService {
     }
 
     add(bordereau: Bordereau, parent: any): Promise<any> {
-        return this.electron.ipcRenderer.invoke('add-bordereau', bordereau, parent);
+        if (!this.projet.currentProjectId) {
+            this.message.error('Veuillez selectionner un projet');
+            return;
+        }
+        return this.electron.ipcRenderer.invoke('add-bordereau', bordereau, parent, this.projet.currentProjectId);
     }
 
     affect(resources: any[], parent: number): Promise<any> {

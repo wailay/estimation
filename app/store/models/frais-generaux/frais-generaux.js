@@ -3,9 +3,9 @@ const { sequelize } = require('../../db');
 const Project = require('../project/project-model');
 const Resource = require('../resources/resource-model');
 
-class Bordereau extends Model {}
+class FraisGeneraux extends Model {}
 
-Bordereau.init(
+FraisGeneraux.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -13,13 +13,9 @@ Bordereau.init(
             primaryKey: true,
             autoIncrement: true,
         },
-        code: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-        },
         description: {
             type: DataTypes.STRING,
+            defaultValue: '',
         },
         quantity: {
             type: DataTypes.INTEGER,
@@ -29,7 +25,7 @@ Bordereau.init(
             type: DataTypes.STRING,
             defaultValue: '',
         },
-        b_unit_price: {
+        unit_price: {
             type: DataTypes.INTEGER,
             defaultValue: '',
         },
@@ -37,12 +33,8 @@ Bordereau.init(
             type: DataTypes.INTEGER,
             defaultValue: '',
         },
-        total_price_vendant: {
-            type: DataTypes.INTEGER,
-            defaultValue: '',
-        },
     },
-    { sequelize, modelName: 'Bordereau', timestamps: false, freezeTableName: true },
+    { sequelize, modelName: 'FraisGeneraux', timestamps: false, freezeTableName: true },
 );
 
 class BordereauResource extends Model {}

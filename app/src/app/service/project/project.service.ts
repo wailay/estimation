@@ -1,18 +1,25 @@
 import { Injectable } from '@angular/core';
-import { IProject } from './../../interfaces/models';
+import { IProject, Result } from './../../interfaces/models';
 import { ElectronService } from './../electron/electron.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ProjectService {
-    constructor(private electron: ElectronService) {}
+    currentProjectId: number;
+    constructor(private electron: ElectronService) {
+        this.currentProjectId = 1;
+    }
 
-    add(project: IProject): Promise<any> {
+    add(project: IProject): Promise<Result> {
         return this.electron.ipcRenderer.invoke('add-project', project);
     }
 
-    getAll(): Promise<any> {
+    getAll(): Promise<Result> {
         return this.electron.ipcRenderer.invoke('get-project');
+    }
+
+    delete(parentId): Promise<Result> {
+        return this.electron.ipcRenderer.invoke('delete-project', parentId);
     }
 }

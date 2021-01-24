@@ -1,5 +1,6 @@
+import { NzMessageService } from 'ng-zorro-antd/message';
 import Tabulator from 'tabulator-tables';
-import { Component, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { IProject } from './../../interfaces/models';
 import { ProjectService } from './../../service/project/project.service';
@@ -9,66 +10,62 @@ import { ProjectService } from './../../service/project/project.service';
     templateUrl: './project.component.html',
     styleUrls: ['./project.component.scss'],
 })
-export class ProjectComponent implements OnChanges {
+export class ProjectComponent implements OnInit {
     projectForm = this.fb.group({
         name: ['', Validators.required],
         client: ['', Validators.required],
         date: ['', Validators.required],
     });
-    alertOpen: boolean;
-    alertMessage: string;
     projects: IProject[];
+    date = null;
+    projectId = 1;
 
-    table1: Tabulator;
-    table2: Tabulator;
-
-    constructor(private fb: FormBuilder, private projectService: ProjectService) {
-        this.alertOpen = false;
-        this.alertMessage = '';
+    constructor(private fb: FormBuilder, public projectService: ProjectService, private message: NzMessageService) {
         this.projects = [];
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        this.table1 = new Tabulator('#table-one', {
-            height: 311,
-            layout: 'fitColumns',
-            movableRows: true,
-            movableRowsConnectedTables: '#table-two',
-            movableRowsReceiver: 'add',
-            placeholder: 'All Rows Moved',
-            data: [{ title: 'allo', name: 'Bob' }],
-            columns: [{ title: 'Name', field: 'name' }],
-        });
-
-        // Table to move rows to
-        this.table2 = new Tabulator('#table-two', {
-            height: 311,
-            layout: 'fitColumns',
-            placeholder: 'Drag Rows Here',
-            data: [],
-            columns: [{ title: 'Name', field: 'name' }],
-        });
+    ngOnInit(): void {
+        this.getAll();
+        this.projectId = this.projectService.currentProjectId;
     }
 
-    onProjectSubmit(): void {
-        this.projectService.add(this.projectForm.value as IProject).then((response) => {
-            this.alertOpen = true;
-            this.alertMessage = response.message;
-        });
+    async addProject(): Promise<void> {
+        const result = await this.projectService.add(this.projectForm.value);
+        if (result.status === 'error') {
+            this.message.error(result.message);
+            return;
+        }
+
+        this.projects.push(this.projectForm.value);
+        this.message.success(result.message);
     }
 
-    getProjects(): void {
-        this.projectService.getAll().then((res) => {
-            this.projects = res.projects;
-            console.log('all', this.projects);
-        });
+    async getAll(): Promise<void> {
+        const result = await this.projectService.getAll();
+        this.projects = result.projects;
     }
 
-    onSelect(project: IProject): void {
-        console.log('selected', project);
+    selectionChange(): void {
+        this.projectService.currentProjectId = this.projectId;
     }
 
-    open(content): void {
-        // this.dialog.open(content);
+    async deleteProject(id: number): Promise<void> {
+        if (id !== this.projectId) {
+            this.message.error('Veuillez selectionner un projet avant');
+            return;
+        }
+        this.sliceProject(id);
+        const result = await this.projectService.delete(this.projectService.currentProjectId);
+
+        if (result.status === 'error') {
+            this.message.error(result.message);
+            return;
+        }
+
+        this.message.success(result.message);
+    }
+
+    sliceProject(id): void {
+        this.projects = this.projects.filter((proj) => proj.id !== id);
     }
 }

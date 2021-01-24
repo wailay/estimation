@@ -8,7 +8,8 @@ import Tabulator from 'tabulator-tables';
     providedIn: 'root',
 })
 export class ResourceService {
-    selected: Subject<Tabulator.RowComponent>;
+    private selected: Subject<Tabulator.RowComponent>;
+    currentSelected: Tabulator.RowComponent;
 
     constructor(private electron: ElectronService) {
         this.selected = new Subject();
@@ -19,7 +20,6 @@ export class ResourceService {
     }
 
     addResource(resource: IResource, parentId: number, type: string): Promise<any> {
-        console.log(' adding res', { ...resource, type });
         return this.electron.ipcRenderer.invoke('add-resource', { ...resource, type }, parentId);
     }
 
@@ -45,5 +45,10 @@ export class ResourceService {
 
     getSelected(): Observable<Tabulator.RowComponent> {
         return this.selected.asObservable();
+    }
+
+    select(row: Tabulator.RowComponent): void {
+        this.selected.next(row);
+        this.currentSelected = row;
     }
 }

@@ -12,6 +12,7 @@ export class TransferTableComponent implements OnChanges {
     @Input() data: any[] = [];
     @Input() filter = '';
     @Output() selected: EventEmitter<Tabulator.RowComponent[]> = new EventEmitter();
+    currentSelected: any[] = [];
 
     filtered = [];
     private columns: any[] = [
@@ -23,23 +24,17 @@ export class TransferTableComponent implements OnChanges {
     ];
     constructor() {}
 
-    // ngOnInit(): void {
-    //     this.drawTable();
-    // }
-
     ngOnChanges(changes: SimpleChanges): void {
-        // if (this.table) this.table.setData(this.data);
         this.drawTable();
     }
 
     private drawTable(): void {
-        console.log('drawing', this.id);
         this.table = new Tabulator(`#${this.id}`, {
             data: this.data,
             reactiveData: true, // enable data reactivity
             columns: this.columns,
             layout: 'fitColumns',
-            height: '250px',
+            height: '500px',
             dataTree: true,
             dataTreeFilter: true,
             dataTreeStartExpanded: true,
@@ -60,7 +55,6 @@ export class TransferTableComponent implements OnChanges {
                 this.filterTree(element.children, value);
             } else {
                 if (element.code.includes(value)) {
-                    console.log(element.code);
                     this.filtered.push(element);
                 }
             }
@@ -75,7 +69,9 @@ export class TransferTableComponent implements OnChanges {
 
         this.filtered = [];
         this.filterTree(this.data, value);
+        this.currentSelected = this.table.getSelectedData();
         this.table.setData(this.filtered);
+        this.currentSelected.forEach((row) => this.table.selectRow(row.id));
     }
 
     get disabled(): boolean {

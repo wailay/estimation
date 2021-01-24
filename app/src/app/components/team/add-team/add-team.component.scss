@@ -1,10 +1,29 @@
 .add-container {
+    height: 100%;
     padding-top: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.form-item {
+    flex: 1;
+}
+.transfer-item {
+    flex: 3;
+}
+
+.confirm-btn-item {
+    flex: 1;
+}
+.confirm-btn {
+    margin: auto;
+    text-align: center;
 }
 
 .transfer {
-    width: 100%;
-    height: 100%;
+    flex-grow: 1;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -15,14 +34,13 @@
     padding: 15px;
     margin: 0 10px 0 10px;
     width: 100%;
-
     align-self: stretch;
 }
 
 .item-no-pad {
     width: 100%;
     margin: 0 10px 0 10px;
-    height: 350px;
+
     align-self: stretch;
     overflow-y: auto;
 }
@@ -32,12 +50,6 @@
 }
 
 .table {
-    height: 100%;
     width: 100%;
     overflow: auto;
-}
-
-.confirm-btn {
-    margin: 30px auto;
-    text-align: center;
 }

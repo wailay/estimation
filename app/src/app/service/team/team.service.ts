@@ -7,11 +7,7 @@ import { ElectronService } from '../electron/electron.service';
     providedIn: 'root',
 })
 export class TeamService {
-    selected: Subject<Tabulator.RowComponent>;
-
-    constructor(private electron: ElectronService) {
-        this.selected = new Subject();
-    }
+    constructor(private electron: ElectronService) {}
 
     recomputePrice(teamId: number): Promise<any> {
         return this.electron.ipcRenderer.invoke('team-compute-unit-price', teamId);
@@ -31,9 +27,5 @@ export class TeamService {
 
     deleteTeamResource(teamId: number, resourceId: number): Promise<any> {
         return this.electron.ipcRenderer.invoke('delete-team-resource', teamId, resourceId);
-    }
-
-    getSelected(): Observable<Tabulator.RowComponent> {
-        return this.selected.asObservable();
     }
 }

@@ -1,9 +1,6 @@
-const { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = require('constants');
 const { ipcMain } = require('electron');
-const { CONSOLE_APPENDER } = require('karma/lib/constants');
 const { Op } = require('sequelize');
 const { isNumeric } = require('tslint');
-const { couldStartTrivia } = require('typescript');
 const { Bordereau, BordereauResource } = require('../../store/models/bordereau/bordereau');
 const Resource = require('../../store/models/resources/resource-model');
 class BordereauService {
@@ -21,9 +18,9 @@ class BordereauService {
     }
 
     getAll() {
-        ipcMain.handle('get-all-bordereau', async () => {
+        ipcMain.handle('get-all-bordereau', async (e, projectId) => {
             try {
-                const bordereaux = await Bordereau.findAll({ include: Resource });
+                const bordereaux = await Bordereau.findAll({ include: Resource, where: { ProjectId: projectId } });
 
                 let hmap = {};
 
@@ -53,7 +50,6 @@ class BordereauService {
     edit() {
         ipcMain.handle('edit-bordereau', async (event, bordId, field, value) => {
             try {
-                console.log('EDITIING BORD', bordId, field, value);
                 const bordToEdit = await Bordereau.findByPk(bordId);
 
                 if (!bordToEdit) return { status: 'error', message: 'Erreur' };
@@ -72,7 +68,6 @@ class BordereauService {
     editBR() {
         ipcMain.handle('edit-bordereau-resource', async (event, bordId, resId, field, value) => {
             try {
-                console.log('EDITIING BORD RES', bordId, resId, field, value);
                 const bordToEdit = await BordereauResource.findOne({ where: { BordereauId: bordId, ResourceId: resId } });
                 const resource = await Resource.findOne({ where: { id: resId } });
 
@@ -80,7 +75,6 @@ class BordereauService {
 
                 const saved = await bordToEdit.set(field, value).save();
 
-                console.log(field, value, isNumeric(value), typeof value === 'number');
                 let newTotal = 0;
                 if (typeof value === 'number') {
                     const newDuration = Math.round(bordToEdit.quantity / bordToEdit.production);
@@ -103,9 +97,9 @@ class BordereauService {
     }
 
     add() {
-        ipcMain.handle('add-bordereau', async (event, bord, parent) => {
+        ipcMain.handle('add-bordereau', async (event, bord, parent, projectId) => {
             try {
-                const created = await Bordereau.create({ ...bord, BordereauId: parent });
+                const created = await Bordereau.create({ ...bord, BordereauId: parent, ProjectId: projectId });
 
                 return { status: 'success', message: 'Bordereau ajoute !', id: created.id };
             } catch (err) {

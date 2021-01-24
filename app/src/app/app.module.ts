@@ -56,6 +56,12 @@ import { TeamDetailComponent } from './components/team/team-detail/team-detail.c
 import { TeamTableComponent } from './components/team/team-table/team-table.component';
 import { TeamComponent } from './components/team/team.component';
 import { IconsProviderModule } from './icons-provider.module';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 registerLocaleData(en);
 
@@ -118,6 +124,12 @@ registerLocaleData(en);
         NzDescriptionsModule,
         NzSpaceModule,
         NzTypographyModule,
+        NzCardModule,
+        NzCheckboxModule,
+        NzDatePickerModule,
+        NzRadioModule,
+        NzPopconfirmModule,
+        NzTableModule,
     ],
     providers: [{ provide: NZ_I18N, useValue: en_US }],
     bootstrap: [AppComponent],

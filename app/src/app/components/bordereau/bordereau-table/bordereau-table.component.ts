@@ -7,6 +7,7 @@ import { BordereauDialogComponent } from './../../../components/bordereau/border
 import { Bordereau } from './../../../interfaces/models';
 import { BordereauService } from './../../../service/bordereau/bordereau.service';
 
+export const UNIT_BORD = { '': 'aucune', mcu: 'mcu', tm: 'tm', 'm-ca': 'm-ca', ml: 'ml', un: 'un', global: 'global' };
 @Component({
     selector: 'app-bordereau-table',
     templateUrl: './bordereau-table.component.html',
@@ -59,13 +60,15 @@ export class BordereauTableComponent implements OnChanges {
             field: 'description',
             editor: 'input',
             editable: false,
-            formatter: this.boldFormatter,
+            formatter: this.textFormatter,
+            headerFilter: 'input',
+            headerFilterLiveFilter: false,
         },
-        { title: 'Quantite Bordereau', field: 'quantity', editor: 'input', editable: false },
-        { title: 'Unite Bordereau', field: 'unit', editor: 'input', editable: false },
+        { title: 'Quantite Bordereau', field: 'quantity', editor: 'input' },
+        { title: 'Unite Bordereau', field: 'unit', editor: 'input' },
         { title: 'Prix Unitaire', field: 'b_unit_price', formatter: 'money', formatterParams: { symbol: '$' } },
-        { title: 'Montant Final', field: 'total_price', formatter: 'money', formatterParams: { symbol: '$' } },
-        { title: 'Montant Final Vendant', field: 'total_price_vendant', formatter: 'money' },
+        { title: 'Montant Final', field: 'total_price', formatter: 'money', formatterParams: { symbol: '$' }, bottomCalc: 'sum' },
+        { title: 'Montant Final Vendant', field: 'total_price_vendant', formatter: 'money', bottomCalc: 'sum' },
     ];
     constructor(
         private bordereauService: BordereauService,
@@ -76,9 +79,18 @@ export class BordereauTableComponent implements OnChanges {
 
     private boldFormatter(c, p): string {
         const value = c.getValue();
-        if ((c.getData() as Bordereau).BordereauId || c.getData().type) return value;
+        if (!(c.getData() as Bordereau).BordereauId) return `<span style='font-weight:bold;'>` + value + '</span>';
 
-        return `<span style='font-weight:bold;'>` + value + '</span>';
+        return value;
+    }
+
+    private textFormatter(c, p): string {
+        const value = c.getValue();
+        if (!(c.getData() as Bordereau).BordereauId) return `<span style='font-weight:bold;'>` + value + '</span>';
+        if ((c.getData() as Bordereau).BordereauId && !c.getData().type && !c.getData().quantity)
+            return `<span style='text-decoration:underline;'>` + value + '</span>';
+
+        return value;
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -94,8 +106,7 @@ export class BordereauTableComponent implements OnChanges {
             layout: 'fitColumns',
             height: '91%',
             dataTree: true,
-            dataTreeBranchElement: false,
-            dataTreeStartExpanded: false,
+            dataTreeStartExpanded: [true, false],
             dataTreeChildField: 'children',
             selectable: true,
             selectableRollingSelection: true,
@@ -123,6 +134,7 @@ export class BordereauTableComponent implements OnChanges {
 
                 this.selected.emit(row);
             },
+            movableRows: true,
         });
     }
 
@@ -132,7 +144,6 @@ export class BordereauTableComponent implements OnChanges {
             nzContent: BordereauDialogComponent,
         });
 
-        console.log(row);
         const parent = row ? row.getData().id : null;
         modal.afterClose.subscribe((travail: Bordereau) => {
             if (!travail) return;
@@ -152,7 +163,6 @@ export class BordereauTableComponent implements OnChanges {
                             BordereauId: parent,
                         });
                     } else {
-                        console.log(res);
                         this.table.addData([
                             {
                                 id: res.id,
@@ -175,9 +185,7 @@ export class BordereauTableComponent implements OnChanges {
     }
 
     edit(id, field, value): void {
-        this.bordereauService.edit(id, field, value).then((res) => {
-            console.log('edit ed! ', res);
-        });
+        this.bordereauService.edit(id, field, value).then((res) => {});
     }
 
     deleteType(row): void {
@@ -189,9 +197,7 @@ export class BordereauTableComponent implements OnChanges {
 
         selectedRows.forEach((rows: Tabulator.RowComponent) => {
             rows.delete();
-            this.bordereauService.delete(rows.getData().id).then((res) => {
-                console.log('delete', res);
-            });
+            this.bordereauService.delete(rows.getData().id).then((res) => {});
         });
     }
 }

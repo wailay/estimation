@@ -67,6 +67,7 @@ export class TeamDetailTableComponent implements OnChanges {
             rowContextMenu: this.rowMenu,
             columns: this.columns,
             height: '100%',
+            layout: 'fitColumns',
             placeholder: "Aucun detail d'equipe",
             cellDblClick: (e, cell) => {
                 if (cell.getField() === 'type') return;
@@ -77,7 +78,6 @@ export class TeamDetailTableComponent implements OnChanges {
                 const teamId = (cell.getData() as TeamResource).TeamResources.TeamId;
                 const field = cell.getColumn().getField();
                 const value = cell.getValue();
-                console.log(cell.getRow().getData());
                 if (field === 'TeamResources.unit_quantity') {
                     this.editTeamQuantity(teamId, resourceId, value);
                 } else {
@@ -97,7 +97,6 @@ export class TeamDetailTableComponent implements OnChanges {
 
     editTeamQuantity(teamid, resourceid, value): void {
         this.teamService.editQuantity(teamid, resourceid, value).then((res) => {
-            console.log('quant edited', res);
             this.edited.emit();
         });
     }
@@ -106,17 +105,16 @@ export class TeamDetailTableComponent implements OnChanges {
         this.dialogService.openConfirm(this.deleteTeamResource.bind(this), row);
     }
 
-    deleteTeamResource(row): void {
+    async deleteTeamResource(row: Tabulator.RowComponent): Promise<void> {
         const data = (row.getData() as TeamResource).TeamResources;
         row.delete();
-        this.teamService.deleteTeamResource(data.TeamId, data.TeamResourceId).then((res) => {
-            console.log('delete team resources', res);
-        });
+        await this.teamService.deleteTeamResource(data.TeamId, data.TeamResourceId);
+        const newSum = await this.teamService.recomputePrice(data.TeamId);
+        this.resourceService.currentSelected.update({ unit_price: newSum });
     }
 
     async openResourceDialog(): Promise<void> {
         const data = await this.resourceService.getAllTree();
-        console.log('add', data);
         const modal = this.modal.create({
             nzTitle: 'Ajouter une ressource',
             nzContent: TransferTableComponent,

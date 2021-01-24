@@ -30,7 +30,6 @@ class EquipementService {
             try {
                 const instance = await EquipementDetail.update({ unit_quantity: quantity }, { where: { id: id } });
 
-                console.log('edit', instance);
                 return { status: 'success', message: 'Quantite modifie !' };
             } catch (err) {
                 return this.errorStatus(err);
@@ -56,7 +55,6 @@ class EquipementService {
                     include: [{ model: Resource, attributes: [] }],
                 });
 
-                console.log('get all', JSON.parse(JSON.stringify(instances)));
                 return JSON.parse(JSON.stringify(instances));
             } catch (err) {
                 return this.errorStatus(err);

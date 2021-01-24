@@ -10,11 +10,10 @@ import { BordereauService } from './../../service/bordereau/bordereau.service';
 })
 export class BordereauResourceComponent implements OnInit {
     selected: Tabulator.RowComponent;
-
+    data: Bordereau[] = [];
     constructor(public bordereauService: BordereauService) {
         this.bordereauService.getAll().then((data: Bordereau[]) => {
-            this.bordereauService.data = data;
-            console.log('data', data);
+            this.data = data;
         });
     }
 

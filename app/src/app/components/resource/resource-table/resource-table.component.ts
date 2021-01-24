@@ -6,7 +6,6 @@ import Tabulator from 'tabulator-tables';
 import { ResourceService } from './../../../service/resource/resource.service';
 import { ResourceDialogComponent } from './../dialogs/resource-dialog/resource-dialog.component';
 import { TypeDialogComponent } from './../dialogs/type-dialog/type-dialog.component';
-
 @Component({
     selector: 'app-resource-table',
     templateUrl: './resource-table.component.html',
@@ -57,7 +56,14 @@ export class ResourceTableComponent implements OnChanges {
         { title: 'Code', field: 'code', headerMenu: this.headerMenu, editor: 'input', editable: false },
         { title: 'Description', field: 'description', editor: 'input', editable: false },
         { title: 'Unite', field: 'unit', editor: 'input', editable: false },
-        { title: 'Prix Unitaire', field: 'unit_price', editor: 'number', editable: false },
+        {
+            title: 'Prix Unitaire',
+            field: 'unit_price',
+            editor: 'number',
+            editable: false,
+            formatter: 'money',
+            formatterParams: { symbol: '$' },
+        },
         { title: 'Production', field: 'production', editor: 'number', editable: false },
         { title: 'Unite de Production', field: 'unit_production', editor: 'input', editable: false },
     ];
@@ -102,9 +108,9 @@ export class ResourceTableComponent implements OnChanges {
 
                 this.edit(id, field, value);
             },
-            rowDblClick: (e, row) => {
+            rowClick: (e, row) => {
                 if (!row.getData().unit) return;
-                this.resourceService.selected.next(row);
+                this.resourceService.select(row);
             },
         });
     }
@@ -120,7 +126,6 @@ export class ResourceTableComponent implements OnChanges {
             this.resourceService.addFolder(type.code, this.type).then((res) => {
                 if (res.status === 'error') {
                     this.message.error(res.message);
-                    console.log('error');
                     return;
                 } else {
                     this.table.addData([{ id: res.id, code: type.code, children: [] }]);
@@ -141,15 +146,17 @@ export class ResourceTableComponent implements OnChanges {
         modal.afterClose.subscribe((resource) => {
             if (!resource) return;
             this.resourceService.addResource(resource, parentId, this.type).then((res) => {
-                console.log(res);
-                if (res.status === 'error') return;
+                if (res.status === 'error') {
+                    this.message.error(res.message);
+                    return;
+                }
                 if (parentId) {
-                    console.log(res.resource);
                     row.getData().children.push(res.resource);
                 } else {
                     this.table.addData({ ...res.resource });
                 }
                 this.table.redraw();
+                this.message.success(res.message);
             });
         });
     }
@@ -167,15 +174,26 @@ export class ResourceTableComponent implements OnChanges {
 
         selectedRows.forEach((rows: Tabulator.RowComponent) => {
             rows.delete();
-            this.resourceService.delete(rows.getData().id).then((res) => {
-                console.log('delete', res);
-            });
+            this.resourceService.delete(rows.getData().id).then((res) => {});
         });
     }
 
     edit(id, field, value): void {
-        this.resourceService.edit(id, field, value).then((res) => {
-            console.log('edit ed! ', res);
-        });
+        this.resourceService.edit(id, field, value).then((res) => {});
+    }
+
+    add(): void {
+        const csvFilePath = '';
+        const csv = require('csvtojson');
+        csv()
+            .fromFile(csvFilePath)
+            .then((jsonObj) => {
+                /**
+                 * [
+                 * 	{a:"1", b:"2", c:"3"},
+                 * 	{a:"4", b:"5". c:"6"}
+                 * ]
+                 */
+            });
     }
 }

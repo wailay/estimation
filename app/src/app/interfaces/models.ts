@@ -1,13 +1,20 @@
+export interface Result {
+    status: 'error' | 'success' | string;
+    message: string;
+    projects?: any;
+}
+
 export interface Default {
     createdAt?: string;
     updatedAt?: string;
 }
 
 export interface IProject {
-    id: number;
+    id?: number;
     name: string;
     client: string;
     date: string;
+    checked: boolean;
 }
 
 export interface IResource {

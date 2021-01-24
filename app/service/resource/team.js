@@ -42,7 +42,7 @@ class TeamService {
 
                 const created = await resource.addTeamResource(team, { through: { unit_quantity: 1 } });
 
-                if (!created) return { status: 'error', message: 'Erreur' };
+                if (!created) return { status: 'error', message: 'Erreur', resource: created.toJSON() };
 
                 return { status: 'success', message: '' };
             } catch (err) {

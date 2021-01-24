@@ -52,7 +52,6 @@ export class EquipementDetailTableComponent implements OnChanges, AfterViewInit,
         if (this.disabled) return false;
 
         if (!fromRow.getData().unit) return false;
-        console.log(this.table.getRows());
         const found = this.table.getRows().find((row) => row.getData().id === fromRow.getData().id);
 
         if (!found) {
@@ -80,9 +79,7 @@ export class EquipementDetailTableComponent implements OnChanges, AfterViewInit,
     }
 
     addEquipementDetail(equipementId: number, resourceId: number): void {
-        this.equipementService.addEquipementDetail(equipementId, resourceId).then((res) => {
-            console.log('add equipement detail', res);
-        });
+        this.equipementService.addEquipementDetail(equipementId, resourceId).then((res) => {});
     }
 
     private drawTable(): void {

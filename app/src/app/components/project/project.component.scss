@@ -1,8 +1,19 @@
 .project-main {
-    margin-left: 50px;
-    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+.form-item {
+    margin-left: 25px;
 }
 
-.form {
-    margin: 35px;
+.list-item {
+    margin-left: 25px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.list-item > div {
+    margin: 15px;
 }

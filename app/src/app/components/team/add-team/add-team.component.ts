@@ -6,6 +6,10 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import Tabulator from 'tabulator-tables';
 import { TeamService } from './../../../service/team/team.service';
 
+export interface Data {
+    id: number;
+    name: string;
+}
 @Component({
     selector: 'app-add-team',
     templateUrl: './add-team.component.html',
@@ -42,7 +46,6 @@ export class AddTeamComponent implements OnInit {
 
     getAllTree(): void {
         this.resourceService.getAllTree().then((res) => {
-            console.log('resss tree', res);
             this.data = res;
         });
     }
@@ -60,9 +63,7 @@ export class AddTeamComponent implements OnInit {
         if (this.selected.length) {
             sum = this.computeTotalPrice();
         }
-        console.log(sum);
         const result = await this.resourceService.addResource({ ...this.teamForm.value, unit_price: sum }, this.parentId, 'T');
-        console.log('returned result', result);
         if (result.status === 'error') {
             this.message.error(result.message);
             return;
@@ -70,7 +71,6 @@ export class AddTeamComponent implements OnInit {
 
         if (result.status === 'success' && this.selected.length) {
             this.selected.forEach(async (row) => {
-                console.log('adding ', row.getData());
                 await this.teamService.addTeamResource(result.resource.id, row.getData().id);
             });
         }

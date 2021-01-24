@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { ProjectOutline, TeamOutline, UnorderedListOutline, TableOutline } from '@ant-design/icons-angular/icons';
+import { ProjectOutline, TeamOutline, UnorderedListOutline, TableOutline, DeleteTwoTone } from '@ant-design/icons-angular/icons';
 import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
 
-const icons = [ProjectOutline, TeamOutline, UnorderedListOutline, TableOutline];
+const icons = [ProjectOutline, TeamOutline, UnorderedListOutline, TableOutline, DeleteTwoTone];
 
 @NgModule({
     imports: [NzIconModule],

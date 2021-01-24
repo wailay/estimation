@@ -1,34 +1,56 @@
-<div style="height: 100%; border: 1px solid red">
-    <p>test project</p>
-</div>
-<div id="table-one"></div>
-<div id="table-two"></div>
-
-<!-- <app-alert [open]="alertOpen" [message]="alertMessage"></app-alert>
 <div class="project-main">
-    <form class="form" [formGroup]="projectForm" (ngSubmit)="onProjectSubmit()">
-        <label>
-            Nom du projet:
-            <input type="text" formControlName="name" />
-        </label>
-
-        <label>
-            Client:
-            <input type="text" formControlName="client" />
-        </label>
-
-        <label>
-            Date:
-            <input type="date" formControlName="date" />
-        </label>
-        <button type="submit" [disabled]="!projectForm.valid">Ajouter un projet</button>
-    </form>
-
-    <div class="container">
-        <ul class="projects">
-            <li *ngFor="let project of projects" (click)="onSelect(project)">
-                Name <span>{{ project.name }}</span> Client : {{ project.client }} Date : <span>{{ project.date }}</span>
-            </li>
-        </ul>
+    <nz-divider nzText="Ajouter un projet" nzOrientation="left"></nz-divider>
+    <div class="form-item">
+        <form nz-form [nzLayout]="'inline'" [formGroup]="projectForm" (ngSubmit)="addProject()">
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Nom du projet">
+                    <input formControlName="name" nz-input placeholder="Nom" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Nom du client">
+                    <input formControlName="client" nz-input placeholder="Client" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Date">
+                    <nz-date-picker formControlName="date"></nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control>
+                    <button nz-button nzType="primary" [disabled]="!projectForm.valid">OK</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
     </div>
-</div> -->
+    <nz-divider nzText="Selectionner un projet" nzOrientation="left"></nz-divider>
+    <div>
+        <nz-radio-group class="list-item" [(ngModel)]="projectId" (ngModelChange)="selectionChange()">
+            <div *ngFor="let project of projects">
+                <ng-template #check>
+                    <label nz-radio [nzValue]="project.id">Selectionner</label>
+                </ng-template>
+                <ng-template #delete>
+                    <i
+                        nz-icon
+                        [nzTheme]="'twotone'"
+                        [nzTwotoneColor]="'#d40606'"
+                        nzType="delete"
+                        nzTheme="outline"
+                        nz-popconfirm
+                        nzPopconfirmTitle="Voulez vous vraiment supprimer?"
+                        nzPopconfirmPlacement="bottom"
+                        (nzOnConfirm)="deleteProject(project.id)"
+                    ></i>
+                </ng-template>
+                <nz-card [nzHoverable]="'true'" style="width: 250px" [nzTitle]="project.name" [nzExtra]="check" [nzActions]="[delete]">
+                    <b>Client :</b>
+                    <p>{{ project.client }}</p>
+                    <b>Date : </b>
+                    <p>{{ project.date | date }}</p>
+                </nz-card>
+            </div>
+        </nz-radio-group>
+    </div>
+</div>
