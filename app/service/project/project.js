@@ -24,7 +24,7 @@ class ProjectService {
     }
 
     getProject() {
-        ipcMain.handle('get-project', async (event) => {
+        ipcMain.handle('get-project', async () => {
             try {
                 const projects = await Project.findAll();
                 return { status: 'success', message: '', projects: JSON.parse(JSON.stringify(projects)) };

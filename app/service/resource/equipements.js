@@ -28,7 +28,7 @@ class EquipementService {
     editDetailQuantity() {
         ipcMain.handle('edit-detail-quantity', async (event, id, quantity) => {
             try {
-                const instance = await EquipementDetail.update({ unit_quantity: quantity }, { where: { id: id } });
+                await EquipementDetail.update({ unit_quantity: quantity }, { where: { id: id } });
 
                 return { status: 'success', message: 'Quantite modifie !' };
             } catch (err) {

@@ -1,6 +1,5 @@
 const { ipcMain } = require('electron');
 const { Op } = require('sequelize');
-const { isNumeric } = require('tslint');
 const { Bordereau, BordereauResource } = require('../../store/models/bordereau/bordereau');
 const Resource = require('../../store/models/resources/resource-model');
 class BordereauService {
@@ -109,7 +108,7 @@ class BordereauService {
     }
 
     delete() {
-        ipcMain.handle('delete-bordereau', async (event, id, resourceId) => {
+        ipcMain.handle('delete-bordereau', async (event, id) => {
             try {
                 await Bordereau.destroy({ where: { [Op.or]: [{ id: id }, { BordereauId: id }] } });
                 await BordereauResource.destroy({ where: { BordereauId: id } });

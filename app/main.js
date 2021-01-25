@@ -8,10 +8,7 @@ const TeamService = require('./service/resource/team');
 const { syncDb } = require('./store/db');
 const url = require('url');
 let win;
-const args = process.argv.slice(1);
-const serve = args.some((val) => val === '--serve');
-// const serve = true;
-args, 'serve', serve;
+
 async function createWindow() {
     nativeTheme.themeSource = 'light';
 
@@ -23,10 +20,9 @@ async function createWindow() {
         },
     });
 
-    if (serve) {
+    if (process.env.NODE_ENV === 'development') {
         win.webContents.openDevTools();
 
-        ('syncing db');
         await syncDb();
         win.loadURL('http://localhost:4200');
     } else {

@@ -1,13 +1,17 @@
 {
     "name": "app",
     "version": "0.0.0",
+    "author": "noone",
+    "description": "estim",
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
         "build": "ng build",
         "test": "ng test",
         "lint": "ng lint",
-        "e2e": "ng e2e"
+        "e2e": "ng e2e",
+        "build:electron": "electron-builder build",
+        "postinstall": "install-app-deps"
     },
     "main": "main.js",
     "private": true,
@@ -21,7 +25,6 @@
         "@angular/platform-browser-dynamic": "~11.0.5",
         "@angular/router": "~11.0.5",
         "@types/tabulator-tables": "^4.9.0",
-        "electron": "^11.1.1",
         "ng-zorro-antd": "^11.0.1",
         "rxjs": "~6.6.0",
         "sequelize": "^6.3.5",
@@ -39,6 +42,9 @@
         "@types/node": "^12.11.1",
         "codelyzer": "^6.0.0",
         "csvtojson": "^2.0.10",
+        "electron": "^11.2.1",
+        "electron-builder": "^22.9.1",
+        "eslint": "^7.18.0",
         "jasmine-core": "~3.6.0",
         "jasmine-spec-reporter": "~5.0.0",
         "karma": "~5.1.0",
@@ -50,5 +56,35 @@
         "ts-node": "~8.3.0",
         "tslint": "~6.1.0",
         "typescript": "~4.0.2"
+    },
+    "build": {
+        "appId": "estim.com",
+        "directories": {
+            "output": "release/"
+        },
+        "extends": null,
+        "files": [
+            "main.js",
+            "./dist/**/*",
+            "node_modules/",
+            "package.json",
+            "./service",
+            "./store"
+        ],
+        "win": {
+            "target": [
+                "portable"
+            ]
+        },
+        "mac": {
+            "target": [
+                "dmg"
+            ]
+        },
+        "linux": {
+            "target": [
+                "AppImage"
+            ]
+        }
     }
 }
