@@ -16,6 +16,7 @@ class ProjectService {
             try {
                 const created = await Project.create(project);
                 if (!created) return { status: 'error', message: 'Erreur' };
+
                 return { status: 'success', message: `Projet ${project.name} ajouté !` };
             } catch (err) {
                 return this.errorStatus(err);

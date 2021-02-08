@@ -181,19 +181,4 @@ export class ResourceTableComponent implements OnChanges {
     edit(id, field, value): void {
         this.resourceService.edit(id, field, value).then((res) => {});
     }
-
-    add(): void {
-        const csvFilePath = '';
-        const csv = require('csvtojson');
-        csv()
-            .fromFile(csvFilePath)
-            .then((jsonObj) => {
-                /**
-                 * [
-                 * 	{a:"1", b:"2", c:"3"},
-                 * 	{a:"4", b:"5". c:"6"}
-                 * ]
-                 */
-            });
-    }
 }

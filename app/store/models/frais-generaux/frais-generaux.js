@@ -13,6 +13,7 @@ FraisGeneraux.init(
         },
         description: {
             type: DataTypes.STRING,
+            unique: true,
             defaultValue: '',
         },
         quantity: {
@@ -35,4 +36,4 @@ FraisGeneraux.init(
     { sequelize, modelName: 'FraisGeneraux', timestamps: false, freezeTableName: true },
 );
 
-module.exports = { FraisGeneraux };
+module.exports = FraisGeneraux;

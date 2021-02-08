@@ -1,3 +1,24 @@
-<button nz-button nzType="primary" (click)="this.openItemForm(null)">Ajouter un item</button>
-<nz-divider></nz-divider>
-<div id="bordereau-table"></div>
+<div class="bord-cont">
+    <div style="margin: 10px">
+        <button nz-button nzType="primary" (click)="downloadExcel()" style="margin-right: 10px">Excel</button>
+        <button nz-button nzType="primary" (click)="downloadPDF()" style="margin-right: 10px">PDF</button>
+        <button nz-button nzType="primary" (click)="this.openItemForm(null)">Ajouter un item</button>
+    </div>
+    <nz-divider></nz-divider>
+
+    <form style="margin: 0 0 10px 10px" nz-form [nzLayout]="'inline'">
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="profit">Profit</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <input #profitInput nz-input type="number" placeholder="Profit en %" id="profit" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control>
+                <button nz-button nzType="primary" (click)="setProfit(profitInput.value)">OK</button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+
+    <div id="bordereau-table"></div>
+</div>

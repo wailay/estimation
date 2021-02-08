@@ -20,6 +20,7 @@ Bordereau.init(
         },
         description: {
             type: DataTypes.STRING,
+            defaultValue: '',
         },
         quantity: {
             type: DataTypes.INTEGER,

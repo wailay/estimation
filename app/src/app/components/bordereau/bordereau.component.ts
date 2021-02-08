@@ -1,7 +1,10 @@
-import { Bordereau } from './../../interfaces/models';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import Tabulator from 'tabulator-tables';
+import { Bordereau } from './../../interfaces/models';
 import { BordereauService } from './../../service/bordereau/bordereau.service';
+import { ProjectService } from './../../service/project/project.service';
 
 @Component({
     selector: 'app-bordereau',
@@ -11,10 +14,15 @@ import { BordereauService } from './../../service/bordereau/bordereau.service';
 export class BordereauComponent implements OnInit {
     selected: Tabulator.RowComponent;
     data: Bordereau[] = [];
-    constructor(public bordereauService: BordereauService) {
-        this.bordereauService.getAll().then((data: Bordereau[]) => {
-            this.data = data;
-        });
+    constructor(public bordereauService: BordereauService, public projet: ProjectService, public message: NzMessageService, public route: Router) {
+        if (!projet.currentProjectId) {
+            message.error('Veuillez selectionner un projet');
+            this.route.navigate(['/project']);
+        } else {
+            this.bordereauService.getWithoutRes().then((data: Bordereau[]) => {
+                this.data = data;
+            });
+        }
     }
 
     selectedChange(row: Tabulator.RowComponent): void {

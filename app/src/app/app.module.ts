@@ -62,6 +62,9 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { FgComponent } from './components/resource/fg/fg.component';
+import { FgTableComponent } from './components/resource/fg/fg-table/fg-table.component';
+import { FgDialogComponent } from './components/resource/dialogs/fg-dialog/fg-dialog.component';
 
 registerLocaleData(en);
 
@@ -99,6 +102,9 @@ registerLocaleData(en);
         BordereauResourceTableComponent,
         LookupComponent,
         ResourceTableComponent,
+        FgComponent,
+        FgTableComponent,
+        FgDialogComponent,
     ],
     imports: [
         BrowserModule,

@@ -5,6 +5,7 @@ const BordereauService = require('./service/resource/bordereau');
 const EquipementService = require('./service/resource/equipements');
 const ResourceService = require('./service/resource/resource');
 const TeamService = require('./service/resource/team');
+const FGService = require('./service/resource/fg');
 const { syncDb } = require('./store/db');
 const url = require('url');
 let win;
@@ -17,6 +18,7 @@ async function createWindow() {
         height: 1200,
         webPreferences: {
             nodeIntegration: true,
+            preload: path.join(__dirname, 'preload.js'),
         },
     });
 
@@ -71,6 +73,9 @@ try {
 
     const bord = new BordereauService();
     bord.handle();
+
+    const fg = new FGService();
+    fg.handle();
 } catch (e) {
     console.log('ERROR', e);
     // Catch Error

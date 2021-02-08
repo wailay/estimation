@@ -10,6 +10,7 @@
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
+        "start:electron": "cross-env NODE_ENV=development electron .",
         "build:electron": "electron-builder build",
         "postinstall": "install-app-deps"
     },
@@ -25,6 +26,8 @@
         "@angular/platform-browser-dynamic": "~11.0.5",
         "@angular/router": "~11.0.5",
         "@types/tabulator-tables": "^4.9.0",
+        "jspdf": "^2.3.0",
+        "jspdf-autotable": "^3.5.13",
         "ng-zorro-antd": "^11.0.1",
         "rxjs": "~6.6.0",
         "sequelize": "^6.3.5",
@@ -41,6 +44,7 @@
         "@types/jasmine": "~3.6.0",
         "@types/node": "^12.11.1",
         "codelyzer": "^6.0.0",
+        "cross-env": "^7.0.3",
         "csvtojson": "^2.0.10",
         "electron": "^11.2.1",
         "electron-builder": "^22.9.1",
@@ -71,6 +75,7 @@
             "./service",
             "./store"
         ],
+        "extraResources": "./store/estimation.sqlite",
         "win": {
             "target": [
                 "portable"

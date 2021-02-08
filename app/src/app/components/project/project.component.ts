@@ -1,7 +1,6 @@
-import { NzMessageService } from 'ng-zorro-antd/message';
-import Tabulator from 'tabulator-tables';
-import { Component, OnChanges, SimpleChanges, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { IProject } from './../../interfaces/models';
 import { ProjectService } from './../../service/project/project.service';
 

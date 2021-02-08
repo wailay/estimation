@@ -9,6 +9,7 @@ import { AddTeamComponent } from './components/team/add-team/add-team.component'
 import { TeamComponent } from './components/team/team.component';
 
 const routes: Routes = [
+    { path: '', redirectTo: '/project', pathMatch: 'full' },
     { path: 'project', component: ProjectComponent },
     { path: 'resource', component: ResourceComponent },
     { path: 'team', component: TeamComponent },

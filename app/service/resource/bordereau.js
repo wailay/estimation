@@ -14,6 +14,37 @@ class BordereauService {
         this.affect();
         this.deleteResource();
         this.recompute();
+        this.getAllWithoutRes();
+        this.getTotalPrice();
+    }
+
+    getAllWithoutRes() {
+        ipcMain.handle('get-all-b-without-res', async (e, projectId) => {
+            try {
+                const bordereaux = await Bordereau.findAll({ where: { ProjectId: projectId } });
+
+                let hmap = {};
+
+                bordereaux.forEach((bord) => {
+                    hmap[bord.id] = bord.toJSON();
+                    hmap[bord.id].children = [];
+                });
+
+                let result = [];
+
+                bordereaux.forEach((bord) => {
+                    if (bord.BordereauId) {
+                        hmap[bord.BordereauId].children.push(hmap[bord.id]);
+                    } else {
+                        result.push(hmap[bord.id]);
+                    }
+                });
+
+                return result;
+            } catch (err) {
+                return this.errorStatus(err);
+            }
+        });
     }
 
     getAll() {
@@ -195,6 +226,18 @@ class BordereauService {
                 await bord.set('b_unit_price', b_unit_price).save();
 
                 return { status: 'sucess', message: 'Recompute reussi !', bordereau: bord.toJSON() };
+            } catch (err) {
+                return this.errorStatus(err);
+            }
+        });
+    }
+
+    getTotalPrice() {
+        ipcMain.handle('bordereau-total-price', async () => {
+            try {
+                const totalPrice = await Bordereau.sum('total_price');
+
+                return totalPrice;
             } catch (err) {
                 return this.errorStatus(err);
             }
