@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BordereauService } from './../bordereau/bordereau.service';
 import { ElectronService } from './../electron/electron.service';
+import { ProjectService } from './../project/project.service';
 
 @Injectable({
     providedIn: 'root',
@@ -8,14 +9,14 @@ import { ElectronService } from './../electron/electron.service';
 export class FgService {
     totalPrice: number;
     profit: number;
-    constructor(private electron: ElectronService, private bord: BordereauService) {
+    constructor(private electron: ElectronService, private bord: BordereauService, private projet: ProjectService) {
         this.totalPrice = 0;
         this.profit = 0;
         this.getTotal();
     }
 
     getAll(): Promise<any> {
-        return this.electron.ipcRenderer.invoke('get-all-fg');
+        return this.electron.ipcRenderer.invoke('get-all-fg', this.projet.currentProjectId);
     }
 
     async getTotal(): Promise<any> {
@@ -29,7 +30,7 @@ export class FgService {
     }
 
     edit(id: number, field: string, value: any): Promise<any> {
-        return this.electron.ipcRenderer.invoke('edit-fg', id, field, value);
+        return this.electron.ipcRenderer.invoke('edit-fg', id, field, value, this.projet.currentProjectId);
     }
 
     delete(id: number): Promise<any> {
@@ -37,6 +38,7 @@ export class FgService {
     }
 
     get percent(): number {
+        if (!this.bord.totalPrice) return 0;
         return parseFloat(((this.totalPrice / this.bord.totalPrice) * 100).toFixed(2));
     }
 }

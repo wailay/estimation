@@ -17,12 +17,22 @@ export class ResourceTableComponent implements OnChanges {
 
     table: Tabulator;
     @Input() data: any[] = [];
+    parentResourceId: number = undefined;
 
     rowMenu = [
         {
             label: 'Ajouter une ressource',
             action: (e, row) => {
                 this.openResourceForm(row);
+            },
+            disabled: (comp) => {
+                return comp.getData().unit;
+            },
+        },
+        {
+            label: 'Ajouter CSV',
+            action: (e, row) => {
+                this.handleUpload(row, row.getData().id);
             },
             disabled: (comp) => {
                 return comp.getData().unit;
@@ -53,20 +63,21 @@ export class ResourceTableComponent implements OnChanges {
     ];
 
     protected columns: Tabulator.ColumnDefinition[] = [
-        { title: 'Code', field: 'code', headerMenu: this.headerMenu, editor: 'input', editable: false },
-        { title: 'Description', field: 'description', editor: 'input', editable: false },
-        { title: 'Unite', field: 'unit', editor: 'input', editable: false },
+        { title: 'Code', field: 'code', headerMenu: this.headerMenu, editor: 'input' },
+        { title: 'Description', field: 'description', editor: 'input' },
+        { title: 'Unite', field: 'unit', editor: 'input' },
         {
             title: 'Prix Unitaire',
             field: 'unit_price',
             editor: 'number',
-            editable: false,
             formatter: 'money',
             formatterParams: { symbol: '$' },
         },
-        { title: 'Production', field: 'production', editor: 'number', editable: false },
-        { title: 'Unite de Production', field: 'unit_production', editor: 'input', editable: false },
+        { title: 'Production', field: 'production', editor: 'number' },
+        { title: 'Unite de Production', field: 'unit_production', editor: 'input' },
     ];
+
+    addButton: string;
     constructor(
         protected resourceService: ResourceService,
         protected modal: NzModalService,
@@ -145,19 +156,7 @@ export class ResourceTableComponent implements OnChanges {
 
         modal.afterClose.subscribe((resource) => {
             if (!resource) return;
-            this.resourceService.addResource(resource, parentId, this.type).then((res) => {
-                if (res.status === 'error') {
-                    this.message.error(res.message);
-                    return;
-                }
-                if (parentId) {
-                    row.getData().children.push(res.resource);
-                } else {
-                    this.table.addData({ ...res.resource });
-                }
-                this.table.redraw();
-                this.message.success(res.message);
-            });
+            this.addResource(resource, parentId, row);
         });
     }
 
@@ -181,4 +180,25 @@ export class ResourceTableComponent implements OnChanges {
     edit(id, field, value): void {
         this.resourceService.edit(id, field, value).then((res) => {});
     }
+
+    async addResource(resource: any, parentId: number, row: any): Promise<void> {
+        const res = await this.resourceService.addResource(resource, parentId, this.type);
+        this.updateData(res, parentId, row);
+    }
+
+    updateData(res: any, parentId: number, row: any): void {
+        if (res.status === 'error') {
+            this.message.error(res.message);
+            return;
+        }
+        if (parentId) {
+            row.getData().children.push(res.resource);
+        } else {
+            this.table.addData({ ...res.resource });
+        }
+        this.table.redraw();
+        this.message.success(res.message);
+    }
+
+    async handleUpload(row: Tabulator.RowComponent, id: number): Promise<void> {}
 }

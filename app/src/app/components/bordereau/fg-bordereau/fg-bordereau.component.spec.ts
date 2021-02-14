@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FgComponent } from './fg.component';
+import { FgBordereauComponent } from './fg-bordereau.component';
 
 describe('FgComponent', () => {
-    let component: FgComponent;
-    let fixture: ComponentFixture<FgComponent>;
+    let component: FgBordereauComponent;
+    let fixture: ComponentFixture<FgBordereauComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [FgComponent],
+            declarations: [FgBordereauComponent],
         }).compileComponents();
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(FgComponent);
+        fixture = TestBed.createComponent(FgBordereauComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

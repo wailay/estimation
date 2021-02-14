@@ -17,7 +17,7 @@ export class ProjectComponent implements OnInit {
     });
     projects: IProject[];
     date = null;
-    projectId = 1;
+    projectId = undefined;
 
     constructor(private fb: FormBuilder, public projectService: ProjectService, private message: NzMessageService) {
         this.projects = [];
@@ -45,6 +45,7 @@ export class ProjectComponent implements OnInit {
     }
 
     selectionChange(): void {
+        console.log('selection change');
         this.projectService.currentProjectId = this.projectId;
     }
 

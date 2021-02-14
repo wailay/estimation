@@ -13,6 +13,7 @@ import { ResourceTableComponent } from './../../resource-table/resource-table.co
 export class VracTableComponent extends ResourceTableComponent {
     type = 'V';
     tableId = 'vrac-table';
+    addButton = 'Vrac';
 
     constructor(
         protected resourceService: ResourceService,

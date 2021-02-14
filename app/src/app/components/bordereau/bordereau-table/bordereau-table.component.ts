@@ -63,8 +63,8 @@ export class BordereauTableComponent implements OnChanges {
             editable: false,
             formatter: this.textFormatter,
         },
-        { title: 'Quantite Bordereau', field: 'quantity', editor: 'input' },
-        { title: 'Unite Bordereau', field: 'unit', editor: 'input' },
+        { title: 'Quantite Bordereau', field: 'quantity', editor: 'input', editable: false },
+        { title: 'Unite Bordereau', field: 'unit', editor: 'input', editable: false },
         { title: 'Prix Unitaire', field: 'b_unit_price', formatter: 'money', formatterParams: { symbol: '$' } },
         { title: 'Montant Final', field: 'total_price', formatter: 'money', formatterParams: { symbol: '$' }, bottomCalc: 'sum' },
         {
@@ -132,7 +132,7 @@ export class BordereauTableComponent implements OnChanges {
     }
 
     private fgFormatter(c, p, o): string {
-        return c.getValue() + ` (${this.fgService.percent} %)`;
+        return c.getValue() + ` (${this.fgService.percent.toFixed(2)} %)`;
     }
 
     private profitFormatter(c, p, o): string {
@@ -141,27 +141,31 @@ export class BordereauTableComponent implements OnChanges {
 
     private fgMutator(val, data): number | undefined {
         if (!data.b_unit_price) return undefined;
-        return (this.fgService.percent / 100) * data.b_unit_price;
+        return this.decimalPrecision((this.fgService.percent / 100) * data.b_unit_price);
     }
     private pufgMutator(val, data): number | undefined {
         if (!data.b_unit_price) return undefined;
-        return data.b_unit_price + data.fg;
+        return this.decimalPrecision(data.b_unit_price + data.fg);
     }
     private profitMutator(val, data): number | undefined {
         if (!data.b_unit_price) return undefined;
-        return data.pufg * (this.fgService.profit / 100);
+        return this.decimalPrecision(data.pufg * (this.fgService.profit / 100));
     }
     private puprofitMutator(val, data): number | undefined {
         if (!data.b_unit_price) return undefined;
-        return data.pufg * data.profit;
+        return this.decimalPrecision(data.pufg + data.profit);
     }
     private vendantMutator(val, data): number | undefined {
         if (!data.b_unit_price) return undefined;
-        return data.puprofit * data.quantity;
+        return this.decimalPrecision(data.puprofit * data.quantity);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         this.drawTable();
+    }
+
+    decimalPrecision(value: number, prec = 2): number {
+        return parseFloat(value.toFixed(prec));
     }
 
     private drawTable(): void {
@@ -180,15 +184,18 @@ export class BordereauTableComponent implements OnChanges {
             selectableRollingSelection: true,
             selectableRangeMode: 'click',
             placeholder: 'Bordereau vide',
+
             cellDblClick: (e, cell) => {
-                cell.edit(true);
+                if (cell.getValue().length > 0 || typeof cell.getValue() === 'number') {
+                    cell.edit(true);
+                }
             },
             cellEdited: (cell) => {
                 const id = (cell.getData() as any).id;
                 const field = cell.getColumn().getField();
                 const value = cell.getValue();
 
-                this.edit(id, field, value);
+                this.edit(id, field, value, cell.getRow());
             },
             rowClick: (e: MouseEvent, row) => {
                 if (e.shiftKey) {
@@ -252,8 +259,15 @@ export class BordereauTableComponent implements OnChanges {
         this.dialogService.openConfirm(this.deleteType.bind(this), row);
     }
 
-    edit(id, field, value): void {
-        this.bordereauService.edit(id, field, value).then((res) => {});
+    async edit(id, field, value, row: Tabulator.RowComponent): Promise<void> {
+        const res = await this.bordereauService.edit(id, field, value);
+        if (res.status === 'error') {
+            console.log(res);
+            return;
+        }
+
+        row.update(res.bordereau);
+        this.updateHack();
     }
 
     deleteType(row): void {
@@ -274,7 +288,13 @@ export class BordereauTableComponent implements OnChanges {
     }
 
     downloadPDF(): void {
-        this.table.download('pdf', `bordereau${new Date().toLocaleDateString('en-US')}.pdf`);
+        this.table.download('pdf', `bordereau${new Date().toLocaleDateString('en-US')}.pdf`, { autoTable: { theme: 'grid' } });
+    }
+
+    // slow
+    updateHack(): void {
+        this.table.setColumns(this.columns);
+        this.table.setData(this.table.getData());
     }
 
     setProfit(profit: number): void {
@@ -282,7 +302,6 @@ export class BordereauTableComponent implements OnChanges {
         this.fgService.profit = profit;
 
         // hack
-        this.table.setColumns(this.columns);
-        this.table.setData(this.table.getData());
+        this.updateHack();
     }
 }

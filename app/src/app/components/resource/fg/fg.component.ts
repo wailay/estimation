@@ -1,28 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FgService } from '@app/service/fg/fg.service';
-import Tabulator from 'tabulator-tables';
+import { Component } from '@angular/core';
+import { ResourceService } from '@app/service/resource/resource.service';
+import { ResourceComponent } from '../resource.component';
 
 @Component({
     selector: 'app-fg',
     templateUrl: './fg.component.html',
     styleUrls: ['./fg.component.scss'],
 })
-export class FgComponent implements OnInit {
-    type = '';
-    data: any[];
-    selected: Tabulator.RowComponent;
+export class FgComponent extends ResourceComponent {
+    type = 'FG';
 
-    constructor(protected fgService: FgService) {
-        this.data = [];
-    }
-
-    ngOnInit(): void {
-        this.getAll();
-    }
-
-    getAll(): void {
-        this.fgService.getAll().then((data) => {
-            this.data = data;
-        });
+    constructor(protected resourceService: ResourceService) {
+        super(resourceService);
+        this.getAll(this.type);
     }
 }

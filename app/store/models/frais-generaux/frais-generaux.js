@@ -11,24 +11,11 @@ FraisGeneraux.init(
             primaryKey: true,
             autoIncrement: true,
         },
-        description: {
-            type: DataTypes.STRING,
-            unique: true,
+        total_price: {
+            type: DataTypes.INTEGER,
             defaultValue: '',
         },
         quantity: {
-            type: DataTypes.INTEGER,
-            defaultValue: '',
-        },
-        unit: {
-            type: DataTypes.STRING,
-            defaultValue: '',
-        },
-        unit_price: {
-            type: DataTypes.INTEGER,
-            defaultValue: '',
-        },
-        total_price: {
             type: DataTypes.INTEGER,
             defaultValue: '',
         },

@@ -1,6 +1,6 @@
 {
-    "name": "app",
-    "version": "0.0.0",
+    "name": "estimation",
+    "version": "0.0.1",
     "author": "noone",
     "description": "estim",
     "scripts": {
@@ -11,7 +11,7 @@
         "lint": "ng lint",
         "e2e": "ng e2e",
         "start:electron": "cross-env NODE_ENV=development electron .",
-        "build:electron": "electron-builder build",
+        "build:electron": "ng build && electron-builder build",
         "postinstall": "install-app-deps"
     },
     "main": "main.js",
@@ -28,6 +28,7 @@
         "@types/tabulator-tables": "^4.9.0",
         "jspdf": "^2.3.0",
         "jspdf-autotable": "^3.5.13",
+        "neat-csv": "^6.0.1",
         "ng-zorro-antd": "^11.0.1",
         "rxjs": "~6.6.0",
         "sequelize": "^6.3.5",
@@ -71,6 +72,7 @@
             "main.js",
             "./dist/**/*",
             "node_modules/",
+            "preload.js",
             "package.json",
             "./service",
             "./store"
@@ -78,7 +80,12 @@
         "extraResources": "./store/estimation.sqlite",
         "win": {
             "target": [
-                "portable"
+                {
+                    "target": "nsis"
+                },
+                {
+                    "target": "portable"
+                }
             ]
         },
         "mac": {

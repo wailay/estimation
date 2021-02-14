@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BordereauResourceComponent } from './components/bordereau-resource/bordereau-resource.component';
 import { BordereauComponent } from './components/bordereau/bordereau.component';
+import { FgBordereauComponent } from './components/bordereau/fg-bordereau/fg-bordereau.component';
 import { LookupComponent } from './components/lookup/lookup.component';
 import { ProjectComponent } from './components/project/project.component';
 import { ResourceComponent } from './components/resource/resource.component';
@@ -16,6 +17,7 @@ const routes: Routes = [
     { path: 'team-add', component: AddTeamComponent },
     { path: 'bordereau', component: BordereauComponent },
     { path: 'bordereau-ressource', component: BordereauResourceComponent },
+    { path: 'fg-bordereau', component: FgBordereauComponent },
     { path: 'affectation', component: LookupComponent },
 ];
 
