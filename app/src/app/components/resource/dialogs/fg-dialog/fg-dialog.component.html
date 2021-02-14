@@ -1,0 +1,35 @@
+<form nz-form [formGroup]="fgForm">
+    <nz-form-item>
+        <nz-form-control>
+            <nz-input-group>
+                <input formControlName="description" nz-input type="text" placeholder="Description" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control>
+            <nz-input-group>
+                <input formControlName="quantity" nz-input type="number" placeholder="Quantite" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control>
+            <nz-input-group>
+                <input formControlName="unit" nz-input type="text" placeholder="Unité" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control>
+            <nz-input-group>
+                <input formControlName="unit_price" nz-input type="number" placeholder="Prix Unitaire" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+</form>
+
+<div *nzModalFooter>
+    <button [disabled]="!fgForm.valid" nz-button nzType="primary" (click)="addFG()">OK</button>
+    <button nz-button nzType="default" (click)="cancel()">Annuler</button>
+</div>

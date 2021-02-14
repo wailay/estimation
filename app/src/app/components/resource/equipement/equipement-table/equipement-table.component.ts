@@ -13,6 +13,7 @@ import { ResourceTableComponent } from './../../resource-table/resource-table.co
 export class EquipementTableComponent extends ResourceTableComponent {
     type = 'E';
     tableId = 'equipement-table';
+    addButton = 'Equipement';
 
     constructor(
         protected resourceService: ResourceService,

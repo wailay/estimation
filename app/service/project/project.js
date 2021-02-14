@@ -16,6 +16,7 @@ class ProjectService {
             try {
                 const created = await Project.create(project);
                 if (!created) return { status: 'error', message: 'Erreur' };
+
                 return { status: 'success', message: `Projet ${project.name} ajouté !` };
             } catch (err) {
                 return this.errorStatus(err);
@@ -24,7 +25,7 @@ class ProjectService {
     }
 
     getProject() {
-        ipcMain.handle('get-project', async (event) => {
+        ipcMain.handle('get-project', async () => {
             try {
                 const projects = await Project.findAll();
                 return { status: 'success', message: '', projects: JSON.parse(JSON.stringify(projects)) };

@@ -1,7 +1,6 @@
-import { NzMessageService } from 'ng-zorro-antd/message';
-import Tabulator from 'tabulator-tables';
-import { Component, OnChanges, SimpleChanges, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { IProject } from './../../interfaces/models';
 import { ProjectService } from './../../service/project/project.service';
 
@@ -18,7 +17,7 @@ export class ProjectComponent implements OnInit {
     });
     projects: IProject[];
     date = null;
-    projectId = 1;
+    projectId = undefined;
 
     constructor(private fb: FormBuilder, public projectService: ProjectService, private message: NzMessageService) {
         this.projects = [];
@@ -46,6 +45,7 @@ export class ProjectComponent implements OnInit {
     }
 
     selectionChange(): void {
+        console.log('selection change');
         this.projectService.currentProjectId = this.projectId;
     }
 

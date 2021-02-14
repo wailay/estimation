@@ -6,10 +6,8 @@ import { ElectronService } from './../electron/electron.service';
     providedIn: 'root',
 })
 export class ProjectService {
-    currentProjectId: number;
-    constructor(private electron: ElectronService) {
-        this.currentProjectId = 1;
-    }
+    currentProjectId: number = undefined;
+    constructor(private electron: ElectronService) {}
 
     add(project: IProject): Promise<Result> {
         return this.electron.ipcRenderer.invoke('add-project', project);

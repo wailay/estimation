@@ -14,6 +14,8 @@ export class ContractorTableComponent extends ResourceTableComponent {
     type = 'C';
     tableId = 'contractor-table';
 
+    addButton = 'Sous-traitant';
+
     constructor(
         protected resourceService: ResourceService,
         protected modal: NzModalService,

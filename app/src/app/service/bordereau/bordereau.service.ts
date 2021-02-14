@@ -1,16 +1,20 @@
-import { NzMessageModule, NzMessageService } from 'ng-zorro-antd/message';
-import { ProjectService } from './../project/project.service';
 import { Injectable } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { Bordereau } from './../../interfaces/models';
 import { ElectronService } from './../electron/electron.service';
+import { ProjectService } from './../project/project.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class BordereauService {
-    data: Bordereau[];
+    totalPrice = 0;
     constructor(private electron: ElectronService, private projet: ProjectService, private message: NzMessageService) {
-        this.data = [];
+        this.getTotalPrice();
+    }
+
+    getWithoutRes(): Promise<any> {
+        return this.electron.ipcRenderer.invoke('get-all-b-without-res', this.projet.currentProjectId);
     }
 
     getAll(): Promise<any> {
@@ -49,7 +53,9 @@ export class BordereauService {
         return this.electron.ipcRenderer.invoke('delete-bordereau-resource', bordId, resId);
     }
 
-    get empty(): boolean {
-        return this.data.length === 0;
+    async getTotalPrice(): Promise<void> {
+        const total = await this.electron.ipcRenderer.invoke('bordereau-total-price');
+        this.totalPrice = total;
+        return total;
     }
 }

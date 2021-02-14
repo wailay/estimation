@@ -1,8 +1,12 @@
 const { Sequelize } = require('sequelize');
 const path = require('path');
+const { app } = require('electron');
+const dbPath =
+    process.env.NODE_ENV === 'development' ? path.join(__dirname, 'estimation.sqlite') : path.join(app.getAppPath(), '../store/estimation.sqlite');
+
 const sequelize = new Sequelize('database', 'username', '', {
     dialect: 'sqlite',
-    storage: path.join(__dirname, 'estimation.sqlite'), // eslint-disable-line
+    storage: dbPath, // eslint-disable-line
     logging: false,
 });
 

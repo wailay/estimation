@@ -13,7 +13,7 @@ import { ResourceTableComponent } from './../../resource-table/resource-table.co
 export class MaterialTableComponent extends ResourceTableComponent {
     type = 'M';
     tableId = 'material-table';
-
+    addButton = 'Materieaux';
     constructor(
         protected resourceService: ResourceService,
         protected modal: NzModalService,

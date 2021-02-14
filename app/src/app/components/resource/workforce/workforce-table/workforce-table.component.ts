@@ -13,6 +13,8 @@ import { ResourceTableComponent } from './../../resource-table/resource-table.co
 export class WorkforceTableComponent extends ResourceTableComponent {
     type = 'W';
     tableId = 'workforce-table';
+    // tslint:disable-next-line: quotemark
+    addButton = "Main d'eouvre";
 
     constructor(
         protected resourceService: ResourceService,

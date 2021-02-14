@@ -1,6 +1,10 @@
 const { ipcMain } = require('electron');
 const { Op } = require('sequelize');
 const Resource = require('../../store/models/resources/resource-model');
+const fs = require('fs');
+const neatCsv = require('neat-csv');
+const { dialog } = require('electron');
+
 class ResourceService {
     constructor() {}
 
@@ -11,6 +15,7 @@ class ResourceService {
         this.addFolder();
         this.addResource();
         this.getAllTree();
+        this.readFile();
     }
 
     edit() {
@@ -123,6 +128,20 @@ class ResourceService {
                     tree.push({ code: value, children: subTree });
                 }
                 return tree;
+            } catch (err) {
+                return this.errorStatus(err);
+            }
+        });
+    }
+
+    readFile() {
+        ipcMain.handle('read-file', async () => {
+            try {
+                const file = await dialog.showOpenDialog({ properties: ['openFile'] });
+                const path = file.filePaths[0];
+                const data = fs.readFileSync(path);
+                const obj = await neatCsv(data);
+                return obj;
             } catch (err) {
                 return this.errorStatus(err);
             }

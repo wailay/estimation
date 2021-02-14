@@ -28,7 +28,7 @@ class EquipementService {
     editDetailQuantity() {
         ipcMain.handle('edit-detail-quantity', async (event, id, quantity) => {
             try {
-                const instance = await EquipementDetail.update({ unit_quantity: quantity }, { where: { id: id } });
+                await EquipementDetail.update({ unit_quantity: quantity }, { where: { id: id } });
 
                 return { status: 'success', message: 'Quantite modifie !' };
             } catch (err) {
@@ -61,25 +61,6 @@ class EquipementService {
             }
         });
     }
-
-    // edit() {
-    //     ipcMain.handle('edit-equipement', async (event, typeId, field, value) => {
-    //         try {
-    //             console.log('EDITIING', typeId, field, value);
-    //             const typeToEdit = await Equipement.findByPk(typeId);
-
-    //             if (!typeToEdit) return { status: 'error', message: 'Erreur' };
-
-    //             const saved = await typeToEdit.set(field, value).save();
-
-    //             if (!saved) return { status: 'error', message: 'Erreur' };
-
-    //             return { status: 'success', message: 'Type modifie !' };
-    //         } catch (err) {
-    //             return this.errorStatus(err);
-    //         }
-    //     });
-    // }
 
     errorStatus(err) {
         console.log(err);

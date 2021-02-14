@@ -1,8 +1,8 @@
-import { Subject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { IResource } from '@app/interfaces/models';
-import { ElectronService } from './../electron/electron.service';
+import { Observable, Subject } from 'rxjs';
 import Tabulator from 'tabulator-tables';
+import { ElectronService } from './../electron/electron.service';
 
 @Injectable({
     providedIn: 'root',
@@ -41,6 +41,10 @@ export class ResourceService {
 
     delete(id: number): Promise<any> {
         return this.electron.ipcRenderer.invoke('delete-resource', id);
+    }
+
+    readFile(): Promise<any> {
+        return this.electron.ipcRenderer.invoke('read-file');
     }
 
     getSelected(): Observable<Tabulator.RowComponent> {

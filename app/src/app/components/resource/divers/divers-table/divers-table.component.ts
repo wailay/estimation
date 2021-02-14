@@ -13,6 +13,7 @@ import { ResourceTableComponent } from './../../resource-table/resource-table.co
 export class DiversTableComponent extends ResourceTableComponent {
     type = 'D';
     tableId = 'divers-table';
+    addButton = 'Divers';
 
     constructor(
         protected resourceService: ResourceService,

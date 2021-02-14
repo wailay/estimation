@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { DialogService } from '@app/service/dialog/dialog.service';
+import { FgService } from '@app/service/fg/fg.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import Tabulator from 'tabulator-tables';
@@ -61,25 +62,62 @@ export class BordereauTableComponent implements OnChanges {
             editor: 'input',
             editable: false,
             formatter: this.textFormatter,
-            headerFilter: 'input',
-            headerFilterLiveFilter: false,
         },
-        { title: 'Quantite Bordereau', field: 'quantity', editor: 'input' },
-        { title: 'Unite Bordereau', field: 'unit', editor: 'input' },
+        { title: 'Quantite Bordereau', field: 'quantity', editor: 'input', editable: false },
+        { title: 'Unite Bordereau', field: 'unit', editor: 'input', editable: false },
         { title: 'Prix Unitaire', field: 'b_unit_price', formatter: 'money', formatterParams: { symbol: '$' } },
         { title: 'Montant Final', field: 'total_price', formatter: 'money', formatterParams: { symbol: '$' }, bottomCalc: 'sum' },
-        { title: 'Montant Final Vendant', field: 'total_price_vendant', formatter: 'money', bottomCalc: 'sum' },
+        {
+            title: 'FG',
+            field: 'fg',
+            titleFormatter: this.fgFormatter.bind(this),
+            formatter: 'money',
+            formatterParams: { symbol: '$' },
+            mutator: this.fgMutator.bind(this),
+        },
+        {
+            title: 'Prix unitaire avec FG',
+            field: 'pufg',
+            formatter: 'money',
+            formatterParams: { symbol: '$' },
+            mutator: this.pufgMutator.bind(this),
+        },
+        {
+            title: 'Profit',
+            field: 'profit',
+            titleFormatter: this.profitFormatter.bind(this),
+            formatter: 'money',
+            formatterParams: { symbol: '$' },
+            mutator: this.profitMutator.bind(this),
+        },
+        {
+            title: 'Prix Unitaire avec Profit',
+            field: 'puprofit',
+            formatter: 'money',
+            formatterParams: { symbol: '$' },
+            mutator: this.puprofitMutator.bind(this),
+        },
+        {
+            title: 'Montant Final Vendant',
+            field: 'total_price_vendant',
+            formatter: 'money',
+            bottomCalc: 'sum',
+            formatterParams: { symbol: '$' },
+            mutator: this.vendantMutator.bind(this),
+        },
     ];
     constructor(
         private bordereauService: BordereauService,
         private modal: NzModalService,
         private dialogService: DialogService,
         private message: NzMessageService,
+        private fgService: FgService,
     ) {}
 
     private boldFormatter(c, p): string {
         const value = c.getValue();
-        if (!(c.getData() as Bordereau).BordereauId) return `<span style='font-weight:bold;'>` + value + '</span>';
+        if (!(c.getData() as Bordereau).BordereauId || !(c.getData() as Bordereau).BordereauResource)
+            return `<span style='font-weight:bold;'>` + value + '</span>';
 
         return value;
     }
@@ -93,8 +131,41 @@ export class BordereauTableComponent implements OnChanges {
         return value;
     }
 
+    private fgFormatter(c, p, o): string {
+        return c.getValue() + ` (${this.fgService.percent.toFixed(2)} %)`;
+    }
+
+    private profitFormatter(c, p, o): string {
+        return c.getValue() + ` (${this.fgService.profit} %)`;
+    }
+
+    private fgMutator(val, data): number | undefined {
+        if (!data.b_unit_price) return undefined;
+        return this.decimalPrecision((this.fgService.percent / 100) * data.b_unit_price);
+    }
+    private pufgMutator(val, data): number | undefined {
+        if (!data.b_unit_price) return undefined;
+        return this.decimalPrecision(data.b_unit_price + data.fg);
+    }
+    private profitMutator(val, data): number | undefined {
+        if (!data.b_unit_price) return undefined;
+        return this.decimalPrecision(data.pufg * (this.fgService.profit / 100));
+    }
+    private puprofitMutator(val, data): number | undefined {
+        if (!data.b_unit_price) return undefined;
+        return this.decimalPrecision(data.pufg + data.profit);
+    }
+    private vendantMutator(val, data): number | undefined {
+        if (!data.b_unit_price) return undefined;
+        return this.decimalPrecision(data.puprofit * data.quantity);
+    }
+
     ngOnChanges(changes: SimpleChanges): void {
         this.drawTable();
+    }
+
+    decimalPrecision(value: number, prec = 2): number {
+        return parseFloat(value.toFixed(prec));
     }
 
     private drawTable(): void {
@@ -105,22 +176,26 @@ export class BordereauTableComponent implements OnChanges {
             columns: this.columns,
             layout: 'fitColumns',
             height: '91%',
+            headerSort: false,
             dataTree: true,
-            dataTreeStartExpanded: [true, false],
+            dataTreeStartExpanded: true,
             dataTreeChildField: 'children',
             selectable: true,
             selectableRollingSelection: true,
             selectableRangeMode: 'click',
             placeholder: 'Bordereau vide',
+
             cellDblClick: (e, cell) => {
-                cell.edit(true);
+                if (cell.getValue().length > 0 || typeof cell.getValue() === 'number') {
+                    cell.edit(true);
+                }
             },
             cellEdited: (cell) => {
                 const id = (cell.getData() as any).id;
                 const field = cell.getColumn().getField();
                 const value = cell.getValue();
 
-                this.edit(id, field, value);
+                this.edit(id, field, value, cell.getRow());
             },
             rowClick: (e: MouseEvent, row) => {
                 if (e.shiftKey) {
@@ -184,8 +259,15 @@ export class BordereauTableComponent implements OnChanges {
         this.dialogService.openConfirm(this.deleteType.bind(this), row);
     }
 
-    edit(id, field, value): void {
-        this.bordereauService.edit(id, field, value).then((res) => {});
+    async edit(id, field, value, row: Tabulator.RowComponent): Promise<void> {
+        const res = await this.bordereauService.edit(id, field, value);
+        if (res.status === 'error') {
+            console.log(res);
+            return;
+        }
+
+        row.update(res.bordereau);
+        this.updateHack();
     }
 
     deleteType(row): void {
@@ -199,5 +281,27 @@ export class BordereauTableComponent implements OnChanges {
             rows.delete();
             this.bordereauService.delete(rows.getData().id).then((res) => {});
         });
+    }
+
+    downloadExcel(): void {
+        this.table.download('xlsx', `bordereau${new Date().toLocaleDateString('en-US')}.xlsx`, { sheetName: 'Bordereau' });
+    }
+
+    downloadPDF(): void {
+        this.table.download('pdf', `bordereau${new Date().toLocaleDateString('en-US')}.pdf`, { autoTable: { theme: 'grid' } });
+    }
+
+    // slow
+    updateHack(): void {
+        this.table.setColumns(this.columns);
+        this.table.setData(this.table.getData());
+    }
+
+    setProfit(profit: number): void {
+        if (!profit) return;
+        this.fgService.profit = profit;
+
+        // hack
+        this.updateHack();
     }
 }

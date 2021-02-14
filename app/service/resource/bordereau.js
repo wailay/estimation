@@ -1,6 +1,5 @@
 const { ipcMain } = require('electron');
 const { Op } = require('sequelize');
-const { isNumeric } = require('tslint');
 const { Bordereau, BordereauResource } = require('../../store/models/bordereau/bordereau');
 const Resource = require('../../store/models/resources/resource-model');
 class BordereauService {
@@ -15,6 +14,37 @@ class BordereauService {
         this.affect();
         this.deleteResource();
         this.recompute();
+        this.getAllWithoutRes();
+        this.getTotalPrice();
+    }
+
+    getAllWithoutRes() {
+        ipcMain.handle('get-all-b-without-res', async (e, projectId) => {
+            try {
+                const bordereaux = await Bordereau.findAll({ where: { ProjectId: projectId } });
+
+                let hmap = {};
+
+                bordereaux.forEach((bord) => {
+                    hmap[bord.id] = bord.toJSON();
+                    hmap[bord.id].children = [];
+                });
+
+                let result = [];
+
+                bordereaux.forEach((bord) => {
+                    if (bord.BordereauId) {
+                        hmap[bord.BordereauId].children.push(hmap[bord.id]);
+                    } else {
+                        result.push(hmap[bord.id]);
+                    }
+                });
+
+                return result;
+            } catch (err) {
+                return this.errorStatus(err);
+            }
+        });
     }
 
     getAll() {
@@ -50,33 +80,60 @@ class BordereauService {
     edit() {
         ipcMain.handle('edit-bordereau', async (event, bordId, field, value) => {
             try {
-                const bordToEdit = await Bordereau.findByPk(bordId);
+                const bordToEdit = await Bordereau.findByPk(bordId, { include: Resource });
 
                 if (!bordToEdit) return { status: 'error', message: 'Erreur' };
-
                 const saved = await bordToEdit.set(field, value).save();
-
                 if (!saved) return { status: 'error', message: 'Erreur' };
 
-                return { status: 'success', message: 'Bordereau modifie !' };
+                let montant_final = 0;
+                if (field === 'quantity') {
+                    for (const resource of bordToEdit.Resources) {
+                        let duration = '';
+                        if (resource.type === 'T') {
+                            await resource.BordereauResource.set('quantity', value).save();
+                        } else {
+                            await resource.BordereauResource.set('quantity', Math.round(value / 8.5)).save();
+                        }
+
+                        let total_price = 0;
+
+                        if (typeof resource.BordereauResource.production === 'number') {
+                            duration = parseFloat((resource.BordereauResource.quantity / resource.BordereauResource.production).toFixed(2));
+                            await resource.BordereauResource.set('duration', duration).save();
+                            total_price = duration * resource.unit_price;
+                        } else {
+                            total_price = resource.BordereauResource.quantity * resource.unit_price;
+                        }
+
+                        await resource.BordereauResource.set('total_price', total_price).save();
+                        montant_final += total_price;
+                    }
+                    await bordToEdit.set('total_price', montant_final).save();
+                    await bordToEdit.set('b_unit_price', parseFloat((montant_final / value).toFixed(2))).save();
+                }
+
+                return { status: 'success', message: 'Bordereau modifie !', bordereau: bordToEdit.toJSON() };
             } catch (err) {
                 return this.errorStatus(err);
             }
         });
     }
 
-    editBR() {
-        ipcMain.handle('edit-bordereau-resource', async (event, bordId, resId, field, value) => {
-            try {
-                const bordToEdit = await BordereauResource.findOne({ where: { BordereauId: bordId, ResourceId: resId } });
-                const resource = await Resource.findOne({ where: { id: resId } });
+    async _editBR(bordId, resId, field, value) {
+        try {
+            const bordToEdit = await BordereauResource.findOne({ where: { BordereauId: bordId, ResourceId: resId } });
+            const resource = await Resource.findOne({ where: { id: resId } });
 
-                if (!bordToEdit) return { status: 'error', message: 'Erreur' };
+            if (!bordToEdit) return { status: 'error', message: 'Erreur' };
 
-                const saved = await bordToEdit.set(field, value).save();
+            const saved = await bordToEdit.set(field, value).save();
+            console.log(field, value);
+            let newTotal = 0;
+            console.log(field);
 
-                let newTotal = 0;
-                if (typeof value === 'number') {
+            if (field !== 'unit_production') {
+                if (typeof value === 'number' && typeof bordToEdit.production === 'number') {
                     const newDuration = Math.round(bordToEdit.quantity / bordToEdit.production);
                     await bordToEdit.set('duration', newDuration).save();
                     newTotal = newDuration * resource.unit_price;
@@ -84,12 +141,21 @@ class BordereauService {
                     newTotal = resource.unit_price * bordToEdit.quantity;
                     await bordToEdit.set('duration', '').save();
                 }
-
                 await bordToEdit.set('total_price', newTotal).save();
+            }
 
-                if (!saved) return { status: 'error', message: 'Erreur' };
+            if (!saved) return { status: 'error', message: 'Erreur' };
 
-                return { status: 'success', message: 'Bordereau Resource modifie !', bordereau: bordToEdit.toJSON() };
+            return { status: 'success', message: 'Bordereau Resource modifie !', bordereau: bordToEdit.toJSON() };
+        } catch (err) {
+            return this.errorStatus(err);
+        }
+    }
+
+    editBR() {
+        ipcMain.handle('edit-bordereau-resource', async (event, bordId, resId, field, value) => {
+            try {
+                return this._editBR(bordId, resId, field, value);
             } catch (err) {
                 return this.errorStatus(err);
             }
@@ -109,7 +175,7 @@ class BordereauService {
     }
 
     delete() {
-        ipcMain.handle('delete-bordereau', async (event, id, resourceId) => {
+        ipcMain.handle('delete-bordereau', async (event, id) => {
             try {
                 await Bordereau.destroy({ where: { [Op.or]: [{ id: id }, { BordereauId: id }] } });
                 await BordereauResource.destroy({ where: { BordereauId: id } });
@@ -153,7 +219,7 @@ class BordereauService {
                     let total_price = null;
 
                     if (typeof resource.production === 'number') {
-                        duration = quantity / resource.production;
+                        duration = parseFloat((quantity / resource.production).toFixed(2));
                         total_price = duration * resource.unit_price;
                     } else {
                         total_price = quantity * resource.unit_price;
@@ -182,6 +248,7 @@ class BordereauService {
     recompute() {
         ipcMain.handle('bordereau-recompute', async (e, bordId) => {
             try {
+                console.log('recomputing');
                 const bord = await Bordereau.findByPk(bordId, { include: Resource });
 
                 const resources = bord.Resources;
@@ -196,6 +263,18 @@ class BordereauService {
                 await bord.set('b_unit_price', b_unit_price).save();
 
                 return { status: 'sucess', message: 'Recompute reussi !', bordereau: bord.toJSON() };
+            } catch (err) {
+                return this.errorStatus(err);
+            }
+        });
+    }
+
+    getTotalPrice() {
+        ipcMain.handle('bordereau-total-price', async () => {
+            try {
+                const totalPrice = await Bordereau.sum('total_price');
+
+                return totalPrice;
             } catch (err) {
                 return this.errorStatus(err);
             }

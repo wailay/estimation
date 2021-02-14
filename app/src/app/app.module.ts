@@ -6,6 +6,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -18,10 +21,14 @@ import { NzListModule } from 'ng-zorro-antd/list';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BordereauResourceTableComponent } from './components/bordereau-resource/bordereau-resource-table/bordereau-resource-table.component';
@@ -29,10 +36,13 @@ import { BordereauResourceComponent } from './components/bordereau-resource/bord
 import { BordereauDialogComponent } from './components/bordereau/bordereau-dialog/bordereau-dialog.component';
 import { BordereauTableComponent } from './components/bordereau/bordereau-table/bordereau-table.component';
 import { BordereauComponent } from './components/bordereau/bordereau.component';
+import { FgBordereauTableComponent } from './components/bordereau/fg-bordereau/fg-bordereau-table/fg-bordereau-table.component';
+import { FgBordereauComponent } from './components/bordereau/fg-bordereau/fg-bordereau.component';
 import { LookupComponent } from './components/lookup/lookup.component';
 import { ProjectComponent } from './components/project/project.component';
 import { ContractorTableComponent } from './components/resource/contractor/contractor-table/contractor-table.component';
 import { ContractorComponent } from './components/resource/contractor/contractor.component';
+import { FgDialogComponent } from './components/resource/dialogs/fg-dialog/fg-dialog.component';
 import { ResourceDialogComponent } from './components/resource/dialogs/resource-dialog/resource-dialog.component';
 import { TypeDialogComponent } from './components/resource/dialogs/type-dialog/type-dialog.component';
 import { DiversTableComponent } from './components/resource/divers/divers-table/divers-table.component';
@@ -41,6 +51,8 @@ import { EquipementDetailTableComponent } from './components/resource/equipement
 import { EquipementDetailComponent } from './components/resource/equipement/equipement-detail/equipement-detail.component';
 import { EquipementTableComponent } from './components/resource/equipement/equipement-table/equipement-table.component';
 import { EquipementComponent } from './components/resource/equipement/equipement.component';
+import { FgTableComponent } from './components/resource/fg/fg-table/fg-table.component';
+import { FgComponent } from './components/resource/fg/fg.component';
 import { MaterialTableComponent } from './components/resource/material/material-table/material-table.component';
 import { MaterialComponent } from './components/resource/material/material.component';
 import { ResourceTableComponent } from './components/resource/resource-table/resource-table.component';
@@ -56,12 +68,6 @@ import { TeamDetailComponent } from './components/team/team-detail/team-detail.c
 import { TeamTableComponent } from './components/team/team-table/team-table.component';
 import { TeamComponent } from './components/team/team.component';
 import { IconsProviderModule } from './icons-provider.module';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { NzRadioModule } from 'ng-zorro-antd/radio';
-import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
-import { NzTableModule } from 'ng-zorro-antd/table';
 
 registerLocaleData(en);
 
@@ -99,6 +105,11 @@ registerLocaleData(en);
         BordereauResourceTableComponent,
         LookupComponent,
         ResourceTableComponent,
+        FgComponent,
+        FgTableComponent,
+        FgDialogComponent,
+        FgBordereauTableComponent,
+        FgBordereauComponent,
     ],
     imports: [
         BrowserModule,
@@ -130,6 +141,7 @@ registerLocaleData(en);
         NzRadioModule,
         NzPopconfirmModule,
         NzTableModule,
+        NzUploadModule,
     ],
     providers: [{ provide: NZ_I18N, useValue: en_US }],
     bootstrap: [AppComponent],

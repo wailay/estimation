@@ -1,8 +1,6 @@
 const { ipcMain } = require('electron');
-const { copyFileSync } = require('fs');
-const { textSpanIsEmpty } = require('typescript');
 const Resource = require('../../store/models/resources/resource-model');
-const { TeamResources, Team } = require('../../store/models/team/team');
+const { TeamResources } = require('../../store/models/team/team');
 class TeamService {
     constructor() {}
 

@@ -10,8 +10,8 @@ export class BordereauDialogComponent implements OnInit {
     form = {
         code: '',
         description: '',
-        unit: null,
-        quantity: null,
+        unit: '',
+        quantity: '',
     };
 
     constructor(private modal: NzModalRef) {}
