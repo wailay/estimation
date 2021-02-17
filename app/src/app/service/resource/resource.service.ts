@@ -35,8 +35,8 @@ export class ResourceService {
         return this.electron.ipcRenderer.invoke('set-resource-field', resourceId, field, value);
     }
 
-    edit(id: number, field: string, value: any): Promise<any> {
-        return this.electron.ipcRenderer.invoke('edit', id, field, value);
+    edit(id: number, field: string, value: any, resType: string): Promise<any> {
+        return this.electron.ipcRenderer.invoke('edit', id, field, value, resType);
     }
 
     delete(id: number): Promise<any> {

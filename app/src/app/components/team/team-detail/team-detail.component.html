@@ -1,9 +1,13 @@
 <div>
     <nz-descriptions nzTitle="Definition" nzBordered [nzSize]="'small'">
-        <nz-descriptions-item nzTitle="Code">{{ team.code }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Code">
+            <div style="display: flex">{{ team.code }}</div>
+        </nz-descriptions-item>
         <nz-descriptions-item nzTitle="Description">{{ team.description }}</nz-descriptions-item>
-        <nz-descriptions-item nzTitle="Unite">{{ team.unit }}</nz-descriptions-item>
-        <nz-descriptions-item nzTitle="Cout Unitaire">{{ totalPrice }} $</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Unite">
+            <div style="display: flex">{{ team.unit }}</div>
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Cout Unitaire"> {{ totalPrice }} $</nz-descriptions-item>
     </nz-descriptions>
     <nz-divider></nz-divider>
     <app-team-detail-table (edited)="resourceEdited()" [data]="data"></app-team-detail-table>

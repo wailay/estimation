@@ -128,9 +128,7 @@ class BordereauService {
             if (!bordToEdit) return { status: 'error', message: 'Erreur' };
 
             const saved = await bordToEdit.set(field, value).save();
-            console.log(field, value);
             let newTotal = 0;
-            console.log(field);
 
             if (field !== 'unit_production') {
                 if (typeof value === 'number' && typeof bordToEdit.production === 'number') {
@@ -233,7 +231,7 @@ class BordereauService {
                     addedRes.push({ ...resource.toJSON(), BordereauResource: newRes[0].toJSON() });
                 }
 
-                let b_unit_price = montant_final / bord.quantity;
+                let b_unit_price = parseFloat(montant_final / bord.quantity.toFixed(2));
 
                 await bord.set('total_price', montant_final).save();
                 await bord.set('b_unit_price', b_unit_price).save();
@@ -248,7 +246,6 @@ class BordereauService {
     recompute() {
         ipcMain.handle('bordereau-recompute', async (e, bordId) => {
             try {
-                console.log('recomputing');
                 const bord = await Bordereau.findByPk(bordId, { include: Resource });
 
                 const resources = bord.Resources;

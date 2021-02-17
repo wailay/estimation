@@ -88,7 +88,7 @@ export class TeamDetailTableComponent implements OnChanges {
     }
 
     edit(id, field, value): void {
-        this.resourceService.edit(id, field, value).then((res) => {
+        this.resourceService.edit(id, field, value, '').then((res) => {
             if (res.status === 'error') console.log('err', res);
 
             this.edited.emit();

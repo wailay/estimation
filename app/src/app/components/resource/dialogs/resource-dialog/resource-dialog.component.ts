@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import Tabulator from 'tabulator-tables';
@@ -13,13 +13,15 @@ export interface ResourceDialogData {
     styleUrls: ['./resource-dialog.component.scss'],
 })
 export class ResourceDialogComponent implements OnInit {
+    @Input() withProduction!: boolean;
+
     resForm = this.fb.group({
         code: ['', Validators.required],
         description: ['', Validators.required],
         unit: ['', Validators.required],
         unit_price: ['', Validators.required],
-        production: [''],
-        unit_production: [''],
+        production: [{ value: '', disabled: !this.withProduction }],
+        unit_production: [{ value: '', disabled: !this.withProduction }],
     });
 
     constructor(private modal: NzModalRef, public fb: FormBuilder) {}
@@ -29,6 +31,8 @@ export class ResourceDialogComponent implements OnInit {
         if (oldRes) {
             this.resForm.patchValue(JSON.parse(oldRes));
         }
+        this.resForm.get('production').reset({ value: '', disabled: this.withProduction });
+        this.resForm.get('unit_production').reset({ value: '', disabled: this.withProduction });
     }
 
     addResource(): void {

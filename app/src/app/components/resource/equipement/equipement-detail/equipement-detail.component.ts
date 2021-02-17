@@ -32,6 +32,6 @@ export class EquipementDetailComponent implements OnInit, DoCheck {
     fixedPriceChange(change): void {
         const value = change.checked ? true : false;
         this.selected.update({ fixed_price: value });
-        this.resourceService.edit(this.resource.id, 'fixed_price', value);
+        this.resourceService.edit(this.resource.id, 'fixed_price', value, '');
     }
 }

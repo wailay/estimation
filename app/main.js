@@ -28,6 +28,7 @@ async function createWindow() {
         await syncDb();
         win.loadURL('http://localhost:4200');
     } else {
+        win.webContents.closeDevTools();
         win.loadURL(
             url.format({
                 pathname: path.join(__dirname, `/dist/index.html`),

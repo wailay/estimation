@@ -117,7 +117,7 @@ export class ResourceTableComponent implements OnChanges {
                 const field = cell.getColumn().getField();
                 const value = cell.getValue();
 
-                this.edit(id, field, value);
+                this.edit(id, field, value, this.type);
             },
             rowClick: (e, row) => {
                 if (!row.getData().unit) return;
@@ -150,6 +150,7 @@ export class ResourceTableComponent implements OnChanges {
         const modal = this.modal.create({
             nzTitle: 'Ajouter une ressource',
             nzContent: ResourceDialogComponent,
+            nzComponentParams: { withProduction: this.type === 'FG' },
         });
 
         const parentId = row ? row.getData().id : row;
@@ -177,8 +178,8 @@ export class ResourceTableComponent implements OnChanges {
         });
     }
 
-    edit(id, field, value): void {
-        this.resourceService.edit(id, field, value).then((res) => {});
+    edit(id, field, value, resType: string): void {
+        this.resourceService.edit(id, field, value, resType).then((res) => {});
     }
 
     async addResource(resource: any, parentId: number, row: any): Promise<void> {

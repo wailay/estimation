@@ -38,7 +38,7 @@ export class FgService {
     }
 
     get percent(): number {
-        if (!this.bord.totalPrice) return 0;
+        if (!this.bord.totalPrice || !this.totalPrice) return 0;
         return parseFloat(((this.totalPrice / this.bord.totalPrice) * 100).toFixed(2));
     }
 }

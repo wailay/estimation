@@ -209,7 +209,6 @@ export class BordereauTableComponent implements OnChanges {
 
                 this.selected.emit(row);
             },
-            movableRows: true,
         });
     }
 
@@ -262,7 +261,6 @@ export class BordereauTableComponent implements OnChanges {
     async edit(id, field, value, row: Tabulator.RowComponent): Promise<void> {
         const res = await this.bordereauService.edit(id, field, value);
         if (res.status === 'error') {
-            console.log(res);
             return;
         }
 

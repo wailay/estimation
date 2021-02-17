@@ -45,7 +45,6 @@ export class ProjectComponent implements OnInit {
     }
 
     selectionChange(): void {
-        console.log('selection change');
         this.projectService.currentProjectId = this.projectId;
     }
 

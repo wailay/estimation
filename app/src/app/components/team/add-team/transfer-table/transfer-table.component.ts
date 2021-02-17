@@ -45,6 +45,8 @@ export class TransferTableComponent implements OnChanges {
             rowSelectionChanged: (data, rows) => {
                 const newRows = rows.filter((row) => row.getData().unit);
                 this.selected.emit(newRows);
+                console.log(rows);
+                this.currentSelected = rows;
             },
         });
     }
@@ -64,14 +66,16 @@ export class TransferTableComponent implements OnChanges {
     onFilterChange(value: string): void {
         if (value.length === 0) {
             this.table.setData(this.data);
+            // this.currentSelected.forEach((row) => this.table.selectRow(row.id));
+
             return;
         }
 
         this.filtered = [];
         this.filterTree(this.data, value);
-        this.currentSelected = this.table.getSelectedData();
+        // this.currentSelected = this.table.getSelectedData();
         this.table.setData(this.filtered);
-        this.currentSelected.forEach((row) => this.table.selectRow(row.id));
+        // this.currentSelected.forEach((row) => this.table.selectRow(row.id));
     }
 
     get disabled(): boolean {

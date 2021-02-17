@@ -4,6 +4,7 @@ const Resource = require('../../store/models/resources/resource-model');
 const fs = require('fs');
 const neatCsv = require('neat-csv');
 const { dialog } = require('electron');
+const FraisGeneraux = require('../../store/models/frais-generaux/frais-generaux');
 
 class ResourceService {
     constructor() {}
@@ -19,7 +20,7 @@ class ResourceService {
     }
 
     edit() {
-        ipcMain.handle('edit', async (event, typeId, field, value) => {
+        ipcMain.handle('edit', async (event, typeId, field, value, resType) => {
             try {
                 const typeToEdit = await Resource.findByPk(typeId);
 
@@ -28,6 +29,15 @@ class ResourceService {
                 const saved = await typeToEdit.set(field, value).save();
 
                 if (!saved) return { status: 'error', message: 'Erreur' };
+
+                //update FraisGeneraux
+                if (resType === 'FG' && field === 'unit_price') {
+                    const fg = await FraisGeneraux.findOne({ ResourceId: typeId });
+
+                    if (fg) {
+                        await fg.set('total_price', value * fg.quantity).save();
+                    }
+                }
 
                 return { status: 'success', message: 'Type modifie !' };
             } catch (err) {

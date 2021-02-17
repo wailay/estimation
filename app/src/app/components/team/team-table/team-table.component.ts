@@ -1,5 +1,3 @@
-import { TeamService } from './../../../service/team/team.service';
-import { LookupComponent } from './../../lookup/lookup.component';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { DialogService } from '@app/service/dialog/dialog.service';
@@ -7,6 +5,8 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import Tabulator from 'tabulator-tables';
 import { ResourceService } from './../../../service/resource/resource.service';
+import { TeamService } from './../../../service/team/team.service';
+import { LookupComponent } from './../../lookup/lookup.component';
 import { ResourceTableComponent } from './../../resource/resource-table/resource-table.component';
 
 @Component({
@@ -80,7 +80,7 @@ export class TeamTableComponent extends ResourceTableComponent implements OnChan
         },
         { title: 'Description', field: 'description', editor: 'input', editable: false },
         { title: 'Unite', field: 'unit', editor: 'input', editable: false },
-        { title: 'Prix Unitaire', field: 'unit_price', editor: 'number', editable: false },
+        { title: 'Prix Unitaire', field: 'unit_price', editable: false },
         { title: 'Production', field: 'production', editor: 'number', editable: false },
     ];
 

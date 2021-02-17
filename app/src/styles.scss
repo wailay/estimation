@@ -12,3 +12,11 @@
     text-align: center !important;
     vertical-align: middle !important;
 }
+
+.ant-descriptions-bordered.ant-descriptions-small .ant-descriptions-item-content {
+    white-space: nowrap !important;
+}
+
+.ant-descriptions-bordered .ant-descriptions-view {
+    overflow: auto !important;
+}

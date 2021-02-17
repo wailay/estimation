@@ -6,6 +6,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import Tabulator from 'tabulator-tables';
 import { Bordereau } from './../../../interfaces/models';
 import { BordereauService } from './../../../service/bordereau/bordereau.service';
+import { FgService } from './../../../service/fg/fg.service';
 import { LookupComponent } from './../../lookup/lookup.component';
 
 @Component({
@@ -62,14 +63,25 @@ export class BordereauResourceTableComponent implements OnChanges {
             bottomCalcFormatter: 'money',
             bottomCalcFormatterParams: { symbol: '$' },
         },
-        { title: 'Quantite Ressource', field: 'BordereauResource.quantity', editor: 'number', editorParams: { min: 1 }, hozAlign: 'center' },
+        {
+            title: 'Quantite Ressource',
+            field: 'BordereauResource.quantity',
+            editor: 'number',
+            editorParams: { min: 1 },
+            hozAlign: 'center',
+        },
         { title: 'Production', field: 'BordereauResource.production', editor: 'number', editorParams: { min: 1 }, hozAlign: 'center' },
         { title: 'Unite de production', field: 'unit_production', editor: 'input', hozAlign: 'center' },
         { title: 'Duree', field: 'BordereauResource.duration', hozAlign: 'center' },
         { title: 'Prix Unitaire', field: 'unit_price', formatter: 'money', formatterParams: { symbol: '$' }, hozAlign: 'center' },
         { title: 'Prix Total Ressources', field: 'BordereauResource.total_price', editable: false, hozAlign: 'center' },
     ];
-    constructor(private bordereauService: BordereauService, private modal: NzModalService, private dialogService: DialogService) {}
+    constructor(
+        private bordereauService: BordereauService,
+        private modal: NzModalService,
+        private dialogService: DialogService,
+        private fg: FgService,
+    ) {}
 
     private boldFormatter(c, p): string {
         const value = c.getValue();
@@ -121,6 +133,7 @@ export class BordereauResourceTableComponent implements OnChanges {
             dataTree: true,
             dataTreeStartExpanded: true,
             dataTreeChildField: 'children',
+            dataTreeElementColumn: 'description',
             groupBy: 'description',
             columnCalcs: 'both',
             // groupClosedShowCalcs: true,
@@ -165,6 +178,9 @@ export class BordereauResourceTableComponent implements OnChanges {
 
                 row.update(res.bordereau);
                 res.resources.forEach((r) => row.addTreeChild(r));
+                this.bordereauService.getTotalPrice().then(() => {
+                    this.fg.getTotal();
+                });
             });
         });
     }

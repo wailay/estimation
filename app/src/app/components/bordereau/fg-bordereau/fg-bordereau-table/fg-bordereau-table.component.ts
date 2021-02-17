@@ -128,9 +128,7 @@ export class FgBordereauTableComponent implements OnChanges {
 
                     this.table.addData({ ...data, ...fgToDadd });
                     this.table.redraw();
-                    this.fgService.getTotal().then((tot) => {
-                        console.log('tootal', tot);
-                    });
+                    this.fgService.getTotal();
                     this.message.success(res.message);
                 });
             });
@@ -155,7 +153,6 @@ export class FgBordereauTableComponent implements OnChanges {
     }
 
     async edit(id, field, value, row: Tabulator.RowComponent): Promise<void> {
-        console.log('edit', field, value);
         this.fgService.edit(id, field, value).then(async (res) => {
             if (res.status === 'error') {
                 this.message.error(res.message);
