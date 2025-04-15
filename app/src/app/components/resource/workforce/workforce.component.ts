@@ -6,6 +6,7 @@ import { ResourceComponent } from './../resource.component';
     selector: 'app-workforce',
     templateUrl: './workforce.component.html',
     styleUrls: ['./workforce.component.scss', './../resource.component.scss'],
+    standalone: false,
 })
 export class WorkforceComponent extends ResourceComponent {
     type = 'W';

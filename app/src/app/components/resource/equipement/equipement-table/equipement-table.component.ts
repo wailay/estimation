@@ -9,6 +9,7 @@ import { ResourceTableComponent } from './../../resource-table/resource-table.co
     selector: 'app-equipement-table',
     templateUrl: '../../resource-table/resource-table.component.html',
     styleUrls: ['./equipement-table.component.scss'],
+    standalone: false,
 })
 export class EquipementTableComponent extends ResourceTableComponent {
     type = 'E';

@@ -10,6 +10,7 @@ export interface TypeDialogData {
     selector: 'app-type-dialog',
     templateUrl: './type-dialog.component.html',
     styleUrls: ['./type-dialog.component.scss'],
+    standalone: false,
 })
 export class TypeDialogComponent implements OnInit {
     code = '';

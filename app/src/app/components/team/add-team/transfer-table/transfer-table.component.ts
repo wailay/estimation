@@ -5,6 +5,7 @@ import { RowComponent, Tabulator } from 'tabulator-tables';
     selector: 'app-transfer-table',
     templateUrl: './transfer-table.component.html',
     styleUrls: ['./transfer-table.component.scss'],
+    standalone: false,
 })
 export class TransferTableComponent implements OnChanges {
     table: Tabulator;

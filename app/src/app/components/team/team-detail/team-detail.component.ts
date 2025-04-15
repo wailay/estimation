@@ -8,6 +8,7 @@ import { TeamService } from './../../../service/team/team.service';
     selector: 'app-team-detail',
     templateUrl: './team-detail.component.html',
     styleUrls: ['./team-detail.component.scss'],
+    standalone: false,
 })
 export class TeamDetailComponent implements OnInit {
     data: any[];

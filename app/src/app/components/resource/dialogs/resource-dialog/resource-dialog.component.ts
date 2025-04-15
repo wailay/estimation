@@ -11,6 +11,7 @@ export interface ResourceDialogData {
     selector: 'app-resource-dialog',
     templateUrl: './resource-dialog.component.html',
     styleUrls: ['./resource-dialog.component.scss'],
+    standalone: false,
 })
 export class ResourceDialogComponent implements OnInit {
     @Input() withProduction!: boolean;

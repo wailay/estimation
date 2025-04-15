@@ -7,6 +7,7 @@ import { EquipementService } from './../../../../../service/resource/equipement/
     selector: 'app-equipement-detail-table',
     templateUrl: './equipement-detail-table.component.html',
     styleUrls: ['./equipement-detail-table.component.scss'],
+    standalone: false,
 })
 export class EquipementDetailTableComponent implements OnChanges, AfterViewInit, OnInit {
     constructor(private equipementService: EquipementService) {}

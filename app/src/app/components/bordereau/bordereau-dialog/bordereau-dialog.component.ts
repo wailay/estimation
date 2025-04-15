@@ -5,6 +5,7 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
     selector: 'app-bordereau-dialog',
     templateUrl: './bordereau-dialog.component.html',
     styleUrls: ['./bordereau-dialog.component.scss'],
+    standalone: false,
 })
 export class BordereauDialogComponent implements OnInit {
     form = {

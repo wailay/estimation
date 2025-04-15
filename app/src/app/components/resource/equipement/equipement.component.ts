@@ -6,6 +6,7 @@ import { ResourceComponent } from './../resource.component';
     selector: 'app-equipement',
     templateUrl: './equipement.component.html',
     styleUrls: ['./equipement.component.scss', './../resource.component.scss'],
+    standalone: false,
 })
 export class EquipementComponent extends ResourceComponent {
     type = 'E';

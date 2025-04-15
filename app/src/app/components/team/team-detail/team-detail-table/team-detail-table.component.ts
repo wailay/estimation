@@ -11,6 +11,7 @@ import { TransferTableComponent } from './../../add-team/transfer-table/transfer
     selector: 'app-team-detail-table',
     templateUrl: './team-detail-table.component.html',
     styleUrls: ['./team-detail-table.component.scss'],
+    standalone: false,
 })
 export class TeamDetailTableComponent implements OnChanges {
     constructor(

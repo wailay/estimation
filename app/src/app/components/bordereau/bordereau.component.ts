@@ -9,6 +9,7 @@ import { ProjectService } from './../../service/project/project.service';
     selector: 'app-bordereau',
     templateUrl: './bordereau.component.html',
     styleUrls: ['./bordereau.component.scss'],
+    standalone: false,
 })
 export class BordereauComponent implements OnInit {
     selected: RowComponent;

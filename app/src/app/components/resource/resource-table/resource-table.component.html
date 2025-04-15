@@ -1,14 +1,8 @@
 <div style="overflow: auto">
     <nz-space>
-        <nz-space-item>
-            <button nz-button nzType="primary" (click)="this.openTypeForm(null)">Nouveau dossier</button>
-        </nz-space-item>
-        <nz-space-item>
-            <button nz-button nzType="primary" (click)="this.openResourceForm(null)">Ajouter {{ addButton }}</button>
-        </nz-space-item>
-        <nz-space-item>
-            <button nz-button (click)="this.handleUpload(null, null)">Ajouter CSV</button>
-        </nz-space-item>
+        <button *nzSpaceItem nz-button nzType="primary" (click)="this.openTypeForm(null)">Nouveau dossier</button>
+        <button *nzSpaceItem nz-button nzType="primary" (click)="this.openResourceForm(null)">Ajouter {{ addButton }}</button>
+        <button *nzSpaceItem nz-button nzType="primary" (click)="this.handleUpload(null, null)">Ajouter CSV</button>
     </nz-space>
     <nz-divider></nz-divider>
     <div [id]="tableId"></div>

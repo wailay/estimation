@@ -6,6 +6,7 @@ import { ResourceComponent } from './../resource.component';
     selector: 'app-vrac',
     templateUrl: './vrac.component.html',
     styleUrls: ['./vrac.component.scss'],
+    standalone: false,
 })
 export class VracComponent extends ResourceComponent {
     type = 'V';

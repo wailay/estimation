@@ -8,6 +8,7 @@ import { ResourceService } from './../../service/resource/resource.service';
     selector: 'app-lookup',
     templateUrl: './lookup.component.html',
     styleUrls: ['./lookup.component.scss'],
+    standalone: false,
 })
 export class LookupComponent implements OnInit {
     resourcesData: any[] = [];

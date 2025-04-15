@@ -6,6 +6,7 @@ import { ResourceComponent } from '../resource.component';
     selector: 'app-fg',
     templateUrl: './fg.component.html',
     styleUrls: ['./fg.component.scss'],
+    standalone: false,
 })
 export class FgComponent extends ResourceComponent {
     type = 'FG';

@@ -9,6 +9,7 @@ import { ResourceTableComponent } from './../../resource-table/resource-table.co
     selector: 'app-workforce-table',
     templateUrl: '../../resource-table/resource-table.component.html',
     styleUrls: ['./workforce-table.component.scss'],
+    standalone: false,
 })
 export class WorkforceTableComponent extends ResourceTableComponent {
     type = 'W';

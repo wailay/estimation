@@ -6,6 +6,7 @@ import { ResourceComponent } from './../resource.component';
     selector: 'app-divers',
     templateUrl: './divers.component.html',
     styleUrls: ['./divers.component.scss', './../resource.component.scss'],
+    standalone: false,
 })
 export class DiversComponent extends ResourceComponent {
     type = 'D';

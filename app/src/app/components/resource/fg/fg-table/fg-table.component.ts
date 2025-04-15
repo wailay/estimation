@@ -10,6 +10,7 @@ import { ResourceTableComponent } from './../../resource-table/resource-table.co
     selector: 'app-fg-table',
     templateUrl: '../../resource-table/resource-table.component.html',
     styleUrls: ['./fg-table.component.scss'],
+    standalone: false,
 })
 export class FgTableComponent extends ResourceTableComponent {
     type = 'FG';

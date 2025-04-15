@@ -6,6 +6,7 @@ import { ResourceComponent } from './../resource.component';
     selector: 'app-contractor',
     templateUrl: './contractor.component.html',
     styleUrls: ['./contractor.component.scss', './../resource.component.scss'],
+    standalone: false,
 })
 export class ContractorComponent extends ResourceComponent {
     type = 'C';

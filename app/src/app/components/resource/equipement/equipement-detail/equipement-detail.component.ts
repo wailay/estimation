@@ -7,6 +7,7 @@ import { ResourceService } from './../../../../service/resource/resource.service
     selector: 'app-equipement-detail',
     templateUrl: './equipement-detail.component.html',
     styleUrls: ['./equipement-detail.component.scss'],
+    standalone: false,
 })
 export class EquipementDetailComponent implements OnInit, DoCheck {
     @Input() selected: RowComponent;

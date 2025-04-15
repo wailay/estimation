@@ -1,7 +1,5 @@
 <nz-space>
-    <nz-space-item>
-        <button nz-button nzType="primary" (click)="this.openFgForm()">Ajouter un FG</button>
-    </nz-space-item>
+    <button *nzSpaceItem nz-button nzType="primary" (click)="this.openFgForm()">Ajouter un FG</button>
 </nz-space>
 <nz-divider></nz-divider>
 <div [id]="tableId"></div>

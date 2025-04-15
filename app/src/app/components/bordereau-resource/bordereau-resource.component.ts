@@ -10,6 +10,7 @@ import { ProjectService } from './../../service/project/project.service';
     selector: 'app-bordereau-resource',
     templateUrl: './bordereau-resource.component.html',
     styleUrls: ['./bordereau-resource.component.scss'],
+    standalone: false,
 })
 export class BordereauResourceComponent implements OnInit {
     selected: RowComponent;

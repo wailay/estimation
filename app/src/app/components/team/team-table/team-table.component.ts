@@ -13,6 +13,7 @@ import { ResourceTableComponent } from './../../resource/resource-table/resource
     selector: 'app-team-table',
     templateUrl: './team-table.component.html',
     styleUrls: ['./team-table.component.scss'],
+    standalone: false,
 })
 export class TeamTableComponent extends ResourceTableComponent implements OnChanges {
     type = 'T';

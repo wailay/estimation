@@ -13,6 +13,7 @@ export const UNIT_BORD = { '': 'aucune', mcu: 'mcu', tm: 'tm', 'm-ca': 'm-ca', m
     selector: 'app-bordereau-table',
     templateUrl: './bordereau-table.component.html',
     styleUrls: ['./bordereau-table.component.scss'],
+    standalone: false,
 })
 export class BordereauTableComponent implements OnChanges {
     @Input() data: any[] = [];
@@ -297,9 +298,9 @@ export class BordereauTableComponent implements OnChanges {
         this.table.setData(this.table.getData());
     }
 
-    setProfit(profit: number): void {
+    setProfit(profit: string): void {
         if (!profit) return;
-        this.fgService.profit = profit;
+        this.fgService.profit = parseFloat(profit);
 
         // hack
         this.updateHack();

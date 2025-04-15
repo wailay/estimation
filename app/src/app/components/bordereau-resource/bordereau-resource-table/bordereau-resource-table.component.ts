@@ -13,6 +13,7 @@ import { LookupComponent } from './../../lookup/lookup.component';
     selector: 'app-bordereau-resource-table',
     templateUrl: './bordereau-resource-table.component.html',
     styleUrls: ['./bordereau-resource-table.component.scss'],
+    standalone: false,
 })
 export class BordereauResourceTableComponent implements OnChanges {
     @Input() data: any[] = [];

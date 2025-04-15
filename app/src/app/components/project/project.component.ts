@@ -8,6 +8,7 @@ import { ProjectService } from './../../service/project/project.service';
     selector: 'app-project',
     templateUrl: './project.component.html',
     styleUrls: ['./project.component.scss'],
+    standalone: false,
 })
 export class ProjectComponent implements OnInit {
     projectForm = this.fb.group({

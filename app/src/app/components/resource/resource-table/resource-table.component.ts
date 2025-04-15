@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { DialogService } from '@app/service/dialog/dialog.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -10,6 +10,7 @@ import { TypeDialogComponent } from './../dialogs/type-dialog/type-dialog.compon
     selector: 'app-resource-table',
     templateUrl: './resource-table.component.html',
     styleUrls: ['./resource-table.component.scss'],
+    standalone: false,
 })
 export class ResourceTableComponent implements OnChanges {
     type: string;
@@ -17,6 +18,7 @@ export class ResourceTableComponent implements OnChanges {
 
     table: Tabulator;
     @Input() data: any[] = [];
+    @Output() selected: EventEmitter<RowComponent> = new EventEmitter();
     parentResourceId: number = undefined;
 
     rowMenu = [

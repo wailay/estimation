@@ -6,6 +6,7 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
     selector: 'app-fg-dialog',
     templateUrl: './fg-dialog.component.html',
     styleUrls: ['./fg-dialog.component.scss'],
+    standalone: false,
 })
 export class FgDialogComponent implements OnInit {
     fgForm = this.fb.group({

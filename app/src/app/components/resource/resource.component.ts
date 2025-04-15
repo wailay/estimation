@@ -5,6 +5,7 @@ import { ResourceService } from './../../service/resource/resource.service';
     selector: 'app-resource',
     templateUrl: './resource.component.html',
     styleUrls: ['./resource.component.scss'],
+    standalone: false,
 })
 export class ResourceComponent implements OnInit {
     type = '';
@@ -22,6 +23,8 @@ export class ResourceComponent implements OnInit {
     }
 
     selectedChange(row: RowComponent): void {
+        // const row = (e.target as HTMLElement).closest('tr');
+
         this.selected = row;
     }
 

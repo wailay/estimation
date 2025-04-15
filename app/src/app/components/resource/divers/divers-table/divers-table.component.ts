@@ -9,6 +9,7 @@ import { ResourceTableComponent } from './../../resource-table/resource-table.co
     selector: 'app-divers-table',
     templateUrl: '../../resource-table/resource-table.component.html',
     styleUrls: ['./divers-table.component.scss'],
+    standalone: false,
 })
 export class DiversTableComponent extends ResourceTableComponent {
     type = 'D';

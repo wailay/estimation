@@ -12,6 +12,7 @@ import { LookupComponent } from './../../../lookup/lookup.component';
     selector: 'app-fg-bordereau-table',
     templateUrl: './fg-bordereau-table.component.html',
     styleUrls: ['./fg-bordereau-table.component.scss'],
+    standalone: false,
 })
 export class FgBordereauTableComponent implements OnChanges {
     tableId = 'fg-bordereau-table';

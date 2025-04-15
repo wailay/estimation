@@ -9,6 +9,7 @@ import { ResourceTableComponent } from './../../resource-table/resource-table.co
     selector: 'app-vrac-table',
     templateUrl: '../../resource-table/resource-table.component.html',
     styleUrls: ['./vrac-table.component.scss'],
+    standalone: false,
 })
 export class VracTableComponent extends ResourceTableComponent {
     type = 'V';

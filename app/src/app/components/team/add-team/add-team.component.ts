@@ -14,6 +14,7 @@ export interface Data {
     selector: 'app-add-team',
     templateUrl: './add-team.component.html',
     styleUrls: ['./add-team.component.scss'],
+    standalone: false,
 })
 export class AddTeamComponent implements OnInit {
     teamForm = this.fb.group({

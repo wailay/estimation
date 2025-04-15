@@ -9,6 +9,7 @@ import { ProjectService } from './../../../service/project/project.service';
     selector: 'app-fg-bordereau',
     templateUrl: './fg-bordereau.component.html',
     styleUrls: ['./fg-bordereau.component.scss'],
+    standalone: false,
 })
 export class FgBordereauComponent implements OnInit {
     type = '';
