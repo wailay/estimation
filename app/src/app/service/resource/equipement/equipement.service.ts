@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import Tabulator from 'tabulator-tables';
-import { IResource } from './../../../interfaces/models';
+import { RowComponent } from 'tabulator-tables';
 import { ElectronService } from './../../electron/electron.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class EquipementService {
-    selected: Subject<Tabulator.RowComponent>;
+    selected: Subject<RowComponent>;
     constructor(private electron: ElectronService) {
         this.selected = new Subject();
     }
@@ -25,7 +24,7 @@ export class EquipementService {
         return this.electron.ipcRenderer.invoke('get-details', equipementId);
     }
 
-    getSelected(): Observable<Tabulator.RowComponent> {
+    getSelected(): Observable<RowComponent> {
         return this.selected.asObservable();
     }
 }

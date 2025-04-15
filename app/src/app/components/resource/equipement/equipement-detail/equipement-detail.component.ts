@@ -1,5 +1,5 @@
 import { Component, DoCheck, Input, OnInit } from '@angular/core';
-import Tabulator from 'tabulator-tables';
+import { RowComponent } from 'tabulator-tables';
 import { IResource } from './../../../../interfaces/models';
 import { ResourceService } from './../../../../service/resource/resource.service';
 
@@ -9,7 +9,7 @@ import { ResourceService } from './../../../../service/resource/resource.service
     styleUrls: ['./equipement-detail.component.scss'],
 })
 export class EquipementDetailComponent implements OnInit, DoCheck {
-    @Input() selected: Tabulator.RowComponent;
+    @Input() selected: RowComponent;
     priceType = false;
     constructor(private resourceService: ResourceService) {}
 

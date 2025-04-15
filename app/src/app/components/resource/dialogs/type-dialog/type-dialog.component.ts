@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import Tabulator from 'tabulator-tables';
+import { RowComponent } from 'tabulator-tables';
 
 export interface TypeDialogData {
-    row: Tabulator.RowComponent;
+    row: RowComponent;
     added: boolean;
 }
 @Component({

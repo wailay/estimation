@@ -8,8 +8,8 @@ describe('VracTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VracTableComponent ]
-    })
+    imports: [VracTableComponent]
+})
     .compileComponents();
   });
 

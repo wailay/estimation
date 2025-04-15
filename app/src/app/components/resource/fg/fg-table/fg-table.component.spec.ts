@@ -8,8 +8,8 @@ describe('FgTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FgTableComponent ]
-    })
+    imports: [FgTableComponent]
+})
     .compileComponents();
   });
 

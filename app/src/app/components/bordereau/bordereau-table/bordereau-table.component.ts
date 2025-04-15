@@ -3,7 +3,7 @@ import { DialogService } from '@app/service/dialog/dialog.service';
 import { FgService } from '@app/service/fg/fg.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import Tabulator from 'tabulator-tables';
+import { ColumnDefinition, RowComponent, Tabulator } from 'tabulator-tables';
 import { BordereauDialogComponent } from './../../../components/bordereau/bordereau-dialog/bordereau-dialog.component';
 import { Bordereau } from './../../../interfaces/models';
 import { BordereauService } from './../../../service/bordereau/bordereau.service';
@@ -16,8 +16,8 @@ export const UNIT_BORD = { '': 'aucune', mcu: 'mcu', tm: 'tm', 'm-ca': 'm-ca', m
 })
 export class BordereauTableComponent implements OnChanges {
     @Input() data: any[] = [];
-    @Output() selected: EventEmitter<Tabulator.RowComponent> = new EventEmitter();
-    selectedRow: Tabulator.RowComponent;
+    @Output() selected: EventEmitter<RowComponent> = new EventEmitter();
+    selectedRow: RowComponent;
 
     table: Tabulator;
     rowMenu = [
@@ -47,7 +47,7 @@ export class BordereauTableComponent implements OnChanges {
         },
     ];
 
-    private columns: Tabulator.ColumnDefinition[] = [
+    private columns: ColumnDefinition[] = [
         {
             title: 'Numero',
             field: 'code',
@@ -180,39 +180,41 @@ export class BordereauTableComponent implements OnChanges {
             dataTree: true,
             dataTreeStartExpanded: true,
             dataTreeChildField: 'children',
-            selectable: true,
-            selectableRollingSelection: true,
-            selectableRangeMode: 'click',
+            selectableRows: true,
+            selectableRowsRollingSelection: true,
+            selectableRowsRangeMode: 'click',
             placeholder: 'Bordereau vide',
+        });
 
-            cellDblClick: (e, cell) => {
-                if (cell.getValue().length > 0 || typeof cell.getValue() === 'number') {
-                    cell.edit(true);
-                }
-            },
-            cellEdited: (cell) => {
-                const id = (cell.getData() as any).id;
-                const field = cell.getColumn().getField();
-                const value = cell.getValue();
+        this.table.on('cellDblClick', (e, cell) => {
+            if (cell.getValue().length > 0 || typeof cell.getValue() === 'number') {
+                cell.edit(true);
+            }
+        });
 
-                this.edit(id, field, value, cell.getRow());
-            },
-            rowClick: (e: MouseEvent, row) => {
-                if (e.shiftKey) {
-                    return;
-                }
+        this.table.on('cellEdited', (cell) => {
+            const id = (cell.getData() as any).id;
+            const field = cell.getColumn().getField();
+            const value = cell.getValue();
 
-                if (!row.getData().unit) {
-                    row.deselect();
-                    return;
-                }
+            this.edit(id, field, value, cell.getRow());
+        });
 
-                this.selected.emit(row);
-            },
+        this.table.on('rowClick', (e: MouseEvent, row) => {
+            if (e.shiftKey) {
+                return;
+            }
+
+            if (!row.getData().unit) {
+                row.deselect();
+                return;
+            }
+
+            this.selected.emit(row);
         });
     }
 
-    openItemForm(row: Tabulator.RowComponent): void {
+    openItemForm(row: RowComponent): void {
         const modal = this.modal.create({
             nzTitle: 'Ajouter un item',
             nzContent: BordereauDialogComponent,
@@ -258,7 +260,7 @@ export class BordereauTableComponent implements OnChanges {
         this.dialogService.openConfirm(this.deleteType.bind(this), row);
     }
 
-    async edit(id, field, value, row: Tabulator.RowComponent): Promise<void> {
+    async edit(id, field, value, row: RowComponent): Promise<void> {
         const res = await this.bordereauService.edit(id, field, value);
         if (res.status === 'error') {
             return;
@@ -275,7 +277,7 @@ export class BordereauTableComponent implements OnChanges {
             selectedRows.push(row);
         }
 
-        selectedRows.forEach((rows: Tabulator.RowComponent) => {
+        selectedRows.forEach((rows: RowComponent) => {
             rows.delete();
             this.bordereauService.delete(rows.getData().id).then((res) => {});
         });

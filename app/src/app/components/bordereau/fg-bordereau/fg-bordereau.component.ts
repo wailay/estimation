@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FgService } from '@app/service/fg/fg.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import Tabulator from 'tabulator-tables';
+import { RowComponent } from 'tabulator-tables';
 import { ProjectService } from './../../../service/project/project.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { ProjectService } from './../../../service/project/project.service';
 export class FgBordereauComponent implements OnInit {
     type = '';
     data: any[];
-    selected: Tabulator.RowComponent;
+    selected: RowComponent;
 
     constructor(protected fgService: FgService, private projet: ProjectService, private route: Router, private message: NzMessageService) {
         this.data = [];

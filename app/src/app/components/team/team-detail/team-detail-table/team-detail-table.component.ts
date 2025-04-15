@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import Tabulator from 'tabulator-tables';
+import { ColumnDefinition, RowComponent, Tabulator } from 'tabulator-tables';
 import { TeamResource } from './../../../../interfaces/models';
 import { DialogService } from './../../../../service/dialog/dialog.service';
 import { ResourceService } from './../../../../service/resource/resource.service';
@@ -41,7 +41,7 @@ export class TeamDetailTableComponent implements OnChanges {
         },
     ];
 
-    private columns: Tabulator.ColumnDefinition[] = [
+    private columns: ColumnDefinition[] = [
         { title: 'Type', field: 'type', editor: 'input', editable: false },
         { title: 'Code', field: 'code', editor: 'input', editable: false, headerMenu: this.headerMenu },
         { title: 'Description', field: 'description', editor: 'input', editable: false },
@@ -69,21 +69,23 @@ export class TeamDetailTableComponent implements OnChanges {
             height: '100%',
             layout: 'fitColumns',
             placeholder: "Aucun detail d'equipe",
-            cellDblClick: (e, cell) => {
-                if (cell.getField() === 'type') return;
-                cell.edit(true);
-            },
-            cellEdited: (cell) => {
-                const resourceId = (cell.getData() as TeamResource).TeamResources.TeamResourceId;
-                const teamId = (cell.getData() as TeamResource).TeamResources.TeamId;
-                const field = cell.getColumn().getField();
-                const value = cell.getValue();
-                if (field === 'TeamResources.unit_quantity') {
-                    this.editTeamQuantity(teamId, resourceId, value);
-                } else {
-                    this.edit(resourceId, field, value);
-                }
-            },
+        });
+
+        this.table.on('cellDblClick', (e, cell) => {
+            if (cell.getField() === 'type') return;
+            cell.edit(true);
+        });
+
+        this.table.on('cellEdited', (cell) => {
+            const resourceId = (cell.getData() as TeamResource).TeamResources.TeamResourceId;
+            const teamId = (cell.getData() as TeamResource).TeamResources.TeamId;
+            const field = cell.getColumn().getField();
+            const value = cell.getValue();
+            if (field === 'TeamResources.unit_quantity') {
+                this.editTeamQuantity(teamId, resourceId, value);
+            } else {
+                this.edit(resourceId, field, value);
+            }
         });
     }
 
@@ -105,7 +107,7 @@ export class TeamDetailTableComponent implements OnChanges {
         this.dialogService.openConfirm(this.deleteTeamResource.bind(this), row);
     }
 
-    async deleteTeamResource(row: Tabulator.RowComponent): Promise<void> {
+    async deleteTeamResource(row: RowComponent): Promise<void> {
         const data = (row.getData() as TeamResource).TeamResources;
         row.delete();
         await this.teamService.deleteTeamResource(data.TeamId, data.TeamResourceId);
@@ -118,7 +120,7 @@ export class TeamDetailTableComponent implements OnChanges {
         const modal = this.modal.create({
             nzTitle: 'Ajouter une ressource',
             nzContent: TransferTableComponent,
-            nzComponentParams: { data },
+            nzData: { data },
         });
     }
 }

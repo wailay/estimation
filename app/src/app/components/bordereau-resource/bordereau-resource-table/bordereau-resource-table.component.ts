@@ -3,7 +3,7 @@ import { IResource } from '@app/interfaces/models';
 import { DialogService } from '@app/service/dialog/dialog.service';
 import {} from 'events';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import Tabulator from 'tabulator-tables';
+import { CellComponent, ColumnDefinition, RowComponent, Tabulator } from 'tabulator-tables';
 import { Bordereau } from './../../../interfaces/models';
 import { BordereauService } from './../../../service/bordereau/bordereau.service';
 import { FgService } from './../../../service/fg/fg.service';
@@ -16,12 +16,12 @@ import { LookupComponent } from './../../lookup/lookup.component';
 })
 export class BordereauResourceTableComponent implements OnChanges {
     @Input() data: any[] = [];
-    @Output() selected: EventEmitter<Tabulator.RowComponent> = new EventEmitter();
+    @Output() selected: EventEmitter<RowComponent> = new EventEmitter();
     moneyFormatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
     });
-    selectedRow: Tabulator.RowComponent;
+    selectedRow: RowComponent;
 
     table: Tabulator;
     rowMenu = [
@@ -42,7 +42,7 @@ export class BordereauResourceTableComponent implements OnChanges {
         },
     ];
 
-    private columns: Tabulator.ColumnDefinition[] = [
+    private columns: ColumnDefinition[] = [
         { title: 'Numero', field: 'code', editable: false, formatter: this.boldFormatter },
         { title: 'Description', field: 'description', editable: false, formatter: this.boldFormatter },
         { title: 'Quantite Bordereau', field: 'quantity', editable: false, hozAlign: 'center' },
@@ -90,7 +90,7 @@ export class BordereauResourceTableComponent implements OnChanges {
         return `<span style='font-weight:bold;'>` + value + '</span>';
     }
 
-    private totalBRFormatter(cell: Tabulator.CellComponent): string {
+    private totalBRFormatter(cell: CellComponent): string {
         const value = cell.getValue();
         if (!value) return;
         const frmt = new Intl.NumberFormat('en-US', {
@@ -142,25 +142,26 @@ export class BordereauResourceTableComponent implements OnChanges {
             // selectableRollingSelection: true,
             // selectableRangeMode: 'click',
             placeholder: 'Bordereau vide',
-            cellEdited: (cell) => {
-                const cellB = cell.getData() as Bordereau;
-                const id = cellB.id;
-                let field = cell.getColumn().getField();
-                const value = cell.getValue();
+        });
 
-                if (cellB.type) {
-                    const bordId = cellB.BordereauResource.BordereauId;
-                    const resId = cellB.BordereauResource.ResourceId;
-                    field = field.substring(field.indexOf('.') + 1);
-                    this.editBR(cell.getRow(), bordId, resId, field, value);
-                } else {
-                    this.edit(id, field, value);
-                }
-            },
+        this.table.on('cellEdited', (cell) => {
+            const cellB = cell.getData() as Bordereau;
+            const id = cellB.id;
+            let field = cell.getColumn().getField();
+            const value = cell.getValue();
+
+            if (cellB.type) {
+                const bordId = cellB.BordereauResource.BordereauId;
+                const resId = cellB.BordereauResource.ResourceId;
+                field = field.substring(field.indexOf('.') + 1);
+                this.editBR(cell.getRow(), bordId, resId, field, value);
+            } else {
+                this.edit(id, field, value);
+            }
         });
     }
 
-    private openResourceTable(row: Tabulator.RowComponent): void {
+    private openResourceTable(row: RowComponent): void {
         const modal = this.modal.create({
             nzTitle: 'Affecter une ressource',
             nzContent: LookupComponent,
@@ -171,7 +172,7 @@ export class BordereauResourceTableComponent implements OnChanges {
         modal.afterClose.subscribe((selected) => {
             if (!selected) return;
 
-            const resources = selected.selected.map((sel: Tabulator.RowComponent) => sel.getData());
+            const resources = selected.selected.map((sel: RowComponent) => sel.getData());
 
             this.bordereauService.affect(resources, parentId).then((res) => {
                 if (res.status === 'error') return;
@@ -185,7 +186,7 @@ export class BordereauResourceTableComponent implements OnChanges {
         });
     }
 
-    private openDeleteModal(row: Tabulator.RowComponent): void {
+    private openDeleteModal(row: RowComponent): void {
         if (row.getData().type) {
             this.dialogService.openConfirm(this.deleteResources.bind(this), row);
         } else {
@@ -197,7 +198,7 @@ export class BordereauResourceTableComponent implements OnChanges {
         this.bordereauService.edit(id, field, value).then((res) => {});
     }
 
-    async editBR(row: Tabulator.RowComponent, bordId, resId, field, value): Promise<void> {
+    async editBR(row: RowComponent, bordId, resId, field, value): Promise<void> {
         const bordResourceResult = await this.bordereauService.editBR(bordId, resId, field, value);
         const bordParentResult = await this.bordereauService.recompute(bordId);
 
@@ -205,7 +206,7 @@ export class BordereauResourceTableComponent implements OnChanges {
             return;
         }
         row.update({ BordereauResource: bordResourceResult.bordereau });
-        (row.getTreeParent() as Tabulator.RowComponent).update(bordParentResult.bordereau);
+        (row.getTreeParent() as RowComponent).update(bordParentResult.bordereau);
     }
 
     deleteBord(row): void {
@@ -215,14 +216,14 @@ export class BordereauResourceTableComponent implements OnChanges {
             selectedRows.push(row);
         }
 
-        selectedRows.forEach((rows: Tabulator.RowComponent) => {
+        selectedRows.forEach((rows: RowComponent) => {
             rows.delete();
             this.bordereauService.delete(row.getData().id).then((res) => {});
         });
     }
 
-    async deleteResources(row: Tabulator.RowComponent): Promise<void> {
-        const parentBord = row.getTreeParent() as Tabulator.RowComponent;
+    async deleteResources(row: RowComponent): Promise<void> {
+        const parentBord = row.getTreeParent() as RowComponent;
 
         const selectedRows = this.table.getSelectedRows();
 
@@ -230,7 +231,7 @@ export class BordereauResourceTableComponent implements OnChanges {
             selectedRows.push(row);
         }
 
-        selectedRows.forEach(async (rows: Tabulator.RowComponent) => {
+        selectedRows.forEach(async (rows: RowComponent) => {
             const bordId = (rows.getData() as IResource).BordereauResource.BordereauId;
             const resId = (rows.getData() as IResource).BordereauResource.ResourceId;
             rows.delete();

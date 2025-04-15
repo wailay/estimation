@@ -35,6 +35,6 @@ export class FgDialogComponent implements OnInit {
     }
 
     get total(): number {
-        return this.fgForm.value.quantity * this.fgForm.value.unit_price;
+        return Number(this.fgForm.value.quantity) * Number(this.fgForm.value.unit_price);
     }
 }

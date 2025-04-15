@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService } from '@app/service/resource/resource.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import Tabulator from 'tabulator-tables';
+import { RowComponent } from 'tabulator-tables';
 import { TeamService } from './../../../service/team/team.service';
 
 export interface Data {
@@ -24,7 +24,7 @@ export class AddTeamComponent implements OnInit {
     });
 
     data: any[] = [];
-    selected: Tabulator.RowComponent[];
+    selected: RowComponent[];
     parentId: number;
 
     constructor(
@@ -50,7 +50,7 @@ export class AddTeamComponent implements OnInit {
         });
     }
 
-    selectionChange(items: Tabulator.RowComponent[]): void {
+    selectionChange(items: RowComponent[]): void {
         this.selected = items;
     }
 

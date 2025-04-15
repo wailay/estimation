@@ -7,8 +7,8 @@ describe('FgComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [FgComponent],
-        }).compileComponents();
+    imports: [FgComponent],
+}).compileComponents();
     });
 
     beforeEach(() => {

@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FgService } from '@app/service/fg/fg.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import Tabulator from 'tabulator-tables';
+import { ColumnDefinition, RowComponent, Tabulator } from 'tabulator-tables';
 import { BordereauService } from '../../../../service/bordereau/bordereau.service';
 import { DialogService } from '../../../../service/dialog/dialog.service';
 import { ProjectService } from './../../../../service/project/project.service';
@@ -37,7 +37,7 @@ export class FgBordereauTableComponent implements OnChanges {
         },
     ];
 
-    protected columns: Tabulator.ColumnDefinition[] = [
+    protected columns: ColumnDefinition[] = [
         { title: 'Code', field: 'code', editable: false },
         { title: 'Description', field: 'description', editable: false },
         { title: 'Quantite', field: 'quantity', editor: 'number', editorParams: { min: 1 }, editable: false },
@@ -85,16 +85,18 @@ export class FgBordereauTableComponent implements OnChanges {
             layout: 'fitColumns',
             height: '70%',
             placeholder: 'Aucun FG',
-            cellDblClick: (e, cell) => {
-                cell.edit(true);
-            },
-            cellEdited: (cell) => {
-                const id = (cell.getData() as any).id;
-                const field = cell.getColumn().getField();
-                const value = cell.getValue();
+        });
 
-                this.edit(id, field, value, cell.getRow());
-            },
+        this.table.on('cellDblClick', (e, cell) => {
+            cell.edit(true);
+        });
+
+        this.table.on('cellEdited', (cell) => {
+            const id = (cell.getData() as any).id;
+            const field = cell.getColumn().getField();
+            const value = cell.getValue();
+
+            this.edit(id, field, value, cell.getRow());
         });
     }
 
@@ -102,14 +104,14 @@ export class FgBordereauTableComponent implements OnChanges {
         const modal = this.modal.create({
             nzTitle: 'Ajouter un FG',
             nzContent: LookupComponent,
-            nzComponentParams: { withEquipe: false, resourceType: 'FG' },
+            nzData: { withEquipe: false, resourceType: 'FG' },
             nzWidth: 1000,
         });
 
         modal.afterClose.subscribe((fg) => {
             if (!fg) return;
 
-            const selected = fg.selected as Tabulator.RowComponent[];
+            const selected = fg.selected as RowComponent[];
 
             selected.forEach((row) => {
                 const data = row.getData();
@@ -126,7 +128,7 @@ export class FgBordereauTableComponent implements OnChanges {
                         return;
                     }
 
-                    this.table.addData({ ...data, ...fgToDadd });
+                    this.table.addData([{ ...data, ...fgToDadd }]);
                     this.table.redraw();
                     this.fgService.getTotal();
                     this.message.success(res.message);
@@ -146,13 +148,13 @@ export class FgBordereauTableComponent implements OnChanges {
             selectedRows.push(row);
         }
 
-        selectedRows.forEach((rows: Tabulator.RowComponent) => {
+        selectedRows.forEach((rows: RowComponent) => {
             rows.delete();
             this.fgService.delete(rows.getData().id).then((res) => {});
         });
     }
 
-    async edit(id, field, value, row: Tabulator.RowComponent): Promise<void> {
+    async edit(id, field, value, row: RowComponent): Promise<void> {
         this.fgService.edit(id, field, value).then(async (res) => {
             if (res.status === 'error') {
                 this.message.error(res.message);

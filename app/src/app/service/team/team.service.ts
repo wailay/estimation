@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import Tabulator from 'tabulator-tables';
 import { ElectronService } from '../electron/electron.service';
 
 @Injectable({

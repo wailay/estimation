@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import Tabulator from 'tabulator-tables';
+import { RowComponent } from 'tabulator-tables';
 import { ResourceService } from './../../service/resource/resource.service';
 @Component({
     selector: 'app-resource',
@@ -9,7 +9,7 @@ import { ResourceService } from './../../service/resource/resource.service';
 export class ResourceComponent implements OnInit {
     type = '';
     data: any[];
-    selected: Tabulator.RowComponent;
+    selected: RowComponent;
 
     constructor(protected resourceService: ResourceService) {
         this.data = [];
@@ -21,7 +21,7 @@ export class ResourceComponent implements OnInit {
         });
     }
 
-    selectedChange(row: Tabulator.RowComponent): void {
+    selectedChange(row: RowComponent): void {
         this.selected = row;
     }
 

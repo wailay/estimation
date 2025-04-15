@@ -8,8 +8,8 @@ describe('BordereauTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BordereauTableComponent ]
-    })
+    imports: [BordereauTableComponent]
+})
     .compileComponents();
   });
 

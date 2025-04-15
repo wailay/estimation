@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import Tabulator from 'tabulator-tables';
+import { RowComponent } from 'tabulator-tables';
 import { IResource } from './../../interfaces/models';
 import { ResourceService } from './../../service/resource/resource.service';
 
@@ -12,8 +12,8 @@ import { ResourceService } from './../../service/resource/resource.service';
 export class LookupComponent implements OnInit {
     resourcesData: any[] = [];
     teamData: any[] = [];
-    selectedResources: Tabulator.RowComponent[] = [];
-    selectedTeams: Tabulator.RowComponent[] = [];
+    selectedResources: RowComponent[] = [];
+    selectedTeams: RowComponent[] = [];
     @Input() withEquipe = true;
     @Input() resourceType = 'all';
 
@@ -42,11 +42,11 @@ export class LookupComponent implements OnInit {
         });
     }
 
-    resourceSelected(rows: Tabulator.RowComponent[]): void {
+    resourceSelected(rows: RowComponent[]): void {
         this.selectedResources = rows;
     }
 
-    teamSelected(rows: Tabulator.RowComponent[]): void {
+    teamSelected(rows: RowComponent[]): void {
         this.selectedTeams = rows;
     }
 

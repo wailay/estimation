@@ -8,8 +8,8 @@ describe('TransferTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TransferTableComponent ]
-    })
+    imports: [TransferTableComponent]
+})
     .compileComponents();
   });
 

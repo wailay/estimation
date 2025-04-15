@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ResourceService } from '@app/service/resource/resource.service';
-import Tabulator from 'tabulator-tables';
+import { RowComponent } from 'tabulator-tables';
 import { IResource } from './../../../interfaces/models';
 import { TeamService } from './../../../service/team/team.service';
 
@@ -26,7 +26,7 @@ export class TeamDetailComponent implements OnInit {
         return this.selected ? this.selected.getData() : {};
     }
 
-    get selected(): Tabulator.RowComponent {
+    get selected(): RowComponent {
         return this.resourceService.currentSelected;
     }
 

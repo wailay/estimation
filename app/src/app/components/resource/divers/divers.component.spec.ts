@@ -8,8 +8,8 @@ describe('DiversComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DiversComponent ]
-    })
+    imports: [DiversComponent]
+})
     .compileComponents();
   });
 

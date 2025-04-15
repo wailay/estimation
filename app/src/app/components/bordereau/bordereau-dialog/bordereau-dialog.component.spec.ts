@@ -8,8 +8,8 @@ describe('BordereauDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BordereauDialogComponent ]
-    })
+    imports: [BordereauDialogComponent]
+})
     .compileComponents();
   });
 

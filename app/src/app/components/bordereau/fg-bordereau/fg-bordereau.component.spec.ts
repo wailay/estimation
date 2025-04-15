@@ -7,8 +7,8 @@ describe('FgComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [FgBordereauComponent],
-        }).compileComponents();
+    imports: [FgBordereauComponent],
+}).compileComponents();
     });
 
     beforeEach(() => {

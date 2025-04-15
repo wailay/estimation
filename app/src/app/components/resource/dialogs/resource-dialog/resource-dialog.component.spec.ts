@@ -8,8 +8,8 @@ describe('ResourceDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ResourceDialogComponent ]
-    })
+    imports: [ResourceDialogComponent]
+})
     .compileComponents();
   });
 

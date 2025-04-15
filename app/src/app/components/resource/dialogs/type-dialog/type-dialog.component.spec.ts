@@ -8,8 +8,8 @@ describe('TypeDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TypeDialogComponent ]
-    })
+    imports: [TypeDialogComponent]
+})
     .compileComponents();
   });
 

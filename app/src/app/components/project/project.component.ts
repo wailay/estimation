@@ -29,13 +29,23 @@ export class ProjectComponent implements OnInit {
     }
 
     async addProject(): Promise<void> {
-        const result = await this.projectService.add(this.projectForm.value);
+        const result = await this.projectService.add({
+            checked: false,
+            client: this.projectForm.value.client,
+            date: this.projectForm.value.date,
+            name: this.projectForm.value.name,
+        });
         if (result.status === 'error') {
             this.message.error(result.message);
             return;
         }
 
-        this.projects.push(this.projectForm.value);
+        this.projects.push({
+            checked: false,
+            client: this.projectForm.value.client,
+            date: this.projectForm.value.date,
+            name: this.projectForm.value.name,
+        });
         this.message.success(result.message);
     }
 

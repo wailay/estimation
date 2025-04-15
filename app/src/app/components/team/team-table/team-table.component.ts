@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { DialogService } from '@app/service/dialog/dialog.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import Tabulator from 'tabulator-tables';
+import { ColumnDefinition, RowComponent } from 'tabulator-tables';
 import { ResourceService } from './../../../service/resource/resource.service';
 import { TeamService } from './../../../service/team/team.service';
 import { LookupComponent } from './../../lookup/lookup.component';
@@ -57,7 +57,7 @@ export class TeamTableComponent extends ResourceTableComponent implements OnChan
         },
     ];
 
-    protected columns: Tabulator.ColumnDefinition[] = [
+    protected columns: ColumnDefinition[] = [
         {
             title: '',
             field: 'checkbox',
@@ -101,19 +101,19 @@ export class TeamTableComponent extends ResourceTableComponent implements OnChan
         super(resourceService, modal, dialogService, message);
     }
 
-    private affectResource(row: Tabulator.RowComponent): void {
+    private affectResource(row: RowComponent): void {
         const modal = this.modal.create({
             nzTitle: 'Affecter une ressource',
             nzContent: LookupComponent,
             nzWidth: 1500,
-            nzComponentParams: { withEquipe: false },
+            nzData: { withEquipe: false },
         });
 
         const parentId = row.getData().id;
         modal.afterClose.subscribe((selected) => {
             if (!selected) return;
 
-            const selectedResources = selected.selected.map((sel: Tabulator.RowComponent) => sel.getData());
+            const selectedResources = selected.selected.map((sel: RowComponent) => sel.getData());
 
             selectedResources.forEach(async (selR) => {
                 const result = await this.teamService.addTeamResource(parentId, selR.id);

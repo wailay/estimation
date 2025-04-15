@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DialogService } from '@app/service/dialog/dialog.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import Tabulator from 'tabulator-tables';
+import { ColumnDefinition, RowComponent, Tabulator } from 'tabulator-tables';
 import { ResourceService } from './../../../service/resource/resource.service';
 import { ResourceDialogComponent } from './../dialogs/resource-dialog/resource-dialog.component';
 import { TypeDialogComponent } from './../dialogs/type-dialog/type-dialog.component';
@@ -62,7 +62,7 @@ export class ResourceTableComponent implements OnChanges {
         },
     ];
 
-    protected columns: Tabulator.ColumnDefinition[] = [
+    protected columns: ColumnDefinition[] = [
         { title: 'Code', field: 'code', headerMenu: this.headerMenu, editor: 'input' },
         { title: 'Description', field: 'description', editor: 'input' },
         { title: 'Unite', field: 'unit', editor: 'input' },
@@ -101,28 +101,31 @@ export class ResourceTableComponent implements OnChanges {
             dataTree: true,
             dataTreeStartExpanded: true,
             dataTreeChildField: 'children',
-            selectable: true,
-            selectableRangeMode: 'click',
-            selectableRollingSelection: true,
+            selectableRows: true,
+            selectableRowsRangeMode: 'click',
+            selectableRowsRollingSelection: true,
             placeholder: 'Aucune resource',
-            cellDblClick: (e, cell) => {
-                if (cell.getRow().getData().unit) {
-                    cell.edit(true);
-                } else if (!cell.getRow().getData().unit && cell.getField() === 'code') {
-                    cell.edit(true);
-                }
-            },
-            cellEdited: (cell) => {
-                const id = (cell.getData() as any).id;
-                const field = cell.getColumn().getField();
-                const value = cell.getValue();
+        });
 
-                this.edit(id, field, value, this.type);
-            },
-            rowClick: (e, row) => {
-                if (!row.getData().unit) return;
-                this.resourceService.select(row);
-            },
+        this.table.on('cellDblClick', (e, cell) => {
+            if (cell.getRow().getData().unit) {
+                cell.edit(true);
+            } else if (!cell.getRow().getData().unit && cell.getField() === 'code') {
+                cell.edit(true);
+            }
+        });
+
+        this.table.on('cellEdited', (cell) => {
+            const id = (cell.getData() as any).id;
+            const field = cell.getColumn().getField();
+            const value = cell.getValue();
+
+            this.edit(id, field, value, this.type);
+        });
+
+        this.table.on('rowClick', (e, row) => {
+            if (!row.getData().unit) return;
+            this.resourceService.select(row);
         });
     }
 
@@ -150,7 +153,7 @@ export class ResourceTableComponent implements OnChanges {
         const modal = this.modal.create({
             nzTitle: 'Ajouter une ressource',
             nzContent: ResourceDialogComponent,
-            nzComponentParams: { withProduction: this.type === 'FG' },
+            nzData: { withProduction: this.type === 'FG' },
         });
 
         const parentId = row ? row.getData().id : row;
@@ -172,7 +175,7 @@ export class ResourceTableComponent implements OnChanges {
             selectedRows.push(row);
         }
 
-        selectedRows.forEach((rows: Tabulator.RowComponent) => {
+        selectedRows.forEach((rows: RowComponent) => {
             rows.delete();
             this.resourceService.delete(rows.getData().id).then((res) => {});
         });
@@ -201,5 +204,5 @@ export class ResourceTableComponent implements OnChanges {
         this.message.success(res.message);
     }
 
-    async handleUpload(row: Tabulator.RowComponent, id: number): Promise<void> {}
+    async handleUpload(row: RowComponent, id: number): Promise<void> {}
 }

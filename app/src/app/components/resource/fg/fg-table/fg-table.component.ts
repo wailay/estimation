@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ResourceService } from '@app/service/resource/resource.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import Tabulator from 'tabulator-tables';
+import { ColumnDefinition, RowComponent } from 'tabulator-tables';
 import { DialogService } from './../../../../service/dialog/dialog.service';
 import { ResourceTableComponent } from './../../resource-table/resource-table.component';
 
@@ -16,7 +16,7 @@ export class FgTableComponent extends ResourceTableComponent {
     tableId = 'fg-table';
     addButton = 'Frais Generaux';
 
-    protected columns: Tabulator.ColumnDefinition[] = [
+    protected columns: ColumnDefinition[] = [
         { title: 'Code', field: 'code', headerMenu: this.headerMenu, editor: 'input' },
         { title: 'Description', field: 'description', editor: 'input' },
         { title: 'Unite', field: 'unit', editor: 'input' },
@@ -38,7 +38,7 @@ export class FgTableComponent extends ResourceTableComponent {
         super(resourceService, modal, dialogService, message);
     }
 
-    async handleUpload(row: Tabulator.RowComponent, id: number): Promise<void> {
+    async handleUpload(row: RowComponent, id: number): Promise<void> {
         const fgs = await this.resourceService.readFile();
 
         for (const fg of fgs) {

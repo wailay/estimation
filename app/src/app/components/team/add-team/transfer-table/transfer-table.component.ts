@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import Tabulator from 'tabulator-tables';
+import { RowComponent, Tabulator } from 'tabulator-tables';
 
 @Component({
     selector: 'app-transfer-table',
@@ -11,7 +11,7 @@ export class TransferTableComponent implements OnChanges {
     @Input() id = '';
     @Input() data: any[] = [];
     @Input() filter = '';
-    @Output() selected: EventEmitter<Tabulator.RowComponent[]> = new EventEmitter();
+    @Output() selected: EventEmitter<RowComponent[]> = new EventEmitter();
     currentSelected: any[] = [];
 
     filtered = [];
@@ -42,12 +42,13 @@ export class TransferTableComponent implements OnChanges {
             dataTreeElementColumn: 'code',
             dataTreeChildField: 'children',
             placeholder: 'Aucune resource',
-            rowSelectionChanged: (data, rows) => {
-                const newRows = rows.filter((row) => row.getData().unit);
-                this.selected.emit(newRows);
-                console.log(rows);
-                this.currentSelected = rows;
-            },
+        });
+
+        this.table.on('rowSelectionChanged', (e, rows) => {
+            const newRows = rows.filter((row) => row.getData().unit);
+            this.selected.emit(newRows);
+            console.log(rows);
+            this.currentSelected = rows;
         });
     }
 

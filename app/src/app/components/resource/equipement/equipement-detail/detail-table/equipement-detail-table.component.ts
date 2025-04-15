@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import Tabulator from 'tabulator-tables';
+import { ColumnDefinition, RowComponent, Tabulator } from 'tabulator-tables';
 import { IResource } from './../../../../../interfaces/models';
 import { EquipementService } from './../../../../../service/resource/equipement/equipement.service';
 
@@ -31,7 +31,7 @@ export class EquipementDetailTableComponent implements OnChanges, AfterViewInit,
         },
     ];
 
-    private columns: Tabulator.ColumnDefinition[] = [
+    private columns: ColumnDefinition[] = [
         {
             title: 'Type',
             field: 'type',
@@ -48,14 +48,14 @@ export class EquipementDetailTableComponent implements OnChanges, AfterViewInit,
         { title: 'Quantite Unitaire', field: 'unit_quantity', editor: 'number', editable: false },
     ];
 
-    customReceiver(fromRow: Tabulator.RowComponent, toRow, fromTable): boolean {
+    customReceiver(fromRow: RowComponent, toRow, fromTable): boolean {
         if (this.disabled) return false;
 
         if (!fromRow.getData().unit) return false;
         const found = this.table.getRows().find((row) => row.getData().id === fromRow.getData().id);
 
         if (!found) {
-            this.table.addData({ ...fromRow.getData(), unit_quantity: 1 });
+            this.table.addData([{ ...fromRow.getData(), unit_quantity: 1 }]);
             this.addEquipementDetail(this.resource.id, fromRow.getData().id);
         }
 
@@ -92,23 +92,25 @@ export class EquipementDetailTableComponent implements OnChanges, AfterViewInit,
             dataTreeChildField: 'children',
             dataTree: true,
             dataTreeStartExpanded: true,
-            selectable: true,
-            selectableRollingSelection: true,
-            selectableRangeMode: 'click',
+            selectableRows: true,
+            selectableRowsRollingSelection: true,
+            selectableRowsRangeMode: 'click',
             placeholder: 'Aucun detail de ressource',
             movableRowsReceiver: this.customReceiver.bind(this),
             // movableRowsReceived: this.customReceiver,
-            cellDblClick: (e, cell) => {
-                if (cell.getField() !== 'unit_quantity') return;
-                cell.edit(true);
-            },
-            cellEdited: (cell) => {
-                const id = (cell.getData() as any).id;
-                const field = cell.getColumn().getField();
-                const value = cell.getValue();
+        });
 
-                // this.edit(id, field, value);
-            },
+        this.table.on('cellDblClick', (e, cell) => {
+            if (cell.getField() !== 'unit_quantity') return;
+            cell.edit(true);
+        });
+
+        this.table.on('cellEdited', (cell) => {
+            const id = (cell.getData() as any).id;
+            const field = cell.getColumn().getField();
+            const value = cell.getValue();
+
+            // this.edit(id, field, value);
         });
     }
 }

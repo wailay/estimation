@@ -8,8 +8,8 @@ describe('WorkforceTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ WorkforceTableComponent ]
-    })
+    imports: [WorkforceTableComponent]
+})
     .compileComponents();
   });
 

@@ -8,8 +8,8 @@ describe('FgDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FgDialogComponent ]
-    })
+    imports: [FgDialogComponent]
+})
     .compileComponents();
   });
 

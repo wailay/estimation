@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import Tabulator from 'tabulator-tables';
+import { RowComponent } from 'tabulator-tables';
 
 export interface ResourceDialogData {
-    row: Tabulator.RowComponent;
+    row: RowComponent;
 }
 
 @Component({
@@ -31,8 +31,8 @@ export class ResourceDialogComponent implements OnInit {
         if (oldRes) {
             this.resForm.patchValue(JSON.parse(oldRes));
         }
-        this.resForm.get('production').reset({ value: '', disabled: this.withProduction });
-        this.resForm.get('unit_production').reset({ value: '', disabled: this.withProduction });
+        this.resForm.get('production').reset('');
+        this.resForm.get('unit_production').reset('');
     }
 
     addResource(): void {
