@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FgService } from '@app/service/fg/fg.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { ColumnDefinition, RowComponent, Tabulator } from 'tabulator-tables';
+import { ColumnDefinition, RowComponent, TabulatorFull } from 'tabulator-tables';
 import { BordereauService } from '../../../../service/bordereau/bordereau.service';
 import { DialogService } from '../../../../service/dialog/dialog.service';
 import { ProjectService } from './../../../../service/project/project.service';
@@ -17,7 +17,7 @@ import { LookupComponent } from './../../../lookup/lookup.component';
 export class FgBordereauTableComponent implements OnChanges {
     tableId = 'fg-bordereau-table';
 
-    table: Tabulator;
+    table: TabulatorFull;
     @Input() data: any[] = [];
 
     rowMenu = [
@@ -78,7 +78,13 @@ export class FgBordereauTableComponent implements OnChanges {
     }
 
     protected drawTable(): void {
-        this.table = new Tabulator(`#${this.tableId}`, {
+        const element = document.getElementById(this.tableId);
+        if (!element) {
+            console.log(`Element with id ${this.tableId} not found`);
+            return;
+        }
+
+        this.table = new TabulatorFull(`#${this.tableId}`, {
             data: this.data,
             reactiveData: true, // enable data reactivity
             rowContextMenu: this.rowMenu,
@@ -89,6 +95,7 @@ export class FgBordereauTableComponent implements OnChanges {
         });
 
         this.table.on('cellDblClick', (e, cell) => {
+            console.log('Cell double click');
             cell.edit(true);
         });
 

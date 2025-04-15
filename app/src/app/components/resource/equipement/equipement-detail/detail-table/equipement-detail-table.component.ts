@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { ColumnDefinition, RowComponent, Tabulator } from 'tabulator-tables';
+import { ColumnDefinition, RowComponent, TabulatorFull } from 'tabulator-tables';
 import { IResource } from './../../../../../interfaces/models';
 import { EquipementService } from './../../../../../service/resource/equipement/equipement.service';
 
@@ -15,7 +15,7 @@ export class EquipementDetailTableComponent implements OnChanges, AfterViewInit,
     @Input() disabled: boolean;
     resource: IResource;
 
-    table: Tabulator;
+    table: TabulatorFull;
 
     private headerMenu = [
         {
@@ -84,7 +84,13 @@ export class EquipementDetailTableComponent implements OnChanges, AfterViewInit,
     }
 
     private drawTable(): void {
-        this.table = new Tabulator('#equipement-detail-table', {
+        const element = document.getElementById('equipement-detail-table');
+        if (!element) {
+            console.log(`Element with id equipement-detail-table not found`);
+            return;
+        }
+
+        this.table = new TabulatorFull('#equipement-detail-table', {
             data: this.data,
             reactiveData: true, // enable data reactivity
             rowContextMenu: [],

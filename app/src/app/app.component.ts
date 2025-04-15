@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import * as XLSX from 'xlsx';
 
 @Component({
     selector: 'app-root',
@@ -12,6 +11,6 @@ export class AppComponent {
     title = 'estimation-ayad';
 
     constructor() {
-        console.log(XLSX.version);
+        console.log('Started AppComponent');
     }
 }

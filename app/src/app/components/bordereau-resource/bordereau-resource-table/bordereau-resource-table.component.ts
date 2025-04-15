@@ -3,7 +3,7 @@ import { IResource } from '@app/interfaces/models';
 import { DialogService } from '@app/service/dialog/dialog.service';
 import {} from 'events';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { CellComponent, ColumnDefinition, RowComponent, Tabulator } from 'tabulator-tables';
+import { CellComponent, ColumnDefinition, RowComponent, TabulatorFull } from 'tabulator-tables';
 import { Bordereau } from './../../../interfaces/models';
 import { BordereauService } from './../../../service/bordereau/bordereau.service';
 import { FgService } from './../../../service/fg/fg.service';
@@ -24,7 +24,7 @@ export class BordereauResourceTableComponent implements OnChanges {
     });
     selectedRow: RowComponent;
 
-    table: Tabulator;
+    table: TabulatorFull;
     rowMenu = [
         {
             label: 'Affecter une ressource',
@@ -124,7 +124,13 @@ export class BordereauResourceTableComponent implements OnChanges {
     }
 
     private drawTable(): void {
-        this.table = new Tabulator('#bordereau-resource-table', {
+        const element = document.getElementById('bordereau-resource-table');
+        if (!element) {
+            console.log(`Element with id bordereau-resource-table not found`);
+            return;
+        }
+
+        this.table = new TabulatorFull('#bordereau-resource-table', {
             data: this.data,
             reactiveData: true, // enable data reactivity
             rowContextMenu: this.rowMenu,

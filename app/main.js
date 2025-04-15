@@ -17,6 +17,7 @@ async function createWindow() {
         width: 1600,
         height: 1200,
         webPreferences: {
+            contextIsolation: false,
             nodeIntegration: true,
             preload: path.join(__dirname, 'preload.js'),
         },

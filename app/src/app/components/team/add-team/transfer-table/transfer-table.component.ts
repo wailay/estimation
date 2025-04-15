@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { RowComponent, Tabulator } from 'tabulator-tables';
+import { RowComponent, TabulatorFull } from 'tabulator-tables';
 
 @Component({
     selector: 'app-transfer-table',
@@ -8,7 +8,7 @@ import { RowComponent, Tabulator } from 'tabulator-tables';
     standalone: false,
 })
 export class TransferTableComponent implements OnChanges {
-    table: Tabulator;
+    table: TabulatorFull;
     @Input() id = '';
     @Input() data: any[] = [];
     @Input() filter = '';
@@ -30,7 +30,13 @@ export class TransferTableComponent implements OnChanges {
     }
 
     private drawTable(): void {
-        this.table = new Tabulator(`#${this.id}`, {
+        const element = document.getElementById(this.id);
+        if (!element) {
+            console.log(`Element with id ${this.id} not found`);
+            return;
+        }
+
+        this.table = new TabulatorFull(`#${this.id}`, {
             data: this.data,
             reactiveData: true, // enable data reactivity
             columns: this.columns,

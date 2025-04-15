@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { ColumnDefinition, RowComponent, Tabulator } from 'tabulator-tables';
+import { ColumnDefinition, RowComponent, TabulatorFull } from 'tabulator-tables';
 import { TeamResource } from './../../../../interfaces/models';
 import { DialogService } from './../../../../service/dialog/dialog.service';
 import { ResourceService } from './../../../../service/resource/resource.service';
@@ -23,7 +23,7 @@ export class TeamDetailTableComponent implements OnChanges {
     @Input() data: any[];
     @Output() edited: EventEmitter<void> = new EventEmitter();
 
-    table: Tabulator;
+    table: TabulatorFull;
     rowMenu = [
         {
             label: 'Supprimer',
@@ -62,7 +62,13 @@ export class TeamDetailTableComponent implements OnChanges {
     // }
 
     private drawTable(): void {
-        this.table = new Tabulator('#team-detail-table', {
+        const element = document.getElementById('team-detail-table');
+        if (!element) {
+            console.log(`Element with id team-detail-table not found`);
+            return;
+        }
+
+        this.table = new TabulatorFull('#team-detail-table', {
             data: this.data,
             reactiveData: true, // enable data reactivity
             rowContextMenu: this.rowMenu,

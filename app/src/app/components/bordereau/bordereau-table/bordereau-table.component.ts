@@ -3,7 +3,7 @@ import { DialogService } from '@app/service/dialog/dialog.service';
 import { FgService } from '@app/service/fg/fg.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { ColumnDefinition, RowComponent, Tabulator } from 'tabulator-tables';
+import { ColumnDefinition, RowComponent, TabulatorFull } from 'tabulator-tables';
 import { BordereauDialogComponent } from './../../../components/bordereau/bordereau-dialog/bordereau-dialog.component';
 import { Bordereau } from './../../../interfaces/models';
 import { BordereauService } from './../../../service/bordereau/bordereau.service';
@@ -20,7 +20,7 @@ export class BordereauTableComponent implements OnChanges {
     @Output() selected: EventEmitter<RowComponent> = new EventEmitter();
     selectedRow: RowComponent;
 
-    table: Tabulator;
+    table: TabulatorFull;
     rowMenu = [
         {
             label: 'Ajouter un sous item',
@@ -170,7 +170,13 @@ export class BordereauTableComponent implements OnChanges {
     }
 
     private drawTable(): void {
-        this.table = new Tabulator('#bordereau-table', {
+        const element = document.getElementById('bordereau-table');
+        if (!element) {
+            console.log(`Element with id bordereau-table not found`);
+            return;
+        }
+
+        this.table = new TabulatorFull('#bordereau-table', {
             data: this.data,
             reactiveData: true, // enable data reactivity
             rowContextMenu: this.rowMenu,
@@ -299,6 +305,7 @@ export class BordereauTableComponent implements OnChanges {
     }
 
     setProfit(profit: string): void {
+        console.log('estting prodit', profit);
         if (!profit) return;
         this.fgService.profit = parseFloat(profit);
 

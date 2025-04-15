@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { DialogService } from '@app/service/dialog/dialog.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { ColumnDefinition, RowComponent, Tabulator } from 'tabulator-tables';
+import { ColumnDefinition, RowComponent, TabulatorFull } from 'tabulator-tables';
 import { ResourceService } from './../../../service/resource/resource.service';
 import { ResourceDialogComponent } from './../dialogs/resource-dialog/resource-dialog.component';
 import { TypeDialogComponent } from './../dialogs/type-dialog/type-dialog.component';
@@ -16,7 +16,7 @@ export class ResourceTableComponent implements OnChanges {
     type: string;
     tableId: string;
 
-    table: Tabulator;
+    table: TabulatorFull;
     @Input() data: any[] = [];
     @Output() selected: EventEmitter<RowComponent> = new EventEmitter();
     parentResourceId: number = undefined;
@@ -93,7 +93,13 @@ export class ResourceTableComponent implements OnChanges {
     }
 
     protected drawTable(): void {
-        this.table = new Tabulator(`#${this.tableId}`, {
+        const element = document.getElementById(this.tableId);
+        if (!element) {
+            console.log(`Element with id ${this.tableId} not found`);
+            return;
+        }
+
+        this.table = new TabulatorFull(`#${this.tableId}`, {
             data: this.data,
             reactiveData: true, // enable data reactivity
             rowContextMenu: this.rowMenu,
