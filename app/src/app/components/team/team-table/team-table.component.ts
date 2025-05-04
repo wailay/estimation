@@ -75,14 +75,11 @@ export class TeamTableComponent extends ResourceTableComponent implements OnChan
             title: 'Code',
             field: 'code',
             headerMenu: this.headerMenu,
-
-            editor: 'input',
-            editable: false,
         },
-        { title: 'Description', field: 'description', editor: 'input', editable: false },
-        { title: 'Unite', field: 'unit', editor: 'input', editable: false },
-        { title: 'Prix Unitaire', field: 'unit_price', editable: false },
-        { title: 'Production', field: 'production', editor: 'number', editable: false },
+        { title: 'Description', field: 'description' },
+        { title: 'Unite', field: 'unit' },
+        { title: 'Prix Unitaire', field: 'unit_price' },
+        { title: 'Production', field: 'production' },
     ];
 
     ngOnChanges(changes: SimpleChanges): void {

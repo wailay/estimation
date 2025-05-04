@@ -2,7 +2,7 @@
     <nz-space>
         <button *nzSpaceItem nz-button nzType="primary" (click)="this.openTypeForm(null)">Nouveau dossier</button>
         <button *nzSpaceItem nz-button nzType="primary" (click)="this.openResourceForm(null)">Ajouter {{ addButton }}</button>
-        <button *nzSpaceItem nz-button nzType="primary" (click)="this.handleUpload(null, null)">Ajouter CSV</button>
+        <button *nzSpaceItem nz-button nzType="primary" (click)="this.handleUploadCsv(null, null)">Ajouter CSV</button>
     </nz-space>
     <nz-divider></nz-divider>
     <div [id]="tableId"></div>

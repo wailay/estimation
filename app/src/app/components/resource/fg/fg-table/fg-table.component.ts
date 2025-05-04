@@ -39,11 +39,21 @@ export class FgTableComponent extends ResourceTableComponent {
         super(resourceService, modal, dialogService, message);
     }
 
-    async handleUpload(row: RowComponent, id: number): Promise<void> {
-        const fgs = await this.resourceService.readFile();
+    async handleUploadCsv(row: RowComponent, id: number): Promise<void> {
+        // Open window to select a file
+        const csvData = await this.resourceService.readFile();
 
-        for (const fg of fgs) {
-            await this.addResource(fg, id, row);
+        console.log('csvData', csvData);
+
+        for (const data of csvData) {
+            const ressource = {
+                code: data['0'],
+                description: data['1'],
+                unit: data['2'],
+                unit_price: data['3'],
+            };
+
+            await this.addResource(ressource, id, row);
         }
     }
 }

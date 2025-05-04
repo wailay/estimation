@@ -23,4 +23,22 @@ export class MaterialTableComponent extends ResourceTableComponent {
     ) {
         super(resourceService, modal, dialogService, message);
     }
+
+    async handleUploadCsv(row: RowComponent, id: number): Promise<void> {
+        // Open window to select a file
+        const csvData = await this.resourceService.readFile();
+
+        console.log('csvData', csvData);
+
+        for (const data of csvData) {
+            const ressource = {
+                code: data['0'],
+                description: data['1'],
+                unit: data['2'],
+                unit_price: data['3'],
+            };
+
+            await this.addResource(ressource, id, row);
+        }
+    }
 }

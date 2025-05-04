@@ -2,7 +2,7 @@ const { ipcMain } = require('electron');
 const { Op } = require('sequelize');
 const Resource = require('../../store/models/resources/resource-model');
 const fs = require('fs');
-const neatCsv = require('neat-csv');
+const csv = require('csv-parser');
 const { dialog } = require('electron');
 const FraisGeneraux = require('../../store/models/frais-generaux/frais-generaux');
 
@@ -149,9 +149,19 @@ class ResourceService {
             try {
                 const file = await dialog.showOpenDialog({ properties: ['openFile'] });
                 const path = file.filePaths[0];
-                const data = fs.readFileSync(path);
-                const obj = await neatCsv(data);
-                return obj;
+                // const data = fs.readFileSync(path);
+                const results = [];
+                await new Promise((resolve, reject) => {
+                    fs.createReadStream(path)
+                        .pipe(csv({ headers: false }))
+                        .on('data', (data) => results.push(data))
+                        .on('end', () => {
+                            resolve();
+                        })
+                        .on('error', (error) => reject(error));
+                });
+
+                return results;
             } catch (err) {
                 return this.errorStatus(err);
             }

@@ -34,7 +34,7 @@ export class ResourceTableComponent implements OnChanges {
         {
             label: 'Ajouter CSV',
             action: (e, row) => {
-                this.handleUpload(row, row.getData().id);
+                this.handleUploadCsv(row, row.getData().id);
             },
             disabled: (comp) => {
                 return comp.getData().unit;
@@ -168,6 +168,8 @@ export class ResourceTableComponent implements OnChanges {
 
         modal.afterClose.subscribe((resource) => {
             if (!resource) return;
+
+            console.log('resource', resource);
             this.addResource(resource, parentId, row);
         });
     }
@@ -212,5 +214,7 @@ export class ResourceTableComponent implements OnChanges {
         this.message.success(res.message);
     }
 
-    async handleUpload(row: RowComponent, id: number): Promise<void> {}
+    async handleUploadCsv(row: RowComponent, id: number): Promise<void> {
+        console.log('handle upload csv base', row, id);
+    }
 }

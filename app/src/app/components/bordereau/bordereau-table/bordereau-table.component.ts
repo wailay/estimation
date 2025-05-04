@@ -305,7 +305,6 @@ export class BordereauTableComponent implements OnChanges {
     }
 
     setProfit(profit: string): void {
-        console.log('estting prodit', profit);
         if (!profit) return;
         this.fgService.profit = parseFloat(profit);
 
