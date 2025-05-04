@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { RowComponent } from 'tabulator-tables';
 import { DialogService } from './../../../../service/dialog/dialog.service';
 import { ResourceService } from './../../../../service/resource/resource.service';
 import { ResourceTableComponent } from './../../resource-table/resource-table.component';
