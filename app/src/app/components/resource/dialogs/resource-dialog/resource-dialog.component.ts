@@ -28,10 +28,10 @@ export class ResourceDialogComponent implements OnInit {
     constructor(private modal: NzModalRef, public fb: FormBuilder) {}
 
     ngOnInit(): void {
-        const oldRes = localStorage.getItem('resource');
-        if (oldRes) {
-            this.resForm.patchValue(JSON.parse(oldRes));
-        }
+        // const oldRes = localStorage.getItem('resource');
+        // if (oldRes) {
+        //     this.resForm.patchValue(JSON.parse(oldRes));
+        // }
         this.resForm.get('production').reset('');
         this.resForm.get('unit_production').reset('');
     }
